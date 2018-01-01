@@ -1,0 +1,8 @@
+[0syllabus]
+    Name = "Syllabus"
+    URL = "/syllabus"
+
+[5posts]
+    Name = "Posts"
+    Title = "Show list of posts"
+    URL = "/post"

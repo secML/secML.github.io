@@ -10,6 +10,16 @@
     <atom:link href="https://secml.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Syllabus Posted</title>
+      <link>https://secml.github.io/syllabusposted/</link>
+      <pubDate>Sun, 31 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/syllabusposted/</guid>
+      <description>&lt;p&gt;The &lt;a href=&#34;https://secml.github.io/syllabus&#34;&gt;Syllabus&lt;/a&gt; is now posted.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Welcome</title>
       <link>https://secml.github.io/welcome/</link>
       <pubDate>Sun, 31 Dec 2017 00:00:00 +0000</pubDate>

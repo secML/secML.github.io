@@ -14,7 +14,7 @@ href="https://tlseminar.github.io">TLSeminar</a> last Spring.
 
 This seminar will focus on understanding the risks adversaries pose to
 machine learning systems, and how to design more robust machine
-learning systems to mitigate those risks.  
+learning systems to mitigate those risks.
 
 The seminar is open to ambitious undergraduate students (with
 instructor permission), and to graduate students interested in

@@ -1,0 +1,15 @@
+[1schedule]
+    Name = "Schedule"
+    URL = "/schedule"
+
+[1tschedule]
+    Name = "Teams"
+    URL = "/teams"
+
+[2readings]
+    Name = "Readings"
+    URL = "/readings/"
+
+[3projects]
+    Name = "Projects"
+    URL = "/projects/"
