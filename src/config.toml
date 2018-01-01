@@ -1,0 +1,50 @@
+baseurl = "https://secml.github.io"
+languageCode = "en-us"
+title = "secML"
+subtitle = "Security and Privacy of Machine Learning"
+copyright = ""
+theme = "secml"
+
+paginate = 10
+paginatePath = "page"
+
+pageNotFoundTitle = "Not Found"
+pageNotFoundDetail = "Your request was determined to be an adversarial example by our web server. This could be because you are evil, but it is most likely a bad link or mistyped URL."
+
+# disqusShortname = "evans1629"
+
+[permalinks]
+    post = "/:slug/"
+    code = "/:slug/"
+
+[taxonomies]
+    tag = "tags"
+    topic = "topics"
+
+[author]
+    name = "secML"
+    #    email = "evans@virginia.edu"
+
+[params]
+    brand = "secML"
+    topline = "Security and Privacy of Machine Learning"
+    footline = "<p align=\"center\">cs6501: secML | University of Virginia, Spring 2018 | <a href=\"https://www.cs.virginia.edu/evans\">David Evans</a></p>"
+    sidebar = "left"
+    googleAnalytics = "UA-3775212-1"
+
+    nodate = true
+    noauthor = true
+    noread = true
+    nopaging=true
+    notoc=true
+
+[blackfriday]
+    angledQuotes = false
+    fractions = false
+    hrefTargetBlank = false
+    latexDashes = true
+    plainIdAnchors = true
+    extensions = []
+    extensionmask = []
+
+[[menu.footer]]

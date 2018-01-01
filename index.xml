@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>secML</title>
+    <link>https://secml.github.io/index.xml</link>
+    <description>Recent content on secML</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 31 Dec 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://secml.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Welcome</title>
+      <link>https://secml.github.io/welcome/</link>
+      <pubDate>Sun, 31 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/welcome/</guid>
+      <description>&lt;p&gt;This graduate-level special topics course will be offered in Spring
+2018. Meetings will be &lt;strong&gt;Fridays, 9:30-noon&lt;/strong&gt; in Rice Hall 032. More
+information will be posted here soon, but the seminar format will be
+roughly similar to what we used to &lt;a
+href=&#34;https://tlseminar.github.io&#34;&gt;TLSeminar&lt;/a&gt; last Spring.&lt;/p&gt;
+
+&lt;p&gt;This seminar will focus on understanding the risks adversaries pose to
+machine learning systems, and how to design more robust machine
+learning systems to mitigate those risks.&lt;/p&gt;
+
+&lt;p&gt;The seminar is open to ambitious undergraduate students (with
+instructor permission), and to graduate students interested in
+research in adversarial machine learning, privacy-preserving machine
+learning, fairness and transparency in machine learning, and other
+related topics.  Previous background in machine learning and security
+is beneficial, but not required so long as you are willing and able to
+learn some foundational materials on your own.  &lt;/p&gt; &lt;p&gt; For more
+information, contact &lt;A href=&#34;https://www.cs.virginia.edu/evans&#34;&gt;David
+Evans&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
