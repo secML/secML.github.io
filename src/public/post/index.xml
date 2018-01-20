@@ -6,8 +6,83 @@
     <description>Recent content in Post-rsses on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 20 Jan 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://secml.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>First Week</title>
+      <link>https://secml.github.io/first-week/</link>
+      <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/first-week/</guid>
+      <description>&lt;p&gt;&lt;em&gt;This message was also sent out by email.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Since not everyone has joined the slack yet, I&amp;rsquo;m sending this out by
+email, but please make sure to join
+&lt;a href=&#34;https://secprivml.slack.com&#34;&gt;https://secprivml.slack.com&lt;/a&gt; soon. I
+will use that for future communications.&lt;/p&gt;
+
+&lt;p&gt;I have grouped the 18 full participants in the class into three teams of six:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Team Bus:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Anant Kharkar&lt;br /&gt;
+Ashley Gao&lt;br /&gt;
+Atallah Hezbor&lt;br /&gt;
+Joshua Holtzman&lt;br /&gt;
+Mainuddin Ahmad Jonas&lt;br /&gt;
+Weilin Xu&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Team Gibbon:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Aditi Narvekar&lt;br /&gt;
+Austin Chen&lt;br /&gt;
+Ethan Lowman&lt;br /&gt;
+Guy &amp;ldquo;Jack&amp;rdquo; Verrier&lt;br /&gt;
+Jialei Fu&lt;br /&gt;
+Jin Ding&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Team Panda:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Bargav Jayaraman&lt;br /&gt;
+Christopher Geier&lt;br /&gt;
+Faysal Hossain Shezan&lt;br /&gt;
+Nathaniel Grevatt&lt;br /&gt;
+Nishant Jha&lt;br /&gt;
+Tanmoy Sen&lt;/p&gt;
+
+&lt;p&gt;The teams will probably adjust a bit over the next week as some people
+who registered for the class didn&amp;rsquo;t submit a survey, and others may be
+joining the class late, etc., but otherwise we will plan to keep with
+these teams through spring break and possible re-arrange things after
+that.  You can, of course, rename your team and develop your own
+adversarial (but tasteful) team icon.&lt;/p&gt;
+
+&lt;p&gt;Each week, one team will be responsible for leading the class, one
+team for blogging (writing a summary of the class), and one team for
+food. Everyone in the class is expected to do the preparation for each
+meeting, which will usually involve reading a few papers (but may
+involve other activities, at the design of the leading team).  See
+&lt;a href=&#34;https://secml.github.io/teams/&#34;&gt;https://secml.github.io/teams/&lt;/a&gt; for
+the description of team responsibilities.  For the first week, Team
+Bus will be the leading team, Team Gibbon will be the feeding team,
+and Team Panda will be the blogging team.  I have created a slack
+channel for each team, and you should have an invitation to join
+it. The immediate tasks for each team are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Team Bus: decide on a leader who will be responsible for coordinating your team for this week, come up with some ideas what you would like to do for Friday&amp;rsquo;s meeting, make sure there are some people who can come to my office hours on Monday (2:30pm) - if not enough people can come then, arrange an alternative time with me, and plan an exciting and worthwhile seminar for Friday.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Team Gibbon: you are the feeding team for this week, so should select 2-3 people to take care of this. One of you should pick up a credit card from me on Thursday to pay for the food. You will be leading the seminar on 2 Feb, so should determine a leader for this, and once Team Bus posts the topic and paper for this week (which should happen on Monday), should start planning your topic. We should meet briefly after Friday&amp;rsquo;s seminar, to discuss your plans, and then a longer meeting the following Monday.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Team Panda: you are the blogging team for this week, so should get familiar with &lt;a href=&#34;https://secml.github.io/blogging/&#34;&gt;https://secml.github.io/blogging/&lt;/a&gt;. You will be leading the seminar or 9 Feb, so should start thinking of topics you would like to lead. You should identify leaders for blogging, feeding, and leading to be ready for the next 3 weeks.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Cheers,&lt;/p&gt;
+
+&lt;p&gt;&amp;mdash; Dave&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Starting Seminar</title>
