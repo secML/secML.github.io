@@ -7,12 +7,9 @@ See [Teams](/teams) for the class teams and responsibilities.
 <tr><td><a href="/class2">Class 2</a> (2 Feb)</td><td></td><td bgcolor="#44AAEE">Blog</td><td bgcolor="#CCDD55">Lead</td><td>Food</td></tr>
 <tr><td><a href="/class3">Class 3</a> (9 Feb)</td><td></td><td>Food</td><td bgcolor="#44AAEE">Blog</td><td bgcolor="#CCDD55">Lead</td></tr>
 <tr><td><a href="/class4">Class 4</a> (16 Feb)</td><td></td><td bgcolor="#CCDD55">Lead</td><td>Food</td><td bgcolor="#44AAEE">Blog</td></tr>
-<tr><td><A href="/class5">Class 5</a> (23 Feb)</td><td>/td><td bgcolor="#44AAEE">Blog</td><td bgcolor="#CCDD55">Lead</td><td>Food</td></tr>
+<tr><td><A href="/class5">Class 5</a> (23 Feb)</td><td></td><td bgcolor="#44AAEE">Blog</td><td bgcolor="#CCDD55">Lead</td><td>Food</td></tr>
 <tr><td><a href="/class6">Class 6</a> (2 Mar)</td><td></td><td>Food</td><td bgcolor="#44AAEE">Blog</td><td bgcolor="#CCDD55">Lead</td></tr>
+<tr><td colapsn=5 bgcolor="#66EEAA" style="text-align:center" colspan=5>Spring Break</td></tr>
 </table>
 
-<table>
-<tr><td bgcolor="#66EEAA" style="text-align:center" colspan=5>Spring Break</td></tr>
-</table>
-
-<table>
+(Schedule after Spring Break to be determined later, but continue similarly.)
