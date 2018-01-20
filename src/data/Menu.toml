@@ -2,6 +2,14 @@
     Name = "Syllabus"
     URL = "/syllabus"
 
+[1schedule]
+    Name = "Schedule"
+    URL = "/schedule"
+
+[2teams]
+    Name = "Teams"
+    URL = "/teams"
+
 [5posts]
     Name = "Posts"
     Title = "Show list of posts"
