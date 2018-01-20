@@ -4,27 +4,27 @@
 <tr bgcolor="#CCC"><td align="center"><b>Team Bus</b></td><td align="center"><b>Team Gibbon</b></td><td align="center"><b>Team Panda</b></td></tr>
 <tr>
 <td>
-Anant Kharkar  
-Ashley Gao  
-Atallah Hezbor  
-Joshua Holtzman  
-Mainuddin Ahmad Jonas  
-Weilin Xu
+Anant Kharkar<br>
+Ashley Gao  <br>
+Atallah Hezbor  <br>
+Joshua Holtzman  <br>
+Mainuddin Ahmad Jonas<br>  
+Weilin Xu<br>
 </td>
 <td>
-Aditi Narvekar  
-Austin Chen  
-Ethan Lowman  
-Guy "Jack" Verrier  
-Jialei Fu  
-Jin Ding  
+Aditi Narvekar<br>  
+Austin Chen  <br>
+Ethan Lowman  <br>
+Guy "Jack" Verrier<br>  
+Jialei Fu  <br>
+Jin Ding  <br>
 </td>
 <td>
-Bargav Jayaraman  
-Christopher Geier  
-Faysal Hossain Shezan  
-Nathaniel Grevatt  
-Nishant Jha  
+Bargav Jayaraman<br>  
+Christopher Geier  <br>
+Faysal Hossain Shezan  <br>
+Nathaniel Grevatt  <br>
+Nishant Jha  <br>
 Tanmoy Sen  
 </td>
 </tr>
