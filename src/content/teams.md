@@ -28,7 +28,7 @@ Bargav Jayaraman<br>
 Christopher Geier  <br>
 Faysal Hossain Shezan  <br>
 Helen Simecek<br>
-Nan Ying<br>
+Nan Yang<br>
 Nathaniel Grevatt  <br>
 Nishant Jha  <br>
 Tanmoy Sen  
