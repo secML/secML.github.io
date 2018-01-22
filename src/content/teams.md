@@ -18,6 +18,7 @@ Ethan Lowman  <br>
 Guy "Jack" Verrier<br>  
 Jialei Fu  <br>
 Jin Ding  <br>
+Suya
 </td>
 <td>
 Bargav Jayaraman<br>  
