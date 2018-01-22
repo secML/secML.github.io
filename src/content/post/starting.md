@@ -13,7 +13,7 @@ To enable this, everyone interested in participating in the class in any way sho
 
    1. Submit this form by Wednesday (Jan 24): [https://goo.gl/forms/FqSmUNHYBPbaKsg72](https://goo.gl/forms/FqSmUNHYBPbaKsg72)
 
-   2. Read the pcourse syllabus](/syllabus/), and follow the directions there to join the seminar slack group.
+   2. Read the [course syllabus](/syllabus/), and follow the directions there to join the seminar slack group.
 
 I will work out the teams based on the form submissions, and set up the schedule for leading classes/blogging. I will have office hours on Monday (Jan 22) at 2:30pm. People from the first presenting team will be expect to meet with me then (not necessarily everyone but at least some of the team), and anyone with questions about the seminar is also welcome to come by. (If this time works for the class, we'll keep this as my regular office hours time for the semester.)
 
