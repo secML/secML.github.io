@@ -7,6 +7,8 @@
 Anant Kharkar<br>
 Ashley Gao  <br>
 Atallah Hezbor  <br>
+Bhuvanesh Murali<br>
+Jeffrey Tan<br>
 Joshua Holtzman  <br>
 Mainuddin Ahmad Jonas<br>  
 Weilin Xu<br>
@@ -18,12 +20,15 @@ Ethan Lowman  <br>
 Guy "Jack" Verrier<br>  
 Jialei Fu  <br>
 Jin Ding  <br>
+Lawrence Hook<br>
 Suya
 </td>
 <td>
 Bargav Jayaraman<br>  
 Christopher Geier  <br>
 Faysal Hossain Shezan  <br>
+Helen Simecek<br>
+Nan Ying<br>
 Nathaniel Grevatt  <br>
 Nishant Jha  <br>
 Tanmoy Sen  
