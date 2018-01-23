@@ -16,11 +16,11 @@ Weilin Xu<br>
 <td>
 Aditi Narvekar<br>  
 Austin Chen  <br>
+Beth Naylor<br>
 Ethan Lowman  <br>
 Guy "Jack" Verrier<br>  
 Jialei Fu  <br>
 Jin Ding  <br>
-Lawrence Hook<br>
 Suya
 </td>
 <td>
@@ -28,6 +28,7 @@ Bargav Jayaraman<br>
 Christopher Geier  <br>
 Faysal Hossain Shezan  <br>
 Helen Simecek<br>
+Lawrence Hook<br>
 Nan Yang<br>
 Nathaniel Grevatt  <br>
 Nishant Jha  <br>
