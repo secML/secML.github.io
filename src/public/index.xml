@@ -148,6 +148,28 @@ Evans&lt;/a&gt;.&lt;/p&gt;
     
     <item>
       <title></title>
+      <link>https://secml.github.io/resources/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/resources/</guid>
+      <description>
+
+&lt;h1 id=&#34;resources-for-adversarial-machine-learning-research&#34;&gt;Resources for Adversarial Machine Learning Research&lt;/h1&gt;
+
+&lt;h2 id=&#34;adversarial-machine-learning-toolkits&#34;&gt;Adversarial Machine Learning Toolkits&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;evademl.org/zoo&#34;&gt;EvadeML-Zoo&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/tensorflow/cleverhans&#34;&gt;cleverhans&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;machine-learning-systems&#34;&gt;Machine Learning Systems&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/facebookresearch/Detectron&#34;&gt;Detectron&lt;/a&gt; - Facebook&amp;rsquo;s research platform for object detection research (including RetinaNet)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>https://secml.github.io/schedule/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -307,11 +329,11 @@ Weilin Xu&lt;br&gt;
 &lt;td&gt;
 Aditi Narvekar&lt;br&gt;  
 Austin Chen  &lt;br&gt;
-Beth Naylor&lt;br&gt;
 Ethan Lowman  &lt;br&gt;
 Guy &#34;Jack&#34; Verrier&lt;br&gt;  
 Jialei Fu  &lt;br&gt;
 Jin Ding  &lt;br&gt;
+Max Naylor&lt;br&gt;
 Suya
 &lt;/td&gt;
 &lt;td&gt;
