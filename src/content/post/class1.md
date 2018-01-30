@@ -36,6 +36,7 @@ Gradient Descent is an optimization algorithm which is used to minimize cost fun
 <img src="/images/gradient_descent_graph.png" width="300" >
 </p>
 
+In the figure, weight is slowly decreasing from the initial stage. J(min) is the minimum value of the cost function which can be obtained by optimizing the algorithm. 
 
 ---
 ## Applications and Vulnabilities
