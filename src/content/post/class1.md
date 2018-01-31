@@ -115,14 +115,10 @@ As we discussed, the sign method in the FGSM is an approximation to the actual g
 
 ---
 ## Transferability of adversarial samples
-- Cross-evasion
-- Intra-technique
+As shown above, an adversarial sample can fool a machine learned model to misclassify it with high confidence. In particular, the adversarial samples made to fool image classifiers show how an adversarial sample can be indistinguishable by humans from legitimate samples. Additionally, examples that evade one classifier tend to evade others. This poses a vulnerability for machine learned models, one that can be exploited with cross-evasion.
 
 #### Learning classifier substitutes
-- Use smaller number of queries/training data
-
-#### Steal model by query
-#### Adversarial sample crafting
+For example, in this [paper](https://arxiv.org/abs/1605.07277), Papernot et al. took advantage of the transferability of adversarial examples on a remote DNN by training a new model with their own synthetic data. By using a relatively small number of queries to label their data, they trained a substitute model which they then used to craft adversarial samples. Demonstrating transferability, 84.24% of the adversarial samples trained from the substitute model fooled the remote DNN.
 
 
 --- Team Panda
