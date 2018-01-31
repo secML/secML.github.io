@@ -4,7 +4,7 @@ draft = true
 title = "Class 1: Intro to Adversarial Machine Learning"
 author = "Team Panda"
 +++
-# Outline of Class 1 blog
+# Class 1 blog
 
 ## Machine Learning Background
 <!-- - Other ML algorithms use linear decision boundaries (SVM, LR, ...)
@@ -86,17 +86,23 @@ The level of knowledge the adversary possesses generally falls into one of three
 
 
 ---
-## Goodfellow's Explaining and Harnessing Adversarial Examples
-You can find the [paper](https://arxiv.org/abs/1412.6572) here.
-#### Potemkin village
-- Freshly painted outside
-- Decaying inside/back
+## Modern Machine Learning as a Potemkin village
 
-#### FGSM
-- Take opposite direction of gradient loss
-- Reverse of optimization
+<p align="center">
+<img src="/images/potemkin.jpeg" width="350" >
+</p>
 
-#### ReLU vs Sigmoid
+The term "Potemkin village" describes a difference between appeance and reality. In a [paper](https://arxiv.org/abs/1412.6572) by Goodfellow, Shlens, and Szegdy, modern machine learning methods are described as building "a Potemkin village that works well on naturally occuring data, but is exposed as a fake when one visits points in space that do not have high probability in the data distribution." The apparent roboustness particularly of deep neural networks has been found to be a falsehood as seen above in the panda picture. 
+
+The two faced nature of machine learning models to be both fragile and robout from two different angles leads to concerns in the security of machine learning algorithms. High confidence in classifying adversarial examples poses a threat to the integrity of the model's output.
+
+#### Fast gradient sign method (FGSM) 
+
+Also the [paper](https://arxiv.org/abs/1412.6572) mentioned a method for generating adversarial examples. Fast gradient sign method maximizes the error between the ground truth classification of the sample and minimizes the error to the target classification. The method is effecitve is generating the best pixels to change to achieve a higher loss, essentially acting as a reverse optimization method. FGSM simply traverses the loss curve by moving in the opposite direction of the gradient loss. 
+
+<!-- TODO: Include photo of fomulas. -->
+
+As we discussed, the sign method in the FGSM is an approximation to the actual gradient. Although the most accurate method would use the true gradient, the sign of the gradient is taken for the sake efficiency. FGSM showcases the fragility of machine learning models especially through visualizations such as the panda example. 
 
 ---
 ## Adversarial training
