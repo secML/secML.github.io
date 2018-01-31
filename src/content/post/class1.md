@@ -100,18 +100,24 @@ The two faced nature of machine learning models to be both fragile and robout fr
 
 Also the [paper](https://arxiv.org/abs/1412.6572) mentioned a method for generating adversarial examples. Fast gradient sign method maximizes the error between the ground truth classification of the sample and minimizes the error to the target classification. The method is effecitve is generating the best pixels to change to achieve a higher loss, essentially acting as a reverse optimization method. FGSM simply traverses the loss curve by moving in the opposite direction of the gradient loss. 
 
-<!-- TODO: Include photo of fomulas. -->
+<p align="center">
+<img src="/images/formula.png" width="200" >
+</p>
 
 As we discussed, the sign method in the FGSM is an approximation to the actual gradient. Although the most accurate method would use the true gradient, the sign of the gradient is taken for the sake efficiency. FGSM showcases the fragility of machine learning models especially through visualizations such as the panda example. 
 
 ---
 ## Adversarial training
 #### Effects of nonlinearities
-- More capacity leads to vulnerability
+Nonlinearities lead to vulnerabilities. As shown below, there are spaces around the mode of the function, which can exploited by adversarial examples.
+
+<p align="center">
+<img src="/images/capacity.png" width="650" >
+</p>
 
 #### Solutions
-- Mixture of original and adversarial examples
-- Add an adversarial regularizer
+- Train model on mixture of original and adversarial examples - Szegedy et al.
+- Use an adversarial regularizer - Goodfellow et al.
 
 ---
 ## Transferability of adversarial samples
