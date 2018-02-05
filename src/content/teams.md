@@ -7,7 +7,6 @@
 Anant Kharkar<br>
 Atallah Hezbor  <br>
 Bhuvanesh Murali<br>
-Jeffrey Tan<br>
 Mainuddin Jonas<br>  
 Weilin Xu<br>
 </td>
