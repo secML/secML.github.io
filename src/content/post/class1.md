@@ -89,25 +89,26 @@ techniques to avoid collisions, including detailed maps and LIDAR, so
 are likely to not be directly vulnerable to image mis-classification
 attacks.)
 
-Machine learning has also found a place in the medical world, being used to identify patterns and trends in patient histories that can be used for diagnoses, to recognize abnormalities in medical imaging, and even to evaluate the efficiency of a hospital's workflow.  In healthcare, the risks are two-fold - there are both safety and privacy risks that need to be considered.  An attacker could manipulate the models used for diagnostics and pattern recognition, thereby putting patient health at risk, and there is also the potential for confidential patient data to be leaked either through the training process or the final model itself. _TODO: I don't see the adversarial scenario here. There is an important issue with insurance fraud, but I have a hard time imagining a scenario where an adversary would want to manipulate a patient's scan images._
+Machine learning has also found a place in the medical world, being used to identify patterns and trends in patient histories that can be used for diagnoses, to recognize abnormalities in medical imaging, and even to evaluate the efficiency of a hospital's workflow.  The use of machine learning in healthcare introduces a new concern - how can patient data be effectively utilized for beneficial purposes, like predicting appropriate drug dosages, without compromising patient privacy? 
 
 There are numerous other uses of ML today (targeted advertising, fraud detection, malware detection, etc.) and each carries particular security and privacy concerns.
 
 ---
 ## Adversarial Examples
 
-In machine learning, an adversarial example is an input that has been manipulated so that the model returns a different, incorrect output.  _TODO: provide some background on this, especially because of the history from the Biggio paper_
-A classic adversarial example for image classification is from a paper by Goodfellow et al. _TODO: add cite and link_, which features a photo of a panda that was originally classified correctly, but is misclassified when carefully-crafted noise is added.  The model classifies the new image as a gibbon, even though human eyes can easily see it is a panda. 
+In machine learning, an adversarial example is an input that has been manipulated so that the model returns a different, incorrect output.  A classic adversarial example for image classification is from a paper by [Goodfellow et al.](https://arxiv.org/pdf/1412.6572.pdf), which features a photo of a panda that was originally classified correctly, but is misclassified when carefully-crafted noise is added.  The model classifies the new image as a gibbon, even though human eyes can easily see it is a panda. 
 
    <p align="center">
 <img src="/images/panda.png" width="600" >
-<br>_TODO: image credit_
+<br> Source: [Goodfellow Paper](https://arxiv.org/pdf/1412.6572.pdf)
    </p>
+
+As outlined in [Biggio et al.'s](https://arxiv.org/pdf/1712.03141.pdf) paper on the history of adversarial machine learning, adversarial examples were first described in 2004 in the context of email spam filters. At this time, [Dalvi et al.](https://homes.cs.washington.edu/~pedrod/papers/kdd04.pdf) and [Lowd and Meek](https://ix.cs.uoregon.edu/~lowd/kdd05lowd.pdf) realized that slight modifications to spam emails allowed them to pass through the filters, without greatly affecting the content of the message. From this point, the field expanded to study the potential for adversarial examples in other realms, like machine-learning-based image and malware classification.  The increased usage of deep learning techniques for object recognition led to a surge in interest around 2014, when Szegedy et al. showed that deep convolutional neural networks were also susceptible to adversarial examples.  Since then, interest in this field has only continued to increase, with more and more papers published each year. 
 
 ### Classifying Attacks
 
-Attacks can be categorized by many different characteristics, but are often referred to in terms of the attack method, the goal of the attack, and the adversary's level of knowledge.
-_TODO: if this is following the taxonomy from the Papernot et al. paper, mention and link_
+Attacks can be categorized by many different characteristics, but are often referred to in terms of the attack method, the goal of the attack, and the adversary's level of knowledge, as detailed in [Papernot et al.](https://arxiv.org/pdf/1611.03814.pdf).
+
 
 #### Attack Method
 
@@ -115,7 +116,7 @@ A poisoning attack is when the adversary adds carefully-crafted samples into the
 
    <p align="center">
 <img src="/images/ml_pipeline.jpg" width="650" >
-<br>_TODO: image credit_
+<br> Source: [Presentation Slides](https://docs.google.com/presentation/d/1dFRjRfCIz1TChZYfIY_FLYiSk7nNmdBY2luJ8T_TCAE/edit?usp=sharing)
    </p>
 
 #### Goal of Attack
@@ -185,3 +186,23 @@ For example, in this [paper](https://arxiv.org/abs/1605.07277), Papernot et al. 
 _TODO: a bit more explanation of this result - how the experiments were done, how transferability differs based on the different models, etc._
 
 --- Team Panda
+
+#### References
+
+[[1]](https://arxiv.org/pdf/1412.6572.pdf) I.J. Goodfellow, J. Shlens, C. Szegedy. "Explaining
+and Harnessing Adversarial Examples." _ArXiv e-prints_, December 2014.
+
+[[2]](https://arxiv.org/pdf/1712.03141.pdf) B. Biggio, F. Roli," "Wild patterns: Ten years after the rise of
+adversarial machine learning."" _arXiv preprint arXiv:1712.03141_, 2017.
+
+[[3]](https://homes.cs.washington.edu/~pedrod/papers/kdd04.pdf) N. Dalvi, P. Domingos, Mausam, S. Sanghai, D. Verma, "Adversarial classification,"" _Int’l Conf. Knowl. Disc. and Data Mining_, 2004, pp. 99–108.
+
+[[4]](https://ix.cs.uoregon.edu/~lowd/kdd05lowd.pdf) D. Lowd, C. Meek, "Adversarial learning," _Int’l Conf. Knowl. Disc. and Data Mining_, ACM Press, Chicago, IL, USA, 2005, pp. 641–647.
+
+[[5]](https://arxiv.org/pdf/1611.03814.pdf) N. Papernot, P. McDaniel, A. Sinha, M. Wellman, "Towards the science of security and privacy in machine learning." _IEEE European Symposium on Security and Privacy_,
+2018.
+
+
+
+
+
