@@ -6,10 +6,6 @@ author = "Team Panda"
 slug = "class1"
 +++
 
-_TODO: list complete references (at least full author lists,
-publication venue, year) for the papers covered, and links to the
-paper_
-
 ## Machine Learning Background
 <!-- - Other ML algorithms use linear decision boundaries (SVM, LR, ...)
 - Deep learning uses linear units with nonlinear composition
@@ -43,7 +39,7 @@ prediction. A frequently used loss function is the 0-1 loss function.
 
 
 where \\(I\\) is the indicator notation. Hinge loss function is also popular in machine learning field. It provides a relatively tight, convex upper bound on the 0-1 indicator function.
-
+s
 <!-- <p align="center">
 <img src="/images/hinge_function.png" width="150" >
 </p> -->
@@ -167,12 +163,13 @@ Nonlinearities lead to vulnerabilities. As shown below, there are spaces around 
 
    <p align="center">
 <img src="/images/capacity.png" width="650" >
-<br>_TODO: add image credit_
+<br>Image credit: [IEEE Security & Privacy](https://pdfs.semanticscholar.org/a69e/5b952a3d334d88555ad767b29ddd52d67cad.pdf)
    </p>
 
 #### Solutions
 - Train model on mixture of original and adversarial examples - Szegedy et al.
-- Use an adversarial regularizer - Goodfellow et al.
+
+Using an adversarial [regularizer](https://en.wikipedia.org/wiki/Regularization_(mathematics)) is also a technique to limit overfitting and vulnerability to adversarial examples. [Goodfellow et al.](https://arxiv.org/abs/1412.6572) describes a technique using the fast gradient sign method mentioned above as a regularizer. Their method generates adversarial examples using the fast gradient sign method and then trains the model with the adversarial examples. By continually updating the adversarial examples to the model, the adversarial regions are minimized. In the paper, they were able to reduce the error rate on adversarial examples from 0.94% to 0.84% using this approach. In order to reduce this error further, they also increased the model size and introduced early stopping on adversarial validation set error. Using these additional techniques they were able to drop the error rate on adversarial examples based on the FGSM from 89.4% to 17.9%. A combination of techniques introduced in training can significantly decrease the vunerability to simple adversarial attacks.
 
 _TODO: looks like this wansn't completed - need to include references and links, and explain what each of these is (and how well they actually work)_
 
