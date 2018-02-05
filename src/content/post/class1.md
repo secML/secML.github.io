@@ -163,7 +163,7 @@ As we discussed, the sign method in the FGSM is an approximation to the actual g
 ---
 ## Adversarial training
 #### Effects of nonlinearities
-Nonlinearities lead to vulnerabilities. As shown below, there are spaces around the mode of the function, which can exploited by adversarial examples.
+One criticism of deep neural networks is that their nonlinearity creates vulnerabilities that can be exploited by adversarial examples.  As shown below, the mode function cuts through the data points linearly, while the function drawn by the neural network conforms more tightly to the training data points.  This overfitting to training data creates pockets in which the class chosen by the function does not match the ground truth class value for a given data point.
 
    <p align="center">
 <img src="/images/capacity.png" width="650" >
@@ -171,7 +171,8 @@ Nonlinearities lead to vulnerabilities. As shown below, there are spaces around 
    </p>
 
 #### Solutions
-- Train model on mixture of original and adversarial examples - Szegedy et al.
+As a possible solution, [Szegedy et al.](https://arxiv.org/pdf/1312.6199.pdf) proposed incorporating adversarial examples into the training data.  Using various techniques to find the vulnerable pockets in the model, the authors were able to generate examples that would fall into those adversarial region.  Adding those samples to the training data results in a new model that does not follow the original training points as closely, creating a smoother, more accurate function.  
+
 - Use an adversarial regularizer - Goodfellow et al.
 
 _TODO: looks like this wansn't completed - need to include references and links, and explain what each of these is (and how well they actually work)_
@@ -189,11 +190,11 @@ _TODO: a bit more explanation of this result - how the experiments were done, ho
 
 #### References
 
-[[1]](https://arxiv.org/pdf/1412.6572.pdf) I.J. Goodfellow, J. Shlens, C. Szegedy. "Explaining
+[[1]](https://arxiv.org/pdf/1412.6572.pdf) I.J. Goodfellow, J. Shlens, C. Szegedy, "Explaining
 and Harnessing Adversarial Examples." _ArXiv e-prints_, December 2014.
 
-[[2]](https://arxiv.org/pdf/1712.03141.pdf) B. Biggio, F. Roli," "Wild patterns: Ten years after the rise of
-adversarial machine learning."" _arXiv preprint arXiv:1712.03141_, 2017.
+[[2]](https://arxiv.org/pdf/1712.03141.pdf) B. Biggio, F. Roli, "Wild patterns: Ten years after the rise of
+adversarial machine learning." _arXiv preprint arXiv:1712.03141_, 2017.
 
 [[3]](https://homes.cs.washington.edu/~pedrod/papers/kdd04.pdf) N. Dalvi, P. Domingos, Mausam, S. Sanghai, D. Verma, "Adversarial classification,"" _Int’l Conf. Knowl. Disc. and Data Mining_, 2004, pp. 99–108.
 
@@ -201,6 +202,12 @@ adversarial machine learning."" _arXiv preprint arXiv:1712.03141_, 2017.
 
 [[5]](https://arxiv.org/pdf/1611.03814.pdf) N. Papernot, P. McDaniel, A. Sinha, M. Wellman, "Towards the science of security and privacy in machine learning." _IEEE European Symposium on Security and Privacy_,
 2018.
+
+[[6]](https://arxiv.org/abs/1605.07277) N. Papernot, P. Mcdaniel, I.J. Goodfellow, "Transferability in machine learning: from phenomena to black-box attacks using adversarial samples" _arXiv preprint arXiv:1605.07277_, 2016.
+
+[[7]](https://arxiv.org/pdf/1312.6199.pdf) C. Szegedy, W. Zaremba, I. Sutskever, J Bruna, D. Erhan, I.J. Goodfellow, R. Fergus. "Intriguing properties of neural networks." _ICLR,_ abs/1312.6199, 2014.
+
+
 
 
 
