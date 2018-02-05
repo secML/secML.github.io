@@ -172,9 +172,6 @@ As a possible solution, [Szegedy et al.](https://arxiv.org/pdf/1312.6199.pdf) pr
 
 Using an adversarial [regularizer](https://en.wikipedia.org/wiki/Regularization_(mathematics)) is also a technique to limit overfitting and vulnerability to adversarial examples. [Goodfellow et al.](https://arxiv.org/abs/1412.6572) describes a technique using the fast gradient sign method mentioned above as a regularizer. Their method generates adversarial examples using the fast gradient sign method and then trains the model with the adversarial examples. By continually updating the adversarial examples to the model, the adversarial regions are minimized. In the paper, they were able to reduce the error rate on adversarial examples from 0.94% to 0.84% using this approach. In order to reduce this error further, they also increased the model size and introduced early stopping on adversarial validation set error. Using these additional techniques they were able to drop the error rate on adversarial examples based on the FGSM from 89.4% to 17.9%. A combination of techniques introduced in training can significantly decrease the vunerability to simple adversarial attacks.
 
-
-_TODO: looks like this wansn't completed - need to include references and links, and explain what each of these is (and how well they actually work)_
-
 ---
 ## Transferability of adversarial samples
 As shown above, an adversarial sample can fool a machine-learned model to misclassify it with high confidence. In particular, the adversarial samples made to fool image classifiers show how an adversarial sample can be indistinguishable to humans from legitimate samples. Additionally, examples that evade one classifier tend to evade others. This poses a vulnerability for machine learned models, one that can be exploited with cross-evasion.
@@ -183,8 +180,6 @@ As shown above, an adversarial sample can fool a machine-learned model to miscla
 For example, [Papernot et al.](https://arxiv.org/abs/1605.07277), took advantage of the transferability of adversarial examples on a remote DNN by training a new model with their own synthetic data. By using a relatively small number of queries to label their data, they trained a substitute model which they then used to craft adversarial samples. Demonstrating transferability, 84.24% of the adversarial samples trained from the substitute model fooled the remote DNN.
 
 To explicitly demonstrate the phenomenon of both intra and cross-technique transferability, [Papernot et al.](https://arxiv.org/abs/1605.07277) used five different machine learning algorithms on five disjoint training sets of MNIST dataset. With this setup, adversarial samples trained from one technique on one subset of the training data fools -- to varying degrees -- models trained by a different subset of the training data as well as a different technique. Furthermore, an ensemble classifier could be fooled at a rate of up to 44%.
-
-_TODO: a bit more explanation of this result - how the experiments were done, how transferability differs based on the different models, etc._
 
 --- Team Panda
 
