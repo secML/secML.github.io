@@ -23,7 +23,6 @@ Christopher Geier  <br>
 Faysal Hossain Shezan  <br>
 Helen Simecek<br>
 Lawrence Hook<br>
-Nathaniel Grevatt  <br>
 Nishant Jha  <br>
 </td>
 <td>
