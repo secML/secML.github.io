@@ -71,7 +71,7 @@ $$Pr[M(x) \in C] \leq \exp(\epsilon) \times Pr[M(x') \in C]$$
 
 In other words, this means that the chance that an event occurs *with your data* and the chance it would occur *without your data* is closely bounded by a privacy budget \\(\epsilon\\). The figure below depicts the equation where the two lines denote the probability distribution over \\(x\\) and \\(x’\\).
 
-![](https://raw.githubusercontent.com/bpnaylor/secML.github.io/master/src/content/images/img1.png "Response probability distribution")
+![](https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img1.png "Response probability distribution")
 
 Source: [Unknown, but will find out from Team Gibbon]
 
@@ -112,7 +112,7 @@ Let’s highlight how an adversary can use model inversion attack to violate the
 
 How does the attack work? First, the adversary computes all the values of the missing variables that could potentially agree with the given information. Then, the adversary runs the model forward for each hypothetical patient in the dataset to predict the stable Warfarin doses. Finally, the adversary performs a likelihood computation to find out which configuration of the missing variables are most probable. Given the information and model inversion setting, this algorithm is optimal, as it minimizes the adversaries misprediction rate. With respect to the baseline, the accuracy of the model inversion attack is only 5% lower in comparison to ideal prediction.
 
-![](https://raw.githubusercontent.com/bpnaylor/secML.github.io/master/src/content/images/img2.png "Model inversion attack")
+![](https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img2.png "Model inversion attack")
 
 *[Source](https://www.usenix.org/sites/default/files/conference/protected-files/sec14_slides_fredrikson.pdf): Privacy in Pharmacogenetics*
 
@@ -120,7 +120,7 @@ As seen in this image, the attacker computes the values of missing variables (ma
 
 Adding noise using differential privacy strategy can be a countermeasure against the model inversion attack. But using differential privacy decreases the utility of the trained model. Based on their simulated trials, authors claim that there is no such privacy budget that can prevent model inversion, without introducing  risk of overfixed dosing. 
 
-![](https://raw.githubusercontent.com/bpnaylor/secML.github.io/master/src/content/images/img3.png "Privacy budget plot")
+![](https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img3.png "Privacy budget plot")
 
 *[Source](https://www.usenix.org/sites/default/files/conference/protected-files/sec14_slides_fredrikson.pdf): Privacy in Pharmacogenetics*
 
