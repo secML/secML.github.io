@@ -2,12 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>secML</title>
-    <link>https://secml.github.io/index.xml</link>
+    <link>https://secml.github.io/</link>
     <description>Recent content on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 26 Jan 2018 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://secml.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://secml.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Class 1: Intro to Adversarial Machine Learning</title>
@@ -15,217 +17,8 @@
       <pubDate>Fri, 26 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>https://secml.github.io/class1/</guid>
-      <description>
-
-&lt;h2 id=&#34;machine-learning-background&#34;&gt;Machine Learning Background&lt;/h2&gt;
-
-&lt;!-- - Other ML algorithms use linear decision boundaries (SVM, LR, ...)
-- Deep learning uses linear units with nonlinear composition
-    - More susceptible to attacks
-- Define terms like gradient and loss --&gt;
-
-&lt;p&gt;In supervised Machine Learning, we train models with training data
-along with the label associated with it. We extract features from each
-sample, and use an algorithm to train a model where the inputs are
-those features and the output is the label.&lt;/p&gt;
-
-&lt;p&gt;For classifying the testing data, the classifier uses decision
-boundary to separate points of the data belonging to each class. In a
-statistical-classification problem with two classes, a decision
-boundary partitions all the underlying vector space into two separate
-classes. A support vector machine (SVM) is a linear classifier which
-constructs a boundary by focusing two closest points from different
-classes and it finds the line that is equidistant to these two points.&lt;/p&gt;
-
-&lt;h4 id=&#34;loss-functions&#34;&gt;Loss Functions&lt;/h4&gt;
-
-&lt;p&gt;A loss function define that how good a given model is at making
-predictions for a given scenario. It has its own curve and its own
-gradients. The slope of the curve indicates the appropriate way of
-updating the parameters to make the model more accurate in case of
-prediction. A frequently used loss function is the 0-1 loss function.&lt;/p&gt;
-
-&lt;p align=&#34;center&#34;&gt;
-&lt;img src=&#34;https://secml.github.io/images/01_loss_function.png&#34; width=&#34;150&#34; &gt;
-&lt;/p&gt;
-
-&lt;p&gt;where \(I\) is the indicator notation. Hinge loss function is also popular in machine learning field. It provides a relatively tight, convex upper bound on the 0-1 indicator function.
-s
-&lt;!-- &lt;p align=&#34;center&#34;&gt;
-&lt;img src=&#34;https://secml.github.io/images/hinge_function.png&#34; width=&#34;150&#34; &gt;
-&lt;/p&gt; --&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;gradient-descent&#34;&gt;Gradient Descent&lt;/h4&gt;
-
-&lt;p&gt;Gradient Descent is an optimization algorithm which is used to minimize cost function by iteratively moving the direction of the steepest descent. In machine learning, we use gradient descent to update the parameters (coefficients in Linear Regression and weight in neural networks) of our model.&lt;/p&gt;
-
-&lt;p&gt;&lt;p align=&#34;center&#34;&gt;
-&lt;img src=&#34;https://secml.github.io/images/gradient_descent_graph.png&#34; width=&#34;300&#34; &gt;
-&lt;br&gt;
-Image credit: &lt;a href=&#34;https://sebastianraschka.com/faq/docs/closed-form-vs-gd.html&#34;&gt;Sebastian Raschka&lt;/a&gt;
-   &lt;/p&gt;&lt;/p&gt;
-
-&lt;p&gt;In the figure, weight is slowly decreasing from the initial stage. \(J_{min}\) is the minimum value of the cost function which can be obtained by optimizing the algorithm.&lt;/p&gt;
-
-&lt;p&gt;Recently, there have been many successful applications of Deep Neural
-Networks (DNN) in the fields of information retrieval, computer
-vision, and speech recognition. Despite their potential, deep neural
-architectures, like all other machine learning approaches, are
-vulnerable to what are known as adversarial samples. These systems can
-be fooled by targeted manipulations which slightly modifying a real
-example to trick the model into “believing” that this modified sample
-belongs to an incorrect class with high confidence. To defend against
-these adversarial attacks, many researchers are exploring several
-directions including data augmentation, increasing model complexity,
-retraining, pre-processing, etc. Their main goal is to protect the
-model against adversarial manipulations by the attackers.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;applications-and-vulnerabilities&#34;&gt;Applications and Vulnerabilities&lt;/h2&gt;
-
-&lt;p&gt;To get a better idea of what security and privacy mean in a machine learning context, we highlight a few
-applications and examine the possible consequences of vulnerabilities in these domains.&lt;/p&gt;
-
-&lt;p&gt;One of the most commonly-discussed applications is in self-driving
-cars, which use machine learning algorithms for image recognition
-tasks, such as identifying traffic signs and road hazards.  If an
-attacker were to cause an erroneous classification, e.g. mistaking a
-stop sign for a speed limit sign or missing a pedestrian in a
-crosswalk, both property and human lives would be in
-jeopardy. (Although luckily self-driving cars use a variety of other
-techniques to avoid collisions, including detailed maps and LIDAR, so
-are likely to not be directly vulnerable to image mis-classification
-attacks.)&lt;/p&gt;
-
-&lt;p&gt;Machine learning has also found a place in the medical world, being used to identify patterns and trends in patient histories that can be used for diagnoses, to recognize abnormalities in medical imaging, and even to evaluate the efficiency of a hospital&amp;rsquo;s workflow.  The use of machine learning in healthcare introduces a new concern - how can patient data be effectively utilized for beneficial purposes, like predicting appropriate drug dosages, without compromising patient privacy?&lt;/p&gt;
-
-&lt;p&gt;There are numerous other uses of ML today (targeted advertising, fraud detection, malware detection, etc.) and each carries particular security and privacy concerns.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;adversarial-examples&#34;&gt;Adversarial Examples&lt;/h2&gt;
-
-&lt;p&gt;In machine learning, an adversarial example is an input that has been manipulated so that the model returns a different, incorrect output.  A classic adversarial example for image classification is from a paper by &lt;a href=&#34;https://arxiv.org/pdf/1412.6572.pdf&#34;&gt;Goodfellow et al.&lt;/a&gt;, which features a photo of a panda that was originally classified correctly, but is misclassified when carefully-crafted noise is added.  The model classifies the new image as a gibbon, even though human eyes can easily see it is a panda.&lt;/p&gt;
-
-&lt;p&gt;&lt;p align=&#34;center&#34;&gt;
-&lt;img src=&#34;https://secml.github.io/images/panda.png&#34; width=&#34;600&#34; &gt;
-&lt;br&gt; Source: &lt;a href=&#34;https://arxiv.org/pdf/1412.6572.pdf&#34;&gt;Goodfellow Paper&lt;/a&gt;
-   &lt;/p&gt;&lt;/p&gt;
-
-&lt;p&gt;As outlined in &lt;a href=&#34;https://arxiv.org/pdf/1712.03141.pdf&#34;&gt;Biggio et al.&amp;rsquo;s&lt;/a&gt; paper on the history of adversarial machine learning, adversarial examples were first described in 2004 in the context of email spam filters. At this time, &lt;a href=&#34;https://homes.cs.washington.edu/~pedrod/papers/kdd04.pdf&#34;&gt;Dalvi et al.&lt;/a&gt; and &lt;a href=&#34;https://ix.cs.uoregon.edu/~lowd/kdd05lowd.pdf&#34;&gt;Lowd and Meek&lt;/a&gt; realized that slight modifications to spam emails allowed them to pass through the filters, without greatly affecting the content of the message. From this point, the field expanded to study the potential for adversarial examples in other realms, like machine-learning-based image and malware classification.  The increased usage of deep learning techniques for object recognition led to a surge in interest around 2014, when Szegedy et al. showed that deep convolutional neural networks were also susceptible to adversarial examples.  Since then, interest in this field has only continued to increase, with more and more papers published each year.&lt;/p&gt;
-
-&lt;h3 id=&#34;classifying-attacks&#34;&gt;Classifying Attacks&lt;/h3&gt;
-
-&lt;p&gt;Attacks can be categorized by many different characteristics, but are often referred to in terms of the attack method, the goal of the attack, and the adversary&amp;rsquo;s level of knowledge, as detailed in &lt;a href=&#34;https://arxiv.org/pdf/1611.03814.pdf&#34;&gt;Papernot et al.&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h4 id=&#34;attack-method&#34;&gt;Attack Method&lt;/h4&gt;
-
-&lt;p&gt;A poisoning attack is when the adversary adds carefully-crafted samples into the training data, thereby disrupting the learning process and manipulating the final trained model.  An evasion attack occurs when a sample originally correctly classified into class A is manipulated and fed back into the model, now receiving an output that is &lt;em&gt;not&lt;/em&gt; class A.  A key difference between these two attacks is where each occurs in the ML pipeline: poisoning attacks occur before the training stage and evasion attacks occuring after training, during the testing stage.&lt;/p&gt;
-
-&lt;p&gt;&lt;p align=&#34;center&#34;&gt;
-&lt;img src=&#34;https://secml.github.io/images/ml_pipeline.jpg&#34; width=&#34;650&#34; &gt;
-&lt;br&gt; Source: &lt;a href=&#34;https://docs.google.com/presentation/d/1dFRjRfCIz1TChZYfIY_FLYiSk7nNmdBY2luJ8T_TCAE/edit?usp=sharing&#34;&gt;Presentation Slides&lt;/a&gt;
-   &lt;/p&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;goal-of-attack&#34;&gt;Goal of Attack&lt;/h4&gt;
-
-&lt;p&gt;The goal of the adversary is another way to categorize attacks, which
-in this case means whether or not there was a specific goal
-classification or not.  &lt;em&gt;Error-generic&lt;/em&gt; (also called &lt;em&gt;untargeted&lt;/em&gt;)
-attacks aim to find a sample close to a given seed that is
-misclassified, but do not have a specific target output
-class. &lt;em&gt;Error-specific&lt;/em&gt; (&lt;em&gt;targeted&lt;/em&gt;) attacks deliberately change the
-seed sample&amp;rsquo;s classification from the original class A to a chosen
-class B.&lt;/p&gt;
-
-&lt;h4 id=&#34;adversary-knowledge&#34;&gt;Adversary Knowledge&lt;/h4&gt;
-
-&lt;p&gt;The level of knowledge the adversary possesses generally falls into one of three loosely defined categories: black box, grey box, and white box attacks.  Black box attacks assume the lowest level of adversary knowledge, generally only allowing the final classification to be known without any finer details about the model.  On the other end of the spectrum, white box attacks assume that the attacker knows everything about the model, including the specific algorithm used, the feature set, the training data, etc. An attack by an adversary who knows more about the model than a black box but less than a white box is called a grey box attack, although the exact definition tends to vary.&lt;/p&gt;
-
-&lt;p align=&#34;center&#34;&gt;
-&lt;img src=&#34;https://secml.github.io/images/boxes.png&#34; width=&#34;600&#34; &gt;
-&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;modern-machine-learning-as-a-potemkin-village&#34;&gt;Modern Machine Learning as a Potemkin village&lt;/h2&gt;
-
-&lt;p align=&#34;center&#34;&gt;
-&lt;img src=&#34;https://secml.github.io/images/potemkin.jpeg&#34; width=&#34;350&#34; &gt;
-&lt;/p&gt;
-
-&lt;p&gt;The term &amp;ldquo;Potemkin village&amp;rdquo; describes a difference between appeance and reality. In a &lt;a href=&#34;https://arxiv.org/abs/1412.6572&#34;&gt;paper&lt;/a&gt; by Goodfellow, Shlens, and Szegdy, modern machine learning methods are described as building &amp;ldquo;a Potemkin village that works well on naturally occuring data, but is exposed as a fake when one visits points in space that do not have high probability in the data distribution.&amp;rdquo; The apparent fragility of deep neural networks has been particuarly exposed, as seen in the panda picture above.&lt;/p&gt;
-
-&lt;p&gt;The two-faced nature of machine learning models to be both fragile and robout from two different angles leads to concerns in the security of machine learning algorithms. High confidence in classifying adversarial examples poses a threat to the integrity of the model&amp;rsquo;s output.&lt;/p&gt;
-
-&lt;h4 id=&#34;fast-gradient-sign-method-fgsm&#34;&gt;Fast gradient sign method (FGSM)&lt;/h4&gt;
-
-&lt;p&gt;Also the &lt;a href=&#34;https://arxiv.org/abs/1412.6572&#34;&gt;paper&lt;/a&gt; mentioned a method for generating adversarial examples. Fast gradient sign method maximizes the error between the ground truth classification of the sample and minimizes the error to the target classification. The method is effecitve is generating the best pixels to change to achieve a higher loss, essentially acting as a reverse optimization method. FGSM simply traverses the loss curve by moving in the opposite direction of the gradient loss.&lt;/p&gt;
-
-&lt;p align=&#34;center&#34;&gt;
-&lt;img src=&#34;https://secml.github.io/images/formula.png&#34; width=&#34;200&#34; &gt;
-&lt;/p&gt;
-
-&lt;p&gt;As we discussed, the sign method in the FGSM is an approximation to the actual gradient. Although the most accurate method would use the true gradient, the sign of the gradient is taken for the sake efficiency: since \(\epsilon\) reflect the adversarial strength (the maximum size perturbation allowed), this represents taking the largest step possible in each dimension in the direction given by the gradient. (There are many variations on FGSM that we&amp;rsquo;ll discuss in later posts, including iterative versions where a sequence of smaller steps is used.) FGSM showcases the fragility of machine learning models especially through visualizations such as the panda example.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;adversarial-training&#34;&gt;Adversarial training&lt;/h2&gt;
-
-&lt;h4 id=&#34;effects-of-nonlinearities&#34;&gt;Effects of nonlinearities&lt;/h4&gt;
-
-&lt;p&gt;One criticism of deep neural networks is that their nonlinearity creates vulnerabilities that can be exploited by adversarial examples.  As shown below, the mode function cuts through the data points linearly, while the function drawn by the neural network conforms more tightly to the training data points.  This overfitting to training data creates pockets in which the class chosen by the function does not match the ground truth class value for a given data point.&lt;/p&gt;
-
-&lt;p&gt;&lt;p align=&#34;center&#34;&gt;
-&lt;img src=&#34;https://secml.github.io/images/capacity.png&#34; width=&#34;650&#34; &gt;
-&lt;br&gt;Image credit: &lt;a href=&#34;https://www.papernot.fr/files/16-mcdaniel-sp-machine-learning-in-adversarial-settings.pdf&#34;&gt;McDaniel, Papernot, and Celik, &lt;em&gt;IEEE Security &amp;amp; Privacy Magazine&lt;/em&gt;&lt;/a&gt;
-   &lt;/p&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;solutions&#34;&gt;Solutions&lt;/h4&gt;
-
-&lt;p&gt;As a possible solution, &lt;a href=&#34;https://arxiv.org/pdf/1312.6199.pdf&#34;&gt;Szegedy et al.&lt;/a&gt; proposed incorporating adversarial examples into the training data.  Using various techniques to find the vulnerable pockets in the model, the authors were able to generate examples that would fall into those adversarial region.  Adding those samples to the training data results in a new model that does not follow the original training points as closely, creating a smoother, more accurate function.&lt;/p&gt;
-
-&lt;p&gt;Using an adversarial &lt;a href=&#34;https://en.wikipedia.org/wiki/Regularization_(mathematics)&#34;&gt;regularizer&lt;/a&gt; is also a technique to limit overfitting and vulnerability to adversarial examples. &lt;a href=&#34;https://arxiv.org/abs/1412.6572&#34;&gt;Goodfellow et al.&lt;/a&gt; describes a technique using the fast gradient sign method mentioned above as a regularizer. Their method generates adversarial examples using the fast gradient sign method and then trains the model with the adversarial examples. By continually updating the adversarial examples to the model, the adversarial regions are minimized. In the paper, they were able to reduce the error rate on adversarial examples from 0.94% to 0.84% using this approach. In order to reduce this error further, they also increased the model size and introduced early stopping on adversarial validation set error. Using these additional techniques they were able to drop the error rate on adversarial examples based on the FGSM from 89.4% to 17.9%. A combination of techniques introduced in training can significantly decrease the vunerability to simple adversarial attacks.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&#34;transferability-of-adversarial-samples&#34;&gt;Transferability of adversarial samples&lt;/h2&gt;
-
-&lt;p&gt;As shown above, an adversarial sample can fool a machine-learned model to misclassify it with high confidence. In particular, the adversarial samples made to fool image classifiers show how an adversarial sample can be indistinguishable to humans from legitimate samples. Additionally, examples that evade one classifier tend to evade others. This poses a vulnerability for machine learned models, one that can be exploited with cross-evasion.&lt;/p&gt;
-
-&lt;h4 id=&#34;learning-classifier-substitutes&#34;&gt;Learning classifier substitutes&lt;/h4&gt;
-
-&lt;p&gt;For example, &lt;a href=&#34;https://arxiv.org/abs/1605.07277&#34;&gt;Papernot et al.&lt;/a&gt;, took advantage of the transferability of adversarial examples on a remote DNN by training a new model with their own synthetic data. By using a relatively small number of queries to label their data, they trained a substitute model which they then used to craft adversarial samples. Demonstrating transferability, 84.24% of the adversarial samples trained from the substitute model fooled the remote DNN.&lt;/p&gt;
-
-&lt;p&gt;To explicitly demonstrate the phenomenon of both intra and cross-technique transferability, &lt;a href=&#34;https://arxiv.org/abs/1605.07277&#34;&gt;Papernot et al.&lt;/a&gt; used five different machine learning algorithms on five disjoint training sets of MNIST dataset. With this setup, adversarial samples trained from one technique on one subset of the training data fools &amp;ndash; to varying degrees &amp;ndash; models trained by a different subset of the training data as well as a different technique. Furthermore, an ensemble classifier could be fooled at a rate of up to 44%.&lt;/p&gt;
-
-&lt;p&gt;&amp;mdash; Team Panda:&lt;br /&gt;
-Christopher Geier,
-Faysal Hossain Shezan,
-Helen Simecek,
-Lawrence Hook,
-Nishant Jha&lt;/p&gt;
-
-&lt;h4 id=&#34;references&#34;&gt;References&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1412.6572.pdf&#34;&gt;[1]&lt;/a&gt; I.J. Goodfellow, J. Shlens, C. Szegedy, &amp;ldquo;Explaining
-and Harnessing Adversarial Examples.&amp;rdquo; &lt;em&gt;ArXiv e-prints&lt;/em&gt;, December 2014.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1712.03141.pdf&#34;&gt;[2]&lt;/a&gt; B. Biggio, F. Roli, &amp;ldquo;Wild patterns: Ten years after the rise of
-adversarial machine learning.&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1712.03141&lt;/em&gt;, 2017.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://homes.cs.washington.edu/~pedrod/papers/kdd04.pdf&#34;&gt;[3]&lt;/a&gt; N. Dalvi, P. Domingos, Mausam, S. Sanghai, D. Verma, &amp;ldquo;Adversarial classification,&amp;rdquo;&amp;rdquo; &lt;em&gt;Int’l Conf. Knowl. Disc. and Data Mining&lt;/em&gt;, 2004, pp. 99–108.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://ix.cs.uoregon.edu/~lowd/kdd05lowd.pdf&#34;&gt;[4]&lt;/a&gt; D. Lowd, C. Meek, &amp;ldquo;Adversarial learning,&amp;rdquo; &lt;em&gt;Int’l Conf. Knowl. Disc. and Data Mining&lt;/em&gt;, ACM Press, Chicago, IL, USA, 2005, pp. 641–647.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1611.03814.pdf&#34;&gt;[5]&lt;/a&gt; N. Papernot, P. McDaniel, A. Sinha, M. Wellman, &amp;ldquo;Towards the science of security and privacy in machine learning.&amp;rdquo; &lt;em&gt;IEEE European Symposium on Security and Privacy&lt;/em&gt;,
-2018.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://arxiv.org/abs/1605.07277&#34;&gt;[6]&lt;/a&gt; N. Papernot, P. Mcdaniel, I.J. Goodfellow, &amp;ldquo;Transferability in machine learning: from phenomena to black-box attacks using adversarial samples&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1605.07277&lt;/em&gt;, 2016.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1312.6199.pdf&#34;&gt;[7]&lt;/a&gt; C. Szegedy, W. Zaremba, I. Sutskever, J Bruna, D. Erhan, I.J. Goodfellow, R. Fergus. &amp;ldquo;Intriguing properties of neural networks.&amp;rdquo; &lt;em&gt;ICLR,&lt;/em&gt; abs/1312.6199, 2014.&lt;/p&gt;
-</description>
+      <description>Machine Learning Background In supervised Machine Learning, we train models with training data along with the label associated with it. We extract features from each sample, and use an algorithm to train a model where the inputs are those features and the output is the label.
+For classifying the testing data, the classifier uses decision boundary to separate points of the data belonging to each class. In a statistical-classification problem with two classes, a decision boundary partitions all the underlying vector space into two separate classes.</description>
     </item>
     
     <item>
@@ -234,73 +27,18 @@ adversarial machine learning.&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1712.031
       <pubDate>Sat, 20 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>https://secml.github.io/first-week/</guid>
-      <description>&lt;p&gt;&lt;em&gt;This message was also sent out by email.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Since not everyone has joined the slack yet, I&amp;rsquo;m sending this out by
-email, but please make sure to join
-&lt;a href=&#34;https://secprivml.slack.com&#34;&gt;https://secprivml.slack.com&lt;/a&gt; soon. I
-will use that for future communications.&lt;/p&gt;
-
-&lt;p&gt;I have grouped the 18 full participants in the class into three teams of six:&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Team Bus:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Anant Kharkar&lt;br /&gt;
-Ashley Gao&lt;br /&gt;
-Atallah Hezbor&lt;br /&gt;
-Joshua Holtzman&lt;br /&gt;
-Mainuddin Ahmad Jonas&lt;br /&gt;
-Weilin Xu&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Team Gibbon:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Aditi Narvekar&lt;br /&gt;
-Austin Chen&lt;br /&gt;
-Ethan Lowman&lt;br /&gt;
-Guy &amp;ldquo;Jack&amp;rdquo; Verrier&lt;br /&gt;
-Jialei Fu&lt;br /&gt;
-Jin Ding&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Team Panda:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Bargav Jayaraman&lt;br /&gt;
-Christopher Geier&lt;br /&gt;
-Faysal Hossain Shezan&lt;br /&gt;
-Nathaniel Grevatt&lt;br /&gt;
-Nishant Jha&lt;br /&gt;
-Tanmoy Sen&lt;/p&gt;
-
-&lt;p&gt;The teams will probably adjust a bit over the next week as some people
-who registered for the class didn&amp;rsquo;t submit a survey, and others may be
-joining the class late, etc., but otherwise we will plan to keep with
-these teams through spring break and possible re-arrange things after
-that.  You can, of course, rename your team and develop your own
-adversarial (but tasteful) team icon.&lt;/p&gt;
-
-&lt;p&gt;Each week, one team will be responsible for leading the class, one
-team for blogging (writing a summary of the class), and one team for
-food. Everyone in the class is expected to do the preparation for each
-meeting, which will usually involve reading a few papers (but may
-involve other activities, at the design of the leading team).  See
-&lt;a href=&#34;https://secml.github.io/teams/&#34;&gt;https://secml.github.io/teams/&lt;/a&gt; for
-the description of team responsibilities.  For the first week, Team
-Bus will be the leading team, Team Gibbon will be the feeding team,
-and Team Panda will be the blogging team.  I have created a slack
-channel for each team, and you should have an invitation to join
-it. The immediate tasks for each team are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Team Bus: decide on a leader who will be responsible for coordinating your team for this week, come up with some ideas what you would like to do for Friday&amp;rsquo;s meeting, make sure there are some people who can come to my office hours on Monday (2:30pm) - if not enough people can come then, arrange an alternative time with me, and plan an exciting and worthwhile seminar for Friday.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Team Gibbon: you are the feeding team for this week, so should select 2-3 people to take care of this. One of you should pick up a credit card from me on Thursday to pay for the food. You will be leading the seminar on 2 Feb, so should determine a leader for this, and once Team Bus posts the topic and paper for this week (which should happen on Monday), should start planning your topic. We should meet briefly after Friday&amp;rsquo;s seminar, to discuss your plans, and then a longer meeting the following Monday.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Team Panda: you are the blogging team for this week, so should get familiar with &lt;a href=&#34;https://secml.github.io/blogging/&#34;&gt;https://secml.github.io/blogging/&lt;/a&gt;. You will be leading the seminar or 9 Feb, so should start thinking of topics you would like to lead. You should identify leaders for blogging, feeding, and leading to be ready for the next 3 weeks.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Cheers,&lt;/p&gt;
-
-&lt;p&gt;&amp;mdash; Dave&lt;/p&gt;
-</description>
+      <description>This message was also sent out by email.
+Since not everyone has joined the slack yet, I&amp;rsquo;m sending this out by email, but please make sure to join https://secprivml.slack.com soon. I will use that for future communications.
+I have grouped the 18 full participants in the class into three teams of six:
+Team Bus:
+Anant Kharkar
+Ashley Gao
+Atallah Hezbor
+Joshua Holtzman
+Mainuddin Ahmad Jonas
+Weilin Xu
+Team Gibbon:
+Aditi Narvekar</description>
     </item>
     
     <item>
@@ -309,22 +47,8 @@ it. The immediate tasks for each team are:&lt;/p&gt;
       <pubDate>Mon, 15 Jan 2018 00:00:00 +0000</pubDate>
       
       <guid>https://secml.github.io/starting-seminar/</guid>
-      <description>&lt;p&gt;Our first seminar meeting will be Friday, January 26 (not this Friday, which would normally be the first class day, since I will be getting back from California too late to meet this week). Meetings will be Fridays in Rice 032, 9:30am-noon.&lt;/p&gt;
-
-&lt;p&gt;Since we&amp;rsquo;re missing the normal first meeting, I want to do as much of the organizational stuff this week to be able to have a substantive first meeting next week. This means we will group students into teams, have a team assigned to lead the first class, and announced topic and readings by next Tuesday (Jan 23).&lt;/p&gt;
-
-&lt;p&gt;To enable this, everyone interested in participating in the class in any way should:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Submit this form by Wednesday (Jan 24): &lt;a href=&#34;https://goo.gl/forms/FqSmUNHYBPbaKsg72&#34;&gt;https://goo.gl/forms/FqSmUNHYBPbaKsg72&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Read the &lt;a href=&#34;https://secml.github.io/syllabus/&#34;&gt;course syllabus&lt;/a&gt;, and follow the directions there to join the seminar slack group.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;I will work out the teams based on the form submissions, and set up the schedule for leading classes/blogging. I will have office hours on Monday (Jan 22) at 2:30pm. People from the first presenting team will be expect to meet with me then (not necessarily everyone but at least some of the team), and anyone with questions about the seminar is also welcome to come by. (If this time works for the class, we&amp;rsquo;ll keep this as my regular office hours time for the semester.)&lt;/p&gt;
-
-&lt;p&gt;Sorry for missing the first class, but I think we&amp;rsquo;ll be able to manage most of what we would have done the first day electronically, and be able to have an effective first meeting on Jan 26.&lt;/p&gt;
-</description>
+      <description>Our first seminar meeting will be Friday, January 26 (not this Friday, which would normally be the first class day, since I will be getting back from California too late to meet this week). Meetings will be Fridays in Rice 032, 9:30am-noon.
+Since we&amp;rsquo;re missing the normal first meeting, I want to do as much of the organizational stuff this week to be able to have a substantive first meeting next week.</description>
     </item>
     
     <item>
@@ -333,8 +57,7 @@ it. The immediate tasks for each team are:&lt;/p&gt;
       <pubDate>Sun, 31 Dec 2017 00:00:00 +0000</pubDate>
       
       <guid>https://secml.github.io/syllabusposted/</guid>
-      <description>&lt;p&gt;The &lt;a href=&#34;https://secml.github.io/syllabus&#34;&gt;Syllabus&lt;/a&gt; is now posted.&lt;/p&gt;
-</description>
+      <description>The Syllabus is now posted.</description>
     </item>
     
     <item>
@@ -343,26 +66,8 @@ it. The immediate tasks for each team are:&lt;/p&gt;
       <pubDate>Sun, 31 Dec 2017 00:00:00 +0000</pubDate>
       
       <guid>https://secml.github.io/welcome/</guid>
-      <description>&lt;p&gt;This graduate-level special topics course will be offered in Spring
-2018. Meetings will be &lt;strong&gt;Fridays, 9:30-noon&lt;/strong&gt; in Rice Hall 032. More
-information will be posted here soon, but the seminar format will be
-roughly similar to what we used to &lt;a
-href=&#34;https://tlseminar.github.io&#34;&gt;TLSeminar&lt;/a&gt; last Spring.&lt;/p&gt;
-
-&lt;p&gt;This seminar will focus on understanding the risks adversaries pose to
-machine learning systems, and how to design more robust machine
-learning systems to mitigate those risks.&lt;/p&gt;
-
-&lt;p&gt;The seminar is open to ambitious undergraduate students (with
-instructor permission), and to graduate students interested in
-research in adversarial machine learning, privacy-preserving machine
-learning, fairness and transparency in machine learning, and other
-related topics.  Previous background in machine learning and security
-is beneficial, but not required so long as you are willing and able to
-learn some foundational materials on your own.  &lt;/p&gt; &lt;p&gt; For more
-information, contact &lt;A href=&#34;https://www.cs.virginia.edu/evans&#34;&gt;David
-Evans&lt;/a&gt;.&lt;/p&gt;
-</description>
+      <description>This graduate-level special topics course will be offered in Spring 2018. Meetings will be Fridays, 9:30-noon in Rice Hall 032. More information will be posted here soon, but the seminar format will be roughly similar to what we used to TLSeminar last Spring.
+This seminar will focus on understanding the risks adversaries pose to machine learning systems, and how to design more robust machine learning systems to mitigate those risks.</description>
     </item>
     
     <item>
@@ -371,20 +76,9 @@ Evans&lt;/a&gt;.&lt;/p&gt;
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://secml.github.io/resources/</guid>
-      <description>
-
-&lt;h1 id=&#34;resources-for-adversarial-machine-learning-research&#34;&gt;Resources for Adversarial Machine Learning Research&lt;/h1&gt;
-
-&lt;h2 id=&#34;adversarial-machine-learning-toolkits&#34;&gt;Adversarial Machine Learning Toolkits&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;evademl.org/zoo&#34;&gt;EvadeML-Zoo&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/tensorflow/cleverhans&#34;&gt;cleverhans&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;machine-learning-systems&#34;&gt;Machine Learning Systems&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/facebookresearch/Detectron&#34;&gt;Detectron&lt;/a&gt; - Facebook&amp;rsquo;s research platform for object detection research (including RetinaNet)&lt;/p&gt;
-</description>
+      <description>Resources for Adversarial Machine Learning Research Adversarial Machine Learning Toolkits EvadeML-Zoo
+cleverhans
+Machine Learning Systems Detectron - Facebook&amp;rsquo;s research platform for object detection research (including RetinaNet)</description>
     </item>
     
     <item>
@@ -393,30 +87,8 @@ Evans&lt;/a&gt;.&lt;/p&gt;
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://secml.github.io/schedule/</guid>
-      <description>&lt;p&gt;See &lt;a href=&#34;https://secml.github.io/teams&#34;&gt;Teams&lt;/a&gt; for the class teams and responsibilities.&lt;/p&gt;
-
-&lt;table&gt;
-&lt;tr bgcolor=&#34;#CCC&#34;&gt;&lt;td style=&#34;text-align:center&#34; width=&#34;20%&#34;&gt;&lt;b&gt;Date&lt;/b&gt;&lt;/td&gt;&lt;td width=&#34;30%&#34; style=&#34;text-align:center&#34;&gt;&lt;b&gt;Topic&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; width=&#34;10%&#34;&gt;&lt;b&gt;Bus&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; width=&#34;10%&#34;&gt;&lt;b&gt;Gibbon&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; width=10%&gt;&lt;b&gt;Panda&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; width=12%&gt;&lt;b&gt;&lt;font size=&#34;-1&#34;&gt;Nematode&lt;/font&gt;&lt;/b&gt;&lt;/tr&gt;
-
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class1&#34;&gt;Class 1&lt;/a&gt; (26 Jan)&lt;/td&gt;&lt;td&gt;Intro to Adversarial ML&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class2&#34;&gt;Class 2&lt;/a&gt; (2 Feb)&lt;/td&gt;&lt;td&gt;Privacy and ML&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class3&#34;&gt;Class 3&lt;/a&gt; (9 Feb)&lt;/td&gt;&lt;td&gt;Adversarial Examples and Defenses&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class4&#34;&gt;Class 4&lt;/a&gt; (16 Feb)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class5&#34;&gt;Class 5&lt;/a&gt; (23 Feb)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class6&#34;&gt;Class 6&lt;/a&gt; (2 Mar)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td colspan=6 bgcolor=&#34;#66EEAA&#34; style=&#34;text-align:center&#34;&gt;Spring Break&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class7&#34;&gt;Class 7&lt;/a&gt; (16 Mar)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class8&#34;&gt;Class 8&lt;/a&gt; (23 Mar)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;/tr&gt;
-
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class9&#34;&gt;Class 9&lt;/a&gt; (30 Mar)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class10&#34;&gt;Class 10&lt;/a&gt; (6 Apr)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class11&#34;&gt;Class 11&lt;/a&gt; (13 Apr)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class12&#34;&gt;Class 12&lt;/a&gt; (20 Apr)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;/tr&gt;
-
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class13&#34;&gt;Class 13&lt;/a&gt; (26 Apr)&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  colspan=5 bgcolor=&#34;#FF3&#34; style=&#34;text-align:center&#34;&gt;Mini-Conference&lt;/td&gt;&lt;/tr&gt;
-
-&lt;/table&gt;
-</description>
+      <description>See Teams for the class teams and responsibilities.
+ DateTopicBusGibbonPandaNematode Class 1 (26 Jan)Intro to Adversarial MLLeadFoodBlog Class 2 (2 Feb)Privacy and MLLeadFoodBlog Class 3 (9 Feb)Adversarial Examples and DefensesBlogLeadFood Class 4 (16 Feb)FoodBlogLead Class 5 (23 Feb)LeadFoodBlog Class 6 (2 Mar)BlogLeadFood Spring Break Class 7 (16 Mar)BlogLeadFood Class 8 (23 Mar)FoodBlogLead Class 9 (30 Mar)LeadFoodBlog Class 10 (6 Apr)BlogLeadFood Class 11 (13 Apr)BlogLeadFood Class 12 (20 Apr)FoodBlogLead Class 13 (26 Apr)Mini-Conference  </description>
     </item>
     
     <item>
@@ -425,109 +97,10 @@ Evans&lt;/a&gt;.&lt;/p&gt;
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://secml.github.io/syllabus/</guid>
-      <description>
-
-&lt;h2 id=&#34;syllabus&#34;&gt;Syllabus&lt;/h2&gt;
-
-&lt;h3 id=&#34;cs6501-security-and-privacy-of-machine-learning&#34;&gt;&lt;strong&gt;cs6501: Security and Privacy of Machine Learning&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;University of Virginia, Spring 2018&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Meetings:&lt;/strong&gt; Fridays, 9:30AM - noon, Rice Hall 032&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Course Objective.&lt;/strong&gt; This seminar will focus on understanding the
-  risks adversaries pose to machine learning systems, and how to
-  design more robust machine learning systems to mitigate those risks.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Expected Background:&lt;/strong&gt; Previous background in machine learning and
-security is beneficial, but not required so long as you are willing
-and able to learn some foundational materials on your own. Most
-students in the seminar should have either strong background in
-machine learning, or strong background in security and privacy, but it
-is not expected that most students have extensive background in both
-areas. The seminar is open to ambitious undergraduate students (with
-instructor permission), and to graduate students interested in
-research in adversarial machine learning, privacy-preserving machine
-learning, fairness and transparency in machine learning, and other
-related topics.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Coordinator:&lt;/strong&gt; &lt;a href=&#34;http://www.cs.virginia.edu/evans&#34;&gt;David Evans&lt;/a&gt;
-  (evans@virginia.edu). My
-  &lt;a href=&#34;http://www.cs.virginia.edu/evans/office&#34;&gt;office&lt;/a&gt; is Rice 507.&lt;/p&gt;
-
-&lt;h2 id=&#34;course-expectations&#34;&gt;Course Expectations&lt;/h2&gt;
-
-&lt;p&gt;Students in the seminar are expected to:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Lead discussions on interesting topics during the class meetings.
-For each week, there will be a team of students charged with
-preparing a topic and leading the discussion, and another team
-charged with writing a blog post about the class. Students
-responsible for posting the blog summary will be different from the
-ones charged with leading the topic discussion, but should work
-closely with the leaders on the posted write-up.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Particpate actively in class meetings.  This means being prepared to
-contribute by doing the assigned preparation (which will typically
-involve reading a few research papers, but may involve other things
-also) and thinking about the materials deeply to be able to
-contribute well to discussions.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Contribute fully to a team that develops a course-long project which
-could either be a research project or a systematization of knowledge
-project. We will discuss this more in an early class, and form teams
-based on interests.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;communications&#34;&gt;Communications&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Course Website:&lt;/strong&gt;
-  &lt;a href=&#34;https://secml.github.io/&#34;&gt;&lt;em&gt;https://secml.github.io/&lt;/em&gt;&lt;/a&gt;.  All
-  course materials will be posted on the course website, and students
-  will be expected to provide materials to add to this site.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Slack:&lt;/strong&gt;
-  &lt;a href=&#34;https://secprivml.slack.com&#34;&gt;&lt;em&gt;https://secprivml.slack.com&lt;/em&gt;&lt;/a&gt;.  We
-  will use a slack group for class communications.  You can join using
-  any &lt;code&gt;@virginia.edu&lt;/code&gt; email address.  You can also create slack
-  channels for your team communications.&lt;/p&gt;
-
-&lt;h2 id=&#34;honor-and-responsibility&#34;&gt;Honor and Responsibility&lt;/h2&gt;
-
-&lt;p&gt;We believe strongly in the value of a &lt;em&gt;community of trust&lt;/em&gt;, and expect
-all of the students in this class to contribute to strenghtening and
-enhancing that community.  The course will be better for everyone if
-everyone can assume everyone else is trustworthy. The course staff
-starts with the assumption that all students at the university deserve
-to be trusted.&lt;/p&gt;
-
-&lt;p&gt;In this course, we will be learning about and exploring some
-vulnerabilities that could be used to compromise deployed systems.
-&lt;strong&gt;You are trusted to behave responsibility and ethically.&lt;/strong&gt; You may
-not attack any system without permission of its owners, and may not
-use anything you learn in this class for evil.  If you have any doubts
-about whether or not something you want to do is ethical and legal,
-you should check with the course instructor before proceeding.&lt;/p&gt;
-
-&lt;h2 id=&#34;area-requirements&#34;&gt;Area Requirements&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Note for CS Graduate Students.&lt;/strong&gt; This course is mislisted in SIS
-(indeed, it is a &amp;ldquo;bug&amp;rdquo; in the setup of SIS that cannot be overcome
-that requires all grad courses to be assigned areas) as counting for
-the &amp;ldquo;Software Systems&amp;rdquo; and &amp;ldquo;Theory&amp;rdquo; area requirements.  As per the
-actual rules in the Graduate Handbook, a cs6501 seminar course does
-not a priori count for any particular areas.  It may be possible to
-count it for any area, but it would be up to you to make the case to
-your committee that it should count for a given area. In most cases,
-this will depend a lot on what you individually do in the class - for
-example, you could select presentation topics and a topic for you
-project that would make a strong case for counting it for the &amp;ldquo;Theory&amp;rdquo;
-area, but someone else who does a systems-focused project would be
-able to count it for a different area. I can help provide guidance on
-this, but it is ultimately up to your committee to decide if a course
-counts for a particular area requirement.&lt;/p&gt;
-</description>
+      <description>Syllabus cs6501: Security and Privacy of Machine Learning University of Virginia, Spring 2018
+Meetings: Fridays, 9:30AM - noon, Rice Hall 032
+Course Objective. This seminar will focus on understanding the risks adversaries pose to machine learning systems, and how to design more robust machine learning systems to mitigate those risks.
+Expected Background: Previous background in machine learning and security is beneficial, but not required so long as you are willing and able to learn some foundational materials on your own.</description>
     </item>
     
     <item>
@@ -536,119 +109,19 @@ counts for a particular area requirement.&lt;/p&gt;
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://secml.github.io/teams/</guid>
-      <description>
-
-&lt;h2 id=&#34;teams&#34;&gt;Teams&lt;/h2&gt;
-
-&lt;table&gt;
-&lt;tr bgcolor=&#34;#CCC&#34;&gt;&lt;td align=&#34;center&#34;&gt;&lt;b&gt;Team Bus&lt;/b&gt;&lt;/td&gt;&lt;td align=&#34;center&#34;&gt;&lt;b&gt;Team Gibbon&lt;/b&gt;&lt;/td&gt;&lt;td align=&#34;center&#34;&gt;&lt;b&gt;Team Panda&lt;/b&gt;&lt;/td&gt;&lt;td align=&#34;center&#34;&gt;&lt;b&gt;Team Nematode&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;
-Anant Kharkar&lt;br&gt;
-Atallah Hezbor  &lt;br&gt;
-Bhuvanesh Murali&lt;br&gt;
-Mainuddin Jonas&lt;br&gt;  
-Weilin Xu&lt;br&gt;
-&lt;/td&gt;
-&lt;td&gt;
-Aditi Narvekar&lt;br&gt;  
-Austin Chen  &lt;br&gt;
-Ethan Lowman  &lt;br&gt;
-Jialei Fu  &lt;br&gt;
-Jin Ding  &lt;br&gt;
-Suya
-&lt;/td&gt;
-&lt;td&gt;
-Christopher Geier  &lt;br&gt;
-Faysal Hossain Shezan  &lt;br&gt;
-Helen Simecek&lt;br&gt;
-Lawrence Hook&lt;br&gt;
-Nishant Jha  &lt;br&gt;
-&lt;/td&gt;
-&lt;td&gt;
-Bargav Jayaraman&lt;br&gt;  
-Guy &#34;Jack&#34; Verrier&lt;br&gt;  
-Joshua Holtzman  &lt;br&gt;
-Max Naylor&lt;br&gt;
-Nan Yang&lt;br&gt;
-Tanmoy Sen  
-&lt;/tr&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;/table&gt;&lt;/p&gt;
-
-&lt;h1 id=&#34;responsibilities&#34;&gt;Responsibilities&lt;/h1&gt;
-
-&lt;p&gt;For each week (except for project proposal and presentation weeks),
-one team will be responsible for Leading the class, one team for
-writing a Blog post on the class topic, and one team for arranging
-food.  See the &lt;a href=&#34;https://secml.github.io/schedule&#34;&gt;Schedule&lt;/a&gt; for team responsibilities.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Leading Team.&lt;/strong&gt;  The team responsible for leading a class should:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Two weeks before the scheduled class, meet briefly with me (Dave) to
-discuss plan for the class. You should decide on a team leader for
-this class, who will be the one responsible for making sure everyone
-on the team knows what they are doing and coordinating the team&amp;rsquo;s
-efforts.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;The Monday the week of the class, at least a few representatives
-from the team should come to my office hours to discuss the plan for
-the class.  You should come prepared to this meeting with suggested
-papers and ideas about how to present them.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;No later than the Monday before class, send out to the class Slack group the preparation materials for the class.  This can include links to papers to read, but could also include exercises to do or software to install and experiment with, etc.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Day of class: lead an interesting, engaging, and illuminating class! This is a 2.5 hour class, so it can&amp;rsquo;t just be a series of unconnected, dull presentations. You need to think of things to do in class to make it more worthwhile and engaging.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;After class: help the Blogging team by providing them with your materials, answering their questions, and reviewing their write-up.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Blogging Team.&lt;/strong&gt; The team responsible for blogging a class should:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;The week before the scheduled class, develop a team plan for how to
-manage the blogging. One team member should be designated the team
-leader for the blogging, and post on slack so we know who is
-responsible. The blogging leader is responsible for making sure the
-team is well coordinated and everyone knows what they are doing and
-follows through on this.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;During class, participate actively in the class, and take detailed
-notes (this can be distributed among the team).&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;By the Tuesday following class, have a draft of the blog post ready,
-and share it with the rest of the class (including the leading team
-and coordinators) for comments. Details on how to prepare the blog post are on the &lt;a href=&#34;https://secml.github.io/blogging&#34;&gt;Blogging Mechanics&lt;/a&gt; page.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;By the next Friday (one week after the class), have a final version
-of the blog post ready to add to the course site.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Feeding Team.&lt;/strong&gt; The team responsible for food should:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Plan among yourselves what food to bring and who is responsible.  If
-you want to use my credit card to buy food, borrow it. You can stop
-by Thursday afternoon to pick it up from me.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Bring something yummy and something with caffiene, but not too messy
-or disruptive, to class. A simple choice is to get a coffee
-container and bagels from the bagel shop in Rice Hall (but make sure
-to get the order in early enough to be ready before class). More
-adventurous choices are encouraged.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Make sure to clean up the room at the end of class. If we get caught
-leaving a mess, we probably will not be allowed to have food
-anymore.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Save the receipts to get reimbursed, and take care of the
-reimbursement. This is easiest if you just borrow my credit card and
-then all you need to do is send me an image of the receipt (or hand
-me a physical receipt).&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>Teams  Team BusTeam GibbonTeam PandaTeam Nematode   Anant Kharkar
+Atallah Hezbor Bhuvanesh Murali
+Mainuddin Jonas
+Weilin Xu
+  Aditi Narvekar
+Austin Chen Ethan Lowman Jialei Fu Jin Ding Suya   Christopher Geier Faysal Hossain Shezan Helen Simecek
+Lawrence Hook
+Nishant Jha   Bargav Jayaraman
+Guy &#34;Jack&#34; Verrier
+Joshua Holtzman Max Naylor
+Nan Yang
+Tanmoy Sen   
+Responsibilities For each week (except for project proposal and presentation weeks), one team will be responsible for Leading the class, one team for writing a Blog post on the class topic, and one team for arranging food.</description>
     </item>
     
     <item>
@@ -657,74 +130,8 @@ me a physical receipt).&lt;/p&gt;&lt;/li&gt;
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://secml.github.io/blogging/</guid>
-      <description>&lt;p&gt;Here are some suggestions for how to create the class blog posts for
-your assigned classes.  I believe each team has at least a few members
-with enough experience using git and web contruction tools that
-following these instructions won&amp;rsquo;t be a big burden, but if you have
-other ways you want to build your blog page for a topic let me know
-and we can discuss alternative options.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Install &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;.  Hugo is a static website
-generator that builds a site from Markdown pages.  (With homebrew on
-Mac OS X, this is easy: &lt;code&gt;brew update &amp;amp;&amp;amp; brew install hugo&lt;/code&gt;.)&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Clone the github repository,
-&lt;a href=&#34;https://github.com/secML/secML.github.io&#34;&gt;&lt;em&gt;https://github.com/secML/secML.github.io&lt;/em&gt;&lt;/a&gt;.
-This is what is used to build the
-&lt;a href=&#34;https://secml.github.io/&#34;&gt;https://secml.github.io/&lt;/a&gt; site.  If you are
-working with multiple teammates on the blog post (which you probably
-should be), you can add write permissions for everyone to the cloned
-repository.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;You should create your page in the &lt;code&gt;web/content/post/&lt;/code&gt;
-subdirectory. You can start by copying an earlier file in that
-directory (e.g., &lt;code&gt;class1.md&lt;/code&gt;) and updating the header section
-(between the &lt;code&gt;+++&lt;/code&gt; marks) and replacing everything after that with
-your content.  Don&amp;rsquo;t forget to &lt;strong&gt;update the date&lt;/strong&gt; so your page will
-appear in the right order. You can put &lt;code&gt;draft = true&lt;/code&gt; in the header,
-so your page will not appear on the course website until it is
-ready.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;You can use multiple files (but probably only one in
-the &lt;code&gt;post/&lt;/code&gt; directory (this will show up as pages on the front
-list).  Use the &lt;code&gt;web/content/images&lt;/code&gt; directory for images and the
-&lt;code&gt;web/content/docs&lt;/code&gt; directory for papers.  Using images and other
-resources to make your post interesting and visually compelling is
-highly encouraged!&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Write the blog page using Markdown.  Markdown is a simple markup
-language that can be used to easily generate both HTML and other
-output document formats.  You can probably figure out everything you
-need by looking at previous posts, but for a summary of Markdown,
-see &lt;a href=&#34;https://daringfireball.net/projects/markdown/syntax&#34;&gt;Markdown: Syntax&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;You can incorporate latex math into your markdown. Use &lt;code&gt;\\(&lt;/code&gt; inline &lt;code&gt;\\)&lt;/code&gt; for inline math, e.g., &lt;code&gt;\\( J_{min}\\}&lt;/code&gt; and &lt;code&gt;$$ ... $$&lt;/code&gt; for display math.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Your post should include credits for any external material you use,
-especially for any images you incorporate that you didn&amp;rsquo;t produce.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Please include full references to the papers, and links to the most
-definitive source available (usually this is to arxiv or a
-conference site, but could be the author&amp;rsquo;s page). You should include
-additional links to relevant and useful reference or code
-repositories. Its good to have an overview section at the beginning
-of the post with links to all the main papers covered, and then to
-have links in specific sections to what is being covered.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;To test the post, run &lt;code&gt;make develop&lt;/code&gt; (in the &lt;code&gt;web/&lt;/code&gt; subdirectory of
-your repository).  This starts the Hugo development server, usually
-on port 1313 (unless that port is already in use).  Then, you can
-view the site with a browser at &lt;code&gt;localhost:1313&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;When you are ready, submit a pull request to incorporate your
-changes into the main repository (and public course website).  Also,
-send a message to me (dave) on slack, so I know the post is ready to
-review.  At this stage, I will probably make some requests for
-improvements, and then will post the edited version to the course
-site.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>Here are some suggestions for how to create the class blog posts for your assigned classes. I believe each team has at least a few members with enough experience using git and web contruction tools that following these instructions won&amp;rsquo;t be a big burden, but if you have other ways you want to build your blog page for a topic let me know and we can discuss alternative options.
+ Install Hugo.</description>
     </item>
     
   </channel>
