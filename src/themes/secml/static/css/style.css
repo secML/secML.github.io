@@ -624,6 +624,7 @@ table {
     border: 1px solid #ccc
 }
 caption {
+    align: center;
     padding: 1rem;
     color: #555
 }
@@ -1076,7 +1077,7 @@ progress {
 
 .caption {
    font-size: 11px; color: #111; margin-left: 60px; margin-right: 30px; margin-top: 0px; margin-bottom: 20px;
-    text-align: left;
+    text-align: center;
 }
 
 
