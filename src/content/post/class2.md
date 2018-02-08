@@ -6,13 +6,18 @@ author = "Team Nematode"
 slug = "class2"
 +++
 
-## Introduction to Privacy & Machine Learning
+## References
+- [Privacy in Pharmacogenetics: An End-to-End Case Study of Personalized Warfarin Dosing](https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-fredrikson-privacy.pdf)
 
-In today’s post we discuss privacy of machine learning. In a time where novel machine learning applications are seemingly announced weekly, privacy is becoming more relevant as learning algorithms play varied and sometimes critical roles in our lives. We introduce differential privacy and common ‘solutions’ that fail to protect individual privacy, explore membership inference attacks on blackbox machine learning models, and discuss the importance of privacy in the field of pharmacogenetics, where machine learning models are used to guide patient treatment. 
+- [Semi-supervised knowledge transfer for deep learning from private training data](https://openreview.net/pdf?id=HkwoSDPgg)
 
-## [Membership inference attacks](https://www.cs.cornell.edu/~shmat/shmat_oak17.pdf)
+- [Membership Inference Attacks Against Machine Learning Models](https://www.cs.cornell.edu/~shmat/shmat_oak17.pdf)
 
-Shokri et al. attempt to attack black box machine learning models based on subtle data leaks based on the outputs. If the membership of a datapoint can be identified in the training set of a black box machine, it poses a significant privacy risk to the data of users of machine learning services. This is especially important for machine learning services such as Google Prediction and Amazon ML, as an inability to guarantee the privacy of training data would preclude a significant number of customers from using their services.   
+In today’s post we introduce some key concepts crucial to understanding the current state of privacy in machine learning. In a time where novel machine learning applications are seemingly announced weekly, privacy is becoming more relevant as learning algorithms play varied and sometimes critical roles in our lives. We introduce differential privacy and common ‘solutions’ that fail to protect individual privacy, explore membership inference attacks on blackbox machine learning models, and discuss the importance of privacy in the field of pharmacogenetics, where machine learning models are used to guide patient treatment. 
+
+## Membership inference attacks
+
+Shokri *et al* attempt to attack black box machine learning models based on subtle data leaks based on the outputs. If the membership of a datapoint can be identified in the training set of a black box machine, it poses a significant privacy risk to the data of users of machine learning services. This is especially important for machine learning services such as Google Prediction and Amazon ML, as an inability to guarantee the privacy of training data would preclude a significant number of customers from using their services.   
 
 The attack is based on the idea that there are noticeable patterns in outputs when the input is given to the model as training data. While no human would be able to pick up on a pattern of that nature, a machine learning model with a theoretically limitless data source has that power. As the purpose of machine learning is to notice and evaluate patterns beyond human recognition, using a machine learning model to attack black box machine learning models makes sense. 
 
@@ -100,7 +105,13 @@ $$ f(x) + \text{Laplace}(0, \sigma)^d $$
 
 where \\(\Delta f = \text{max} || f(x)-f(x') ||_1 \\)  and \\(\sigma \geq \frac{\Delta f}{\epsilon}\\).
 
-## [Pharmacogenetics and Privacy](https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-fredrikson-privacy.pdf) 
+Let us consider a working example. Consider that there are two adjacent data sets \\(D\\) and \\(D'\\) consisting of scores of students of a class, such that \\(D\\) and \\(D’\\) differ by only one student’s record.
+
+Consider the function \\(f\\) that computes the class average. If, say, the minimum and maximum attainable scores are \\(0\\) and \\(100\\) respectively, then the sensitivity of \\(f\\) is \\( \frac{100-0}{4} = 25\\).
+
+Thus the \\(\epsilon\\)-differentially private class average of \\(D\\) is given by \\(\frac{65+83+77+56}{4} + \text{Laplace}(0, \frac{25}{\epsilon})\\). This preserves the privacy of the student differing in \\(D\\) and \\(D’\\).
+
+## Privacy in Pharmacogenetics
 
 Fredrikson *et al* introduce the concept of privacy in the field of pharmacogenetics, where machine learning models are used to guide medical treatments based on a patient’s genotype and background. The authors exploit the privacy risk of such models by launching a new type of attack named *model inversion attack*.
 
@@ -124,10 +135,10 @@ Adding noise using differential privacy strategy can be a countermeasure against
 
 *[Source](https://www.usenix.org/sites/default/files/conference/protected-files/sec14_slides_fredrikson.pdf): Privacy in Pharmacogenetics*
 
-## Netflix
+## The Netflix Prize: Semi-supervised deep learning from private training data
 
 [Draft coming soon]
 
 ## Conclusion
 
-ThiWe introduced differential privacy and formally defined what is meant by preservation of ϵ-differential privacy, discussed common solutions and how they fail, moved on to discuss properties of a differentially private algorithm, and how adding Laplace Noise ensures a ϵ-differential private function. We also discussed how in Membership Inference Attacks Against Machine Learning Models, Shokri et al. discuss attacking a black box model by training on a set of shadow models. Finally,  we discussed how in Privacy in Pharmacogenetics: An End-to-End Case Study of Personalized Warfarin Dosing Fredrikson et al. demonstrate how a model inversion attack can be employed to infer patient genotype information.
+We have introduced differential privacy and formally defined what is meant by preservation of ϵ-differential privacy; discussed common solutions and how they fail; explained the properties of a differentially private algorithm, and how adding Laplace Noise enables \\(\epsilon\\)-differential private functions. We also discussed how in Membership Inference Attacks Against Machine Learning Models, Shokri *et al* discuss attacking a black box model by training on a set of shadow models. Finally,  we discussed how in Privacy in Pharmacogenetics: An End-to-End Case Study of Personalized Warfarin Dosing Fredrikson *et al* demonstrate how a model inversion attack can be employed to infer patient genotype information.
