@@ -22,11 +22,9 @@ To limit the power of these attacks, more regularization can be used to minimize
 
 ## Differential privacy
 
-**\# TODO: Sources needed from Team Gibbon for this section**
-
 With the explosion of data collection from various social platforms and the increasing usage of machine learning on personalized applications like personalized medication, medical diagnostics, genomics and face recognition, the collection of sensitive human data is inevitable. When dealing with personal information, it is paramount to preserve the privacy of any individual participating in the data set. In a word, it is necessary to ensure that an adversary does not learn about the presence or absence of any individual’s information from looking at the synopsis of the data set. This goal is the central motivation the concept of differential privacy.
 
-To fully appreciate differential privacy, let us discuss some alternative solutions to preserving individual privacy in a data set identify how each one fails in achieving the goal of privacy.
+To fully appreciate differential privacy, let us discuss some [alternative solutions](http://www.lrdc.pitt.edu/schunn/cdi2009/presentations/Dwork.pdf) to preserving individual privacy in a data set identify how each one fails in achieving the goal of privacy.
 
 #### Failed alternatives
 
@@ -60,7 +58,7 @@ Semantic security is a strict notion in cryptography which ensures that the adva
 
 #### Defining differential privacy
 
-The formal definition of differential privacy is given as:
+The [formal definition](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf) of differential privacy is given as:
 
 ---
 A randomized computation \\(M\\) satisfies \\(\epsilon\\)-differential privacy if for any adjacent data sets \\(x\\) and \\(x’\\), and any subset \\(C\\) of possible outcomes \\(Range(M)\\),
@@ -73,9 +71,9 @@ In other words, this means that the chance that an event occurs *with your data*
 
 ![](https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img1.png "Response probability distribution")
 
-Source: [Unknown, but will find out from Team Gibbon]
+*[Source](http://www.lrdc.pitt.edu/schunn/cdi2009/presentations/Dwork.pdf): Differential Privacy and Pan-Private Algorithms [6]*
 
-There is another relaxed version of the above definition of differential privacy, called \\((\epsilon,\delta)\\)-differential privacy, defined as below:
+There is another relaxed version of the above definition of differential privacy, called \\((\epsilon,\delta)\\)-differential privacy, [defined](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf) as below:
 
 ---
 A randomized computation \\(M\\) satisfies \\((\epsilon,\delta)\\)-differential privacy if for any adjacent data sets \\(x\\) and \\(x’\\), and any subset \\(C\\) of possible outcomes \\(Range(M)\\),
@@ -94,7 +92,7 @@ The above definition basically implies that with probability \\((1-\delta)\\), \
 
 #### Differential privacy with Laplace noise
 
-To ensure \\(\epsilon\\)-differential privacy for a function \\(f(x)\\), we can add Laplace noise to it:
+To ensure \\(\epsilon\\)-differential privacy for a function \\(f(x)\\), we can add [Laplace noise](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf) to it:
 
 $$ f(x) + \text{Laplace}(0, \sigma)^d $$
 
@@ -168,3 +166,7 @@ Bargav Jayaraman, Guy "Jack" Verrier, Joshua Holtzman, Max Naylor, Nan Yang, Tan
 [[4]](https://www.cs.utexas.edu/~shmat/shmat_oak08netflix.pdf) A. Narayanan, V. Shmatikov, "Robust De-anonymization of Large Sparse Datasets." May 2008.
 
 [[5]](https://www.cs.utexas.edu/~shmat/shmat_oak11ymal.pdf) J. A. Calandrino, A. Kilzer, A. Narayanan, E. W. Felten, V. Shmatikov, "'You Might Also Like': Privacy Risks of Collaborative Filtering." May 2011.
+
+[[6]](http://www.lrdc.pitt.edu/schunn/cdi2009/presentations/Dwork.pdf) C. Dwork, "Differential Privacy and Pan-Private Algorithms." August 2016.
+
+[[7]](https://www.youtube.com/watch?v=OfWj89oRD7g) C. Dwork, "Differential Privacy - Lecture 1". August 2016.
