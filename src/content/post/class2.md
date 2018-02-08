@@ -1,23 +1,16 @@
 +++
 date = "02 Feb 2018"
-draft = true
+draft = false
 title = "Class 2: Intro to Privacy in Machine Learning"
 author = "Team Nematode"
 slug = "class2"
 +++
 
-## References
-- [Privacy in Pharmacogenetics: An End-to-End Case Study of Personalized Warfarin Dosing](https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-fredrikson-privacy.pdf)
-
-- [Semi-supervised knowledge transfer for deep learning from private training data](https://openreview.net/pdf?id=HkwoSDPgg)
-
-- [Membership Inference Attacks Against Machine Learning Models](https://www.cs.cornell.edu/~shmat/shmat_oak17.pdf)
-
 In today’s post we introduce some key concepts crucial to understanding the current state of privacy in machine learning. In a time where novel machine learning applications are seemingly announced weekly, privacy is becoming more relevant as learning algorithms play varied and sometimes critical roles in our lives. We introduce differential privacy and common ‘solutions’ that fail to protect individual privacy, explore membership inference attacks on blackbox machine learning models, and discuss the importance of privacy in the field of pharmacogenetics, where machine learning models are used to guide patient treatment. 
 
 ## Membership inference attacks
 
-Shokri *et al* attempt to attack black box machine learning models based on subtle data leaks based on the outputs. If the membership of a datapoint can be identified in the training set of a black box machine, it poses a significant privacy risk to the data of users of machine learning services. This is especially important for machine learning services such as Google Prediction and Amazon ML, as an inability to guarantee the privacy of training data would preclude a significant number of customers from using their services.   
+[Shokri et al.](https://www.cs.cornell.edu/~shmat/shmat_oak17.pdf) attempt to attack black box machine learning models based on subtle data leaks based on the outputs. If the membership of a datapoint can be identified in the training set of a black box machine, it poses a significant privacy risk to the data of users of machine learning services. This is especially important for machine learning services such as Google Prediction and Amazon ML, as an inability to guarantee the privacy of training data would preclude a significant number of customers from using their services.   
 
 The attack is based on the idea that there are noticeable patterns in outputs when the input is given to the model as training data. While no human would be able to pick up on a pattern of that nature, a machine learning model with a theoretically limitless data source has that power. As the purpose of machine learning is to notice and evaluate patterns beyond human recognition, using a machine learning model to attack black box machine learning models makes sense. 
 
@@ -28,6 +21,8 @@ The attack model is then trained on a set of shadow models, using classification
 To limit the power of these attacks, more regularization can be used to minimize overfitting, as the overfitting patterns become less apparent as the curve fitting is minimized. However, differential privacy is the more general class of solutions that is the defining foundation of the current state of the field of privacy in machine learning.
 
 ## Differential privacy
+
+**\# TODO: Sources needed from Team Gibbon for this section**
 
 With the explosion of data collection from various social platforms and the increasing usage of machine learning on personalized applications like personalized medication, medical diagnostics, genomics and face recognition, the collection of sensitive human data is inevitable. When dealing with personal information, it is paramount to preserve the privacy of any individual participating in the data set. In a word, it is necessary to ensure that an adversary does not learn about the presence or absence of any individual’s information from looking at the synopsis of the data set. This goal is the central motivation the concept of differential privacy.
 
@@ -113,9 +108,9 @@ Thus the \\(\epsilon\\)-differentially private class average of \\(D\\) is given
 
 ## Privacy in Pharmacogenetics
 
-Fredrikson *et al* introduce the concept of privacy in the field of pharmacogenetics, where machine learning models are used to guide medical treatments based on a patient’s genotype and background. The authors exploit the privacy risk of such models by launching a new type of attack named *model inversion attack*.
+[Fredrikson et al.](https://www.usenix.org/sites/default/files/conference/protected-files/sec14_slides_fredrikson.pdf) introduce the concept of privacy in the field of pharmacogenetics, where machine learning models are used to guide medical treatments based on a patient’s genotype and background. The authors exploit the privacy risk of such models by launching a new type of attack named *model inversion attack*.
 
-In their case study, Fredrikson *et al* analyze personalized Warfarin doses, a widely used anticoagulant. Finding the correct dose of Warfarin is vitally important as both low and high doses may result in death of the patient -- literally, a matter of life and death. 
+In their case study, Fredrikson et al. analyze personalized Warfarin doses, a widely used anticoagulant. Finding the correct dose of Warfarin is vitally important as both low and high doses may result in death of the patient -- literally, a matter of life and death. 
 
 This experiment was ran on the available IWPC dataset which contains and uses demographic information *(age, height, weight, race)*, genetic markers *(CYP2C9/VKORC1)* and clinical histories of people around the world to predict their appropriate Warfarin dose. The IWPC has found that linear regression is the best learning model to fit the data and has made the model available for physicians' use in calculating the initial dose of the Warfarin.
 
@@ -125,7 +120,7 @@ How does the attack work? First, the adversary computes all the values of the mi
 
 ![](https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img2.png "Model inversion attack")
 
-*[Source](https://www.usenix.org/sites/default/files/conference/protected-files/sec14_slides_fredrikson.pdf): Privacy in Pharmacogenetics*
+*[Source](https://www.usenix.org/sites/default/files/conference/protected-files/sec14_slides_fredrikson.pdf): Privacy in Pharmacogenetics [2]*
 
 As seen in this image, the attacker computes the values of missing variables (marked with ?), then predicts the Warfarin doses; and finally, using this information, finds the most likely configuration.
 
@@ -133,12 +128,43 @@ Adding noise using differential privacy strategy can be a countermeasure against
 
 ![](https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img3.png "Privacy budget plot")
 
-*[Source](https://www.usenix.org/sites/default/files/conference/protected-files/sec14_slides_fredrikson.pdf): Privacy in Pharmacogenetics*
+*[Source](https://www.usenix.org/sites/default/files/conference/protected-files/sec14_slides_fredrikson.pdf): Privacy in Pharmacogenetics [2]*
 
 ## The Netflix Prize: Semi-supervised deep learning from private training data
 
-[Draft coming soon]
+Traditional recommender systems are usually not designed with an emphasis on privacy, which can be detrimental when the adversary are able to create multiple accounts to affect the recommendation at will. [Researchers](https://www.cs.utexas.edu/~shmat/shmat_oak08netflix.pdf) have been successful in developing powerful attack linking records in the Netflix Prize data set with other public user data. The implication is that sensitive information as the input of a recommender system can be linked and made inference about. [Similar practical examples](https://www.cs.utexas.edu/~shmat/shmat_oak11ymal.pdf) include making inference about purchase history through Amazon’s recommendations.
+
+McSherry and Mironov’s [paper](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf) adapted the leading recommendation algorithms (factor models and neighborhood models) to the differential privacy framework in order to develop a recommender system based on the Netflix data set while providing privacy guarantees. As mentioned in the above section, differential privacy enables privacy preserving computation by substantially precluding inference from the output data, unlike the prior efforts focusing mainly on cryptographic solutions that limit access to data of users. By doing so, it is conceivable that more uncertainty/noise is added to computation.
+
+One interesting aspect this paper dealt with is the privacy vs. accuracy tradeoff. Evaluation of their approach was applied to the Netflix Prize data set which bears an extremely high dimension. The root mean squared error (RMSE) was used as the metric for accuracy. The findings are as the quality of privacy increases, the accuracy of the recommendation drops. 
+
+![](https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img4.png "RMSE for four algorithms as a function of θ \\(\propto\\\) 1/σ on the Netflix Prize set.")
+
+*[Source](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf): Differentially Private Recommender Systems [3]*
+
+Privacy vs. accuracy over time was also studied to explore how the loss of accuracy due to privacy-preserving decreased as more data become available for a fixed value of the privacy parameter. The results are shown in the following figure.
+
+![](https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img5.png "Left scale—accuracy loss, right scale—the
+number of records. The \\(x\\\)-axis is the number of days
+elapsed since 7/1/2000.")
+
+*[Source](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf): Differentially Private Recommender Systems [3]*
 
 ## Conclusion
 
-We have introduced differential privacy and formally defined what is meant by preservation of ϵ-differential privacy; discussed common solutions and how they fail; explained the properties of a differentially private algorithm, and how adding Laplace Noise enables \\(\epsilon\\)-differential private functions. We also discussed how in Membership Inference Attacks Against Machine Learning Models, Shokri *et al* discuss attacking a black box model by training on a set of shadow models. Finally,  we discussed how in Privacy in Pharmacogenetics: An End-to-End Case Study of Personalized Warfarin Dosing Fredrikson *et al* demonstrate how a model inversion attack can be employed to infer patient genotype information.
+We have introduced differential privacy and formally defined what is meant by preservation of ϵ-differential privacy; discussed common solutions and how they fail; explained the properties of a differentially private algorithm, and how adding Laplace Noise enables \\(\epsilon\\)-differential private functions. We also discussed how in Membership Inference Attacks Against Machine Learning Models, Shokri et al. discuss attacking a black box model by training on a set of shadow models. Finally,  we discussed how in Privacy in Pharmacogenetics: An End-to-End Case Study of Personalized Warfarin Dosing Fredrikson et al. demonstrate how a model inversion attack can be employed to infer patient genotype information.
+
+— Team Nematode: \\
+Bargav Jayaraman, Guy "Jack" Verrier, Joshua Holtzman, Max Naylor, Nan Yang, Tanmoy Sen
+
+## References
+
+[[1]](https://www.cs.cornell.edu/~shmat/shmat_oak17.pdf) R. Shokri, M. Stronati, C. Song, V. Shmatikov, "Membership Inference Attacks Against Machine Learning Models." May 2017. 
+
+[[2]](https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-fredrikson-privacy.pdf) M. Fredrikson, E. Lantz, S. Jha, S. Lin, D. Page, T. Ristenpart, "Privacy in Pharmacogenetics: An End-to-End Case Study of Personalized Warfarin Dosing." August 2014.
+
+[[3]](https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf) F. McSherry, I. Mironov, "Differentially Private Recommender Systems: Building Privacy into the Netflix Prize Contenders." June 2009.
+
+[[4]](https://www.cs.utexas.edu/~shmat/shmat_oak08netflix.pdf) A. Narayanan, V. Shmatikov, "Robust De-anonymization of Large Sparse Datasets." May 2008.
+
+[[5]](https://www.cs.utexas.edu/~shmat/shmat_oak11ymal.pdf) J. A. Calandrino, A. Kilzer, A. Narayanan, E. W. Felten, V. Shmatikov, "'You Might Also Like': Privacy Risks of Collaborative Filtering." May 2011.
