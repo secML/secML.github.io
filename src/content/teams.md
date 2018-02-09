@@ -14,7 +14,6 @@ Weilin Xu<br>
 Aditi Narvekar<br>  
 Austin Chen  <br>
 Ethan Lowman  <br>
-Jialei Fu  <br>
 Jin Ding  <br>
 Suya
 </td>
