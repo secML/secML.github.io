@@ -95,6 +95,36 @@ Source: [_Towards evaluating the robustness of neural networks_]((https://arxiv.
 
 ## Obfuscated Gradients
 
+>  Athalye, A., Carlini, N., & Wagner, D. "Obfuscated Gradients Give a False Sense of Security: Circumventing Defenses to Adversarial Examples." ArXiv e-prints, arXiv: 1802.00420. February 2018.
+
+Optimization-based attacks such as the Basic Iterative Method, Projected Gradient Descent, and Carlini and Wagner’s attack are powerful threat to most defenses against adversarial examples in machine learning classifiers. New defenses have been proposed that appear to be resistant to optimization-based attacks, but Athalye, Carlini, and Wagner argue that these defenses are not as robust as they claim.
+
+Optimization-based attacks generate adversarial examples using gradients obtained through backpropagation. The authors identify obfuscated gradients as an element of many defenses that provides a facade of security by causing the attacker’s gradient descent to fail. Obfuscated gradients come in at least three forms: shattered gradients, stochastic gradients, and vanishing/exploding gradients.
+
+A defense uses **shattered gradients** when it introduces non-differentiable operations, numeric instability, or otherwise causes the attacker’s gradient signal to be incorrect. A defense uses **stochastic gradients** when the inputs to the classifier are randomized or a stochastic classifier is used, resulting in a different gradient each time it is evaluated. **Vanishing/exploding gradients** are an issue encountered in training some networks in which the gradient grows or shrinks exponentially during backpropagation. Some defenses involve multiple iterations of neural network evaluation. This can be viewed as evaluating one very deep neural network, which obfuscates the gradient signal by forcing the vanishing/exploding gradient problem.
+
+
+### Detecting Obfuscated Gradients
+The authors propose a number of tests that might help detect when a defense relies on obfuscated gradients.
+
+- Iterative attacks should work better than single-step attacks, since iterative attacks are strictly stronger than single-step attacks.
+- White-box attacks should perform better than black-box attacks, since the black-box threat model is a strict subset of the white-box threat model.
+- Attacks with an unbounded distortion metric (e.g. \\(L_2\\) norm) should find adversarial examples with 100% success.
+- Optimization-based attacks should perform better than brute-force sampling of nearby inputs (sampling within an \\(\epsilon\\)-ball).
+
+These tests may not cover all cases of obfuscated gradients, but they indicate when intuitive properties start to break down. All defenses with obfuscated gradients discussed by the authors fail at least one test.
+
+### Attack Techniques
+The authors introduce attack techniques to address each of the three types of obfuscated gradients.
+
+Shattered gradients can be attacked using a technique called Backward Pass Differentiable Approximation. For a classifier \\(f(\cdot)\\), some defenses make gradients unavailable to attackers by incorporating a non-differentiable preprocessing step \\(g(\cdot)\\), making the secured classifier \\(\hat{f}(\cdot) = f(g(\cdot))\\). Backward Pass Differentiable Approximation estimates gradients by substituting a smooth, differentiable approximation of \\(g\\).
+
+Stochastic gradient-based defenses that randomly transform inputs can be defeated using the Expectation over Transformation technique to compute the gradient over the expected transformation of the input. If a stochastic classifier is used, the gradient can be similarly computed over the expectation of random parameters.
+
+Defenses that use vanishing/exploding gradients can be circumvented by reparameterizing the secured classifier and optimizing over a space where vanishing/exploding gradients do not occur.
+
+Seven of the eight defense techniques accepted to ICLR 2018 are based on a form of obfuscated gradients, and are therefore vulnerable to these attacks. The defense by Madry, et al., discussed below, was the only approach evaluated that doesn’t cause obfuscated gradients. Athalye, Carlini, and Wagner recommend that future defenses should be presented with specific, realistic threat models, testable claims with bounded test parameters, and evaluations against new defense-aware attacks.
+
 ## Resistance to Adversarial Attacks
 
 > Aleksander Madry, Aleksandar Makelov, Ludwig Schmidt, Dimitris Tsipras, and Adrian Vladu. _Towards Deep Learning Models Resistant to Adversarial Attacks_.  ICLR 2018. [[PDF](https://arxiv.org/pdf/1706.06083.pdf)]
