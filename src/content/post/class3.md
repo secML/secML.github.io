@@ -30,7 +30,7 @@ In the simplest form of distillation, knowledge is transferred to the distilled 
 
 2)A second Deep Neural Network is trained by replacing the hard labels of the training set with class probabilities output by the first Deep Neural Network.
 
-![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/DNN.png)
+![](/images/class3/DNN.png)
 
 ### Softmax Function under distillation 
 Softmax function is the Last layer of network. It’s used to normalize the outputs of the second to last layer. Under distillation situation, it has a parameter temperature (T)
@@ -38,17 +38,17 @@ To perform distillation in softmax layer, a large network whose output layer is 
 
 $$ F(X)=\bigg[ \frac{exp(z_i(X)/T)}{\sum_{l=0}^{N-1} exp(z_l(X)/T)  } \bigg]_{i\epsilon 0,1...N-1} $$
 
-![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/softmax.png )
+![](/images/class3/softmax.png )
 
 ### Using Distillation as a Defense
 In distillation as a defense, the same network architecture is used in the distilled DNN as in the original DNN. First, this paper trained an initial network F on data X with a softmax temperature of T. Then, this paper use the probability vector F(X), which includes additional knowledge about classes compared to a class label, predicted by network F to train a distilled network  at temperature T on the same data X. The definition and calculation of F(X) can be found in softmax part and  the detailed training process is described in “how distillation works” part. 
 
-![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/defense.png )
+![](/images/class3/defense.png )
 
 ### Results
 This paper evaluated Resilience, Sensitivity and Robustness on 2 datasets: MNIST and CIFAR10
 
-![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/table.png )
+![](/images/class3/table.png )
 <div class="caption">
 Resilience: success rate of adversarial crafting.
 </div>
@@ -62,7 +62,7 @@ Resilience: success rate of adversarial crafting.
 This paper also evaluated effect of Temperature on Adversarial Success
 Success of adversarial samples when changing at most 112 features.
 
-![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/res.png )
+![](/images/class3/res.png )
 
 But actually Defensive Distillation is not robust to adversarial examples.
 
@@ -85,13 +85,10 @@ where \\(f(x+\delta) \leq 0\\) iff the classification result of \\((x+\delta)\\)
 
 The evaluation part is compared to other existing white-box attack methods. Specifically, [Fast Gradient Sign (FGS)](https://arxiv.org/pdf/1412.6572.pdf), [Iterative Fast Gradient Sign (IFGS)](https://arxiv.org/pdf/1607.02533.pdf) methods are suitable for \\(L_\infty \\)-norm, [Deepfool](https://arxiv.org/pdf/1511.04599.pdf) method is suitable for \\(L_2\\)-norm attack, [JSMA](https://arxiv.org/pdf/1511.07528.pdf) method is suitable for \\(L_{0}\\)-norm attack. The target model for the listed attacks are [distillation based network](https://arxiv.org/pdf/1511.04508.pdf) (defensitive strategy proposed for defending against FGS and IFGS methods) and normally trained neural networks. The final evaluation results demonstrate that the attack proposed in this work is far stronger than existing attack method in that it achieves highest attack success rate (this method achieves \\(100\%\\) success rate while other methods don't) and lowest perturbation magnitude. Some sample images generated from this attack are shown below. This attack is also now broadly accepted as a standard baseline for evaluating newly proposed defense mechanisms.
 
-<p align="center">
-<img src="/images/class3_img1.png" width="600" >
-</p>
-
-   <div class="caption">
+![](/images/class3/class3_img1.png)
+<div class="caption">
 Source: [_Towards evaluating the robustness of neural networks_]((https://arxiv.org/pdf/1608.04644.pdf)) [1]
-   </div>
+</div>
 
 ## Obfuscated Gradients
 
@@ -144,11 +141,11 @@ This is a classic saddle point problem, consisting of two connected parts: an in
 
 The inner loss function was modeled with a fast gradient sign method (FGSM) attack. The FGSM perturbed data was used for as training data on the defense side. The outer minimization function was a little more complicated. It’s not simple enough to train on FGSM adversaries. We want something that’s universally robust, so we use PGD, a first-order method to solve constrained optimization problems. The authors used PGD to find local maxima, since they are the areas of highest loss.
 
-![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/Madry1.png)
+![](/images/class3/Madry1.png)
 
 These graphs show how the loss scales as the number of PGD iterations increases.  The loss grows and plateaus as the number of iterations grows (as expected for any model).  However, the adversarially-trained models display much less loss than the naturally-trained models, indicating that Madry et. al.’s defense works well against their attacks.
 
-![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/Madry2.png)
+![](/images/class3/Madry2.png)
 
 These graphs show the distributions of loss values, for various starting points.  The loss values are obtained by randomly sampling points within an \\(L\infty\\)-ball centered at the starting point, then using PGD to find the local maxima near those random points.  Although the locations of the points are widely distributed, the loss values are all clustered together.  The authors claim that these graphs display the universality of PGD: any local maxima with significantly higher losses would likely be infeasible for any other first-order method to find.
 
