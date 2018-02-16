@@ -7,7 +7,7 @@ slug = "class3"
 +++
 
 This week’s topic covered some proposed adversarial example attacks and defenses. The underlying problem is that machine learning techniques assume that training and testing data are generated from the same distribution. Therefore, adversaries can choose inputs to exploit the algorithms by manipulating data. We began class by discussing common distance metrics, 
-\\(L_0\\), \\(L_2\\), and \\(L_\infty\\), popular benchmarking datasets, and the history of adversarial ML. However, the main theme was defense techniques can be used safely to prevent adversarial attacks. Below we discuss four papers that discuss both effective and ineffective defenses.
+\\(L_0, L_2\\), and \\(L\infty\\), popular benchmarking datasets, and the history of adversarial ML. However, the main theme was defense techniques can be used safely to prevent adversarial attacks. Below we discuss four papers that discuss both effective and ineffective defenses.
 
 ## Distillation as a Defense
 > Nicolas Papernot and
