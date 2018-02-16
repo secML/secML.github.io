@@ -29,7 +29,8 @@ In the simplest form of distillation, knowledge is transferred to the distilled 
 1)A Deep Neural Network(DNN) is trained with a high temperature, the T we mentioned before.The training of this first DNN is a high temperature because the high temperature forces the DNN to produce probability vectors with relatively large values for each class. The high temperature of a softmax is, the more ambiguous its probability distribution will be. The smaller the temperature of a softmax is, the more discrete its probability distribution will be. 
 
 2)A second Deep Neural Network is trained by replacing the hard labels of the training set with class probabilities output by the first Deep Neural Network.
-![](https://github.com/azvchen/secML.github.io/blob/master/src/content/images/DNN.png )
+
+![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/DNN.png)
 
 ### Softmax Function under distillation 
 Softmax function is the Last layer of network. It’s used to normalize the outputs of the second to last layer. Under distillation situation, it has a parameter temperature (T)
@@ -37,17 +38,17 @@ To perform distillation in softmax layer, a large network whose output layer is 
 
 $$ F(X)=\bigg[ \frac{exp(z_i(X)/T)}{\sum_{l=0}^{N-1} exp(z_l(X)/T)  } \bigg]_{i\epsilon 0,1...N-1} $$
 
-![](https://github.com/jindingars/secML.github.io/blob/master/src/content/images/softmax.png )
+![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/softmax.png )
 
 ### Using Distillation as a Defense
 In distillation as a defense, the same network architecture is used in the distilled DNN as in the original DNN. First, this paper trained an initial network F on data X with a softmax temperature of T. Then, this paper use the probability vector F(X), which includes additional knowledge about classes compared to a class label, predicted by network F to train a distilled network  at temperature T on the same data X. The definition and calculation of F(X) can be found in softmax part and  the detailed training process is described in “how distillation works” part. 
 
-![](https://github.com/jindingars/secML.github.io/blob/master/src/content/images/defense.png )
+![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/defense.png )
 
 ### Results
 This paper evaluated Resilience, Sensitivity and Robustness on 2 datasets: MNIST and CIFAR10
 
-![](https://github.com/jindingars/secML.github.io/blob/master/src/content/images/table.png )
+![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/table.png )
 <div class="caption">
 Resilience: success rate of adversarial crafting.
 </div>
@@ -61,7 +62,7 @@ Resilience: success rate of adversarial crafting.
 This paper also evaluated effect of Temperature on Adversarial Success
 Success of adversarial samples when changing at most 112 features.
 
-![](https://github.com/jindingars/secML.github.io/blob/master/src/content/images/res.png )
+![](https://raw.githubusercontent.com/azvchen/secML.github.io/master/src/content/images/class3/res.png )
 
 But actually Defensive Distillation is not robust to adversarial examples.
 
@@ -126,9 +127,6 @@ Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya
 
 ## References
 
-<<<<<<< HEAD
-[[1]](https://www.cs.cornell.edu/~shmat/shmat_oak17.pdf) A. Madry, A. Makelov, L. Schmidt, D. Tsipras, A. Vladu, "Towards Deep Learning Models Resistant to Adversarial Attacks".  February 2018.
-=======
 [[1]](https://arxiv.org/pdf/1608.04644.pdf) Carlini N, Wagner D. Towards evaluating the robustness of neural networks. InSecurity and Privacy (SP), 2017 IEEE Symposium on 2017 May 22 (pp. 39-57). IEEE.\
 
 [[2]](https://arxiv.org/pdf/1412.6980.pdf) Kingma DP, Ba J. Adam: A method for stochastic optimization. arXiv preprint arXiv:1412.6980. 2014 Dec 22.
@@ -142,4 +140,5 @@ Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya
 [[6]](https://arxiv.org/pdf/1511.07528.pdf) Papernot N, McDaniel P, Jha S, Fredrikson M, Celik ZB, Swami A. The limitations of deep learning in adversarial settings. InSecurity and Privacy (EuroS&P), 2016 IEEE European Symposium on 2016 Mar 21 (pp. 372-387). IEEE.
 
 [[7]](https://arxiv.org/pdf/1511.04508.pdf) Papernot N, McDaniel P, Wu X, Jha S, Swami A. Distillation as a defense to adversarial perturbations against deep neural networks. InSecurity and Privacy (SP), 2016 IEEE Symposium on 2016 May 22 (pp. 582-597). IEEE.
->>>>>>> eaebd115c408f6249e0c7c98eca0ab2bdcacbd1a
+
+[[8]](https://www.cs.cornell.edu/~shmat/shmat_oak17.pdf) A. Madry, A. Makelov, L. Schmidt, D. Tsipras, A. Vladu, "Towards Deep Learning Models Resistant to Adversarial Attacks".  February 2018.
