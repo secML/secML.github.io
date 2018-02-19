@@ -46,7 +46,7 @@ Johnson, Noah, Joseph P. Near, and Dawn Song. "Towards Practical Differential Pr
 
 Differential Privacy can be defined in terms of the application-specific concept of adjacent databases. Suppose, for adjacent databases where each training dataset contains a set of image-label pairs, we say that two of these sets are adjacent if one image-label pair is present in one training set while absent in the other. A randomized mechanism \\( \mathcal{M}: D \rightarrow R\\) with domain D and range R satisfies \\( (\epsilon, \delta) \\)-differential privacy if for any two adjacent inputs \\( d,d'~\epsilon ~D\\) and for any subset of outputs \\( S \subseteq R\\) it holds that
 
-$$ Pr[\mathcal{M}(d) ~\epsilon ~\mathcal{S}] \leq \mathcal(e)^{\epsilon} Pr[\mathcal{M}(d') ~\epsilon ~\mathcal{S}] + \delta $$ 
+$$ Pr[\mathcal{M}(d) ~\epsilon ~\mathcal{S}] \leq \mathcal{e}^{\epsilon} Pr[\mathcal{M}(d') ~\epsilon ~\mathcal{S}] + \delta $$ 
 
 Authors used Dwork et al.[1] privacy definition of allowing the possibility that plain \\( \epsilon \\)-differential privacy is broken with probability \\( \delta \\) in their work. 
 
@@ -62,7 +62,7 @@ Algorithm 1 describes their method for training a model with parameters \\( \the
 
 <p align="center">
 <img src="/images/class4/algorithm_diff_priv_sgd.png" width="600" >
-<br> Figure: Code snippet of Differentially private SGD
+<br> <b>Figure:</b> Code snippet of Differentially private SGD
 </p>
 
 #### Moments Accountant
@@ -71,7 +71,7 @@ Algorithm 1 describes their method for training a model with parameters \\( \the
 Each lot is \\( (\epsilon, \delta)\\)-DP if we choose \\(\sigma \\) in Algorithm 1 as \\( \sigma \\) = \\(\frac{\sqrt{ 2\log(\frac{1.5}{\delta})}} {\epsilon} \\) for Gaussian noise. Thus, each step is \\( \mathcal{O}((q \epsilon),q\delta) \\)-DP over the dataset, where q = \\( \frac{L}{N}\\) is the sampling probability of a lot over the dataset and \\(\epsilon \leq 1 \\).
 The result in the literature which gives the best overall bound is the strong composition theorem [2]. Strong composition theorem does not take into account any particular noise distribution under consideration. Authors invent a stronger accounting method, which is the moments accountant. In Algorithm 1, over T iterations, naive composition gives the bound of \\( \mathcal{O}((qT \epsilon),qT\delta) \\)-DP. Over T iterations, strong composition gives the bound of \\( \mathcal{O}((q \epsilon \sqrt{T \log \frac{1}{\delta}}),qT\delta) \\)-DP. Whereas, over T iterations, moments accountant gives a tighter bound of \\( \mathcal{O}((q \epsilon \sqrt{T}),\delta) \\)-DP.
 
-Theorem: There exist constants \\(c_1\\) and \\(c_2\\) so that given the sampling probability q = L/N and the number of steps T, for any \\( \epsilon < c_1q^{2}T \\), Algorithm 1 is \\( (\epsilon,\delta) \\)-differentially private for any \\(\delta > 0\\) if we choose $$ \sigma \geq c_2 \frac{q \sqrt{T\log(\frac{1}{\delta})}}{\epsilon} $$
+**Theorem:** There exist constants \\(c_1\\) and \\(c_2\\) so that given the sampling probability q = L/N and the number of steps T, for any \\( \epsilon < c_1q^{2}T \\), Algorithm 1 is \\( (\epsilon,\delta) \\)-differentially private for any \\(\delta > 0\\) if we choose $$ \sigma \geq c_2 \frac{q \sqrt{T\log(\frac{1}{\delta})}}{\epsilon} $$
 
 If we use the strong composition theorem, we will then need to choose \\( \sigma = \Omega(q\sqrt{T\log(1/\delta)\log(T/\delta)}/\epsilon)\\)
 For L = 0.01N, \\(\sigma\\) = 4, \\(\delta\\) = \\(10^{-5}\\), and T = 10000, we have \\(\epsilon\\) ≈ 1.26 using the moments accountant, and \\(\epsilon\\) ≈ 9.34 using the strong composition theorem.
@@ -103,7 +103,7 @@ The main purpose of their implementation is to keep track of privacy spending ov
 
 <p align="center">
 <img src="/images/class4/algorithm_dpsgd_optimizer.png" width="600" >
-<br> Figure: Code snippet of DPSGD_Optimizer and DPTrain
+<br> <b>Figure:</b> Code snippet of DPSGD_Optimizer and DPTrain
 </p> 
 
 
@@ -116,6 +116,53 @@ Differentially Private Principal Component Analysis is a very useful method for 
 
 
 ## Experimental Results
+
+
+#### MNIST
+
+<p align="center">
+<img src="/images/class4/result_accuracy_mnist_fig_3.png">
+</p> 
+
+**Figure:** Results on the accuracy for different noise levels on the MNIST dataset. In all the experiments, the network uses 60 dimension PCA projection, 1,000 hidden units, and is trained using lot size 600 and clipping threshold 4. The noise levels \\(\sigma, \sigma_{p}\\) for training the neural network and for PCA projection are set at (8, 16), (4, 7), and (2, 4), respectively, for the three experiments.
+
+In the above Figure, they showed the results for different noise levels. In
+each plot, they showed the evolution of the training and testing
+accuracy as a function of the number of epochs as well as
+the corresponding \\(\delta\\) value, keeping \\(\epsilon\\) fixed. 
+
+
+<p align="center">
+<img src="/images/class4/result_accuracy_mnist_fig_4.png" width="600" >
+</p> 
+
+**Figure:** Accuracy of various \\( (\epsilon,\delta) \\) privacy values
+on the MNIST dataset. Each curve corresponds to a different \\(\delta \\) value.
+
+In the above figure, they showed the accuracy that they can obtain for different value of \\(\delta\\) and \\(\epsilon\\). From the figure, one can observe that keeping the value of \\(\delta\\) fixed and varying the value of \\(\epsilon\\) can have large impact on the accuracy. 
+
+
+<p align="center">
+<img src="/images/class4/result_accuracy_mnist_fig_5.png" >
+</p> 
+
+**Figure:** MNIST accuracy when one parameter varies, and the others are fixed at reference values.
+
+In the above figure, they showed the accuracy of the model on MNIST dataset by by varying a particular parameter while keeping the other parameter constant. For training the neural network parameters and for PCA projection they set the reference values like - 60 PCA dimenstions, 600 lot size, 1000 hidden units, initial learning rate of 0.1, final learning rate 0.052 in 10 epochs, gradient norm bound of 4, and noise equal to 4 and 7 respectively. 
+
+
+#### CIFAR-10
+
+<p align="center">
+<img src="/images/class4/result_accuracy_cifar_fig_6.png" >
+</p> 
+
+**Figure:** Results on accuracy for different noise levels on CIFAR-10. With \\(\delta \\) set to \\(10^{-5}\\) , achieve accuracy 67%, 70%, and 73%, with \\(\epsilon \\) being 2, 4, and 8, respectively. The first graph uses a lot size of 2,000, (2) and (3) use a lot size of 4,000. In all cases, \\(\sigma \\) is set to 6, and clipping is set to 3.
+
+
+In the above figure, authors showed the result of the accuracy and privacy cost of the model on the CIFAR-10 dataset as a function of the number of epochs for different parameter settings. In MNIST dataset, the difference in accuracy between a non-private baseline and a private model is about 1.3% whereas the corresponding drop in accuracy in CIFAR-10 dataset is about 7%. 
+
+
 
 --- Team Panda
 Christopher Geier, Faysal Hossain Shezan, Helen Simecek, Lawrence Hook, Nishant Jha
