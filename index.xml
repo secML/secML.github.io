@@ -6,8 +6,24 @@
     <description>Recent content on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 09 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 20 Feb 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://secml.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Topic Suggestions</title>
+      <link>https://secml.github.io/topic-suggestions/</link>
+      <pubDate>Tue, 20 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/topic-suggestions/</guid>
+      <description>&lt;p&gt;To help with topics for future classes, I&amp;rsquo;ve created a
+&lt;a href=&#34;https://secml.github.io/topics&#34;&gt;Topics&lt;/a&gt; page with some possible ideas and links to papers.
+This is not meant to be exhaustive by any stretch; any topics loosely
+connected to machine learning security and privacy is within scope,
+and there are lots of great papers on these topics not included on
+this page.  But, hopefully it will be a useful starting point for
+teams looking for ideas for topics for future classes.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Class 3: Adversarial Machine Learning</title>
@@ -1044,6 +1060,67 @@ reimbursement. This is easiest if you just borrow my credit card and
 then all you need to do is send me an image of the receipt (or hand
 me a physical receipt).&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://secml.github.io/topics/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/topics/</guid>
+      <description>
+
+&lt;p&gt;This page collects some topic ideas and papers for future classes.
+These are just suggestions, not meant to be an exhaustive list or limit the scope of future topics or papers.&lt;/p&gt;
+
+&lt;h3 id=&#34;certified-defenses-formal-methods&#34;&gt;Certified Defenses, Formal Methods&lt;/h3&gt;
+
+&lt;p&gt;Aditi Raghunathan, Jacob Steinhardt, Percy Liang. &lt;em&gt;Certified Defenses against Adversarial Examples&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/abs/1801.09344&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Guy Katz, Clark Barrett, David Dill, Kyle Julian and Mykel Kochenderfer. &lt;em&gt;Reluplex: An Efficient SMT Solver for Verifying Deep Neural Networks&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/pdf/1702.01135.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Nicholas Carlini, Guy Katz, Clark Barrett, and David L. Dill. &lt;em&gt;Ground-Truth Adversarial Examples&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/pdf/1709.10207.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;J. Zico Kolter, Eric Wong. &lt;em&gt;Provable defenses against adversarial examples via the convex outer adversarial polytope&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/abs/1711.00851&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;testing&#34;&gt;Testing&lt;/h3&gt;
+
+&lt;p&gt;Kexin Pei, Yinzhi Cao, Junfeng Yang, Suman Jana. &lt;em&gt;DeepXplore: Automated Whitebox Testing of Deep Learning Systems&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/abs/1705.06640&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;malware-detection-and-evasion&#34;&gt;Malware Detection and Evasion&lt;/h3&gt;
+
+&lt;p&gt;Robin Sommer and Vern Paxson. &lt;em&gt;Outside the Closed World: On Using Machine Learning For Network Intrusion Detection&lt;/em&gt;. &lt;a href=&#34;https://oaklandsok.github.io/papers/sommer2010.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Igino Corona and Giorgio Giacinto and Fabio Roli. &lt;em&gt;Adversarial Attacks against Intrusion Detection
+Systems: Taxonomy, Solutions and Open Issues&lt;/em&gt;. &lt;a href=&#34;http://pralab.diee.unica.it/sites/default/files/Corona-INS2013.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Kyle Soska and Nicolas Christin. &lt;em&gt;Automatically Detecting Vulnerable Websites Before They Turn Malicious&lt;/em&gt;. &lt;a href=&#34;https://www.andrew.cmu.edu/user/nicolasc/publications/SC-USENIXSec14.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Roberto Jordaney, Kumar Sharad, Santanu K. Dash, Zhi Wang, Davide Papini, Ilia Nouretdinov, and Lorenzo Cavallaro. &lt;em&gt;Transcend: Detecting Concept Drift in Malware Classification Models&lt;/em&gt;. &lt;a href=&#34;https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/jordaney&#34;&gt;Paper Site&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hung Dang, Yue Huang, and Ee-Chien Chang. &lt;em&gt;Evading Classifiers by Morphing in the Dark&lt;/em&gt;. &lt;a href=&#34;https://acmccs.github.io/papers/p119-dangA.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;fairness&#34;&gt;Fairness&lt;/h3&gt;
+
+&lt;p&gt;Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan. &lt;em&gt;Semantics derived automatically from language corpora contain human-like biases&lt;/em&gt;. &lt;a href=&#34;http://science.sciencemag.org/content/356/6334/183.full&#34;&gt;HTML&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Jieyu Zhao, Tianlu Wang, Mark Yatskar, Vicente Ordonez, Kai-Wei Chang. &lt;em&gt;Men Also Like Shopping:
+Reducing Gender Bias Amplification using Corpus-level Constraints&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/pdf/1707.09457.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://fatconference.org/2018/program.html&#34;&gt;Conference on Fairness, Accountability, and
+Transparency&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;poisoning&#34;&gt;Poisoning&lt;/h3&gt;
+
+&lt;p&gt;Battista Biggio, Igino Corona, Giorgio Fumera, Giorgio Giacinto, and
+Fabio Roli. &lt;em&gt;Bagging Classifiers for Fighting Poisoning Attacks in
+Adversarial Classification
+Tasks&lt;/em&gt;. &lt;a href=&#34;http://192.167.131.140/sites/default/files/biggio11-mcs.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Scott Alfeld, Xiaojin Zhu, and Paul Barford.  &lt;em&gt;Data Poisoning Attacks
+against Autoregressive
+Models&lt;/em&gt;. &lt;a href=&#34;http://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12049/11758&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

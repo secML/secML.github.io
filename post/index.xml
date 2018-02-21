@@ -6,8 +6,24 @@
     <description>Recent content in Post-rsses on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 09 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 20 Feb 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://secml.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Topic Suggestions</title>
+      <link>https://secml.github.io/topic-suggestions/</link>
+      <pubDate>Tue, 20 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/topic-suggestions/</guid>
+      <description>&lt;p&gt;To help with topics for future classes, I&amp;rsquo;ve created a
+&lt;a href=&#34;https://secml.github.io/topics&#34;&gt;Topics&lt;/a&gt; page with some possible ideas and links to papers.
+This is not meant to be exhaustive by any stretch; any topics loosely
+connected to machine learning security and privacy is within scope,
+and there are lots of great papers on these topics not included on
+this page.  But, hopefully it will be a useful starting point for
+teams looking for ideas for topics for future classes.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Class 3: Adversarial Machine Learning</title>
