@@ -1,5 +1,5 @@
 +++
-date = "16 Feb 2018"
+date = "22 Feb 2018"
 draft = true
 title = "Class 4: Differential Privacy In Action"
 author = "Team Panda"
@@ -8,56 +8,55 @@ slug = "class4"
 
 Two weeks ago we took a look at [privacy in machine learning](https://secml.github.io/class2/) and introduced differential privacy as one possible approach to perform statistical analysis on data while maintaining user privacy.  Today we explore three applications of differential privacy: Google's RAPPOR for obtaining user data from client-side software, the FLEX system to enforce differential privacy for SQL queries, and an algorithm for training deep neural networks that can provide differential privacy guarantees. 
 
-## Google's RAPPOR - Nishant
+## Google's RAPPOR 
 
-Erlingsson, Úlfar, Vasyl Pihur, and Aleksandra Korolova. "Rappor: Randomized aggregatable privacy-preserving ordinal response." [[PDF](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/42852.pdf)] 
+> Erlingsson, Úlfar, Vasyl Pihur, and Aleksandra Korolova. _Rappor: Randomized aggregatable privacy-preserving ordinal response_. ACM CCS 2014. [[PDF](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/42852.pdf)] 
 
-
-The goal of Randomized Aggregatable Privacy-Preserving Ordinal Response or RAPPOR is to ensure anonymity for those participating in crowd-sourced statistics with a strong privacy guarantee. For example, if student who has cheated is participating in a study on cheating in school it is unlikely they would respond truthfully without strong plausible deniability.
+The goal of Randomized Aggregatable Privacy-Preserving Ordinal Response (RAPPOR) is to ensure anonymity for those participating in crowd-sourced statistics with a strong privacy guarantee. For example, if student who has cheated is participating in a study on cheating in school it is unlikely they would respond truthfully without strong plausible deniability.
 
 
 A simple algorithm that constructs such plausible deniability is shown below:
+ 
+    STEP ONE
 
-STEP ONE
-flip coin
-if (coin==HEADS):
-	answer truthfully
-else:
-	go to step 2
+    flip coin
+    if (coin==HEADS):
+        answer truthfully
+    else:
+        go to step 2
 
-STEP TWO
-flip coin
-if (coin==HEADS):
-	answer yes
-else:
-	answer truthfully
+    STEP TWO
 
-Utilizing this algorithm will result in a truthful response rate of 75%. Therefore if we let Y = [Number of raised hands] / [Size of class] then [Number of true cheaters] = 2(Y − 0.25).
+    flip coin
+    if (coin==HEADS):
+        answer yes
+    else:
+        answer truthfully
 
-This means we have differential privacy with the level ε = ln(0.75/(1 − 0.75)) = ln(3), but only for the first time responses are collected. This guarantee degrades if the same survey is administered repeatedly. RAPPOR is a way to ensure strong privacy protection even for a single respondent who is surveyed often.
+This algorithm will result in a truthful response rate of 75%. Therefore if we let \\(Y = [\text{Number of raised hands}] / [\text{Size of class}]\\) then \\([\text{Number of true cheaters}] \approx 2(Y − 0.25)\\).
 
-On a high level, RAPPOR achieves this by having each client machine report a “noisy” representation of the true value v by submitting a k-sized bit array to a server. This representation of v is selected in order to reveal a specific amount of information about v in order to limit the information the server learns from the k-sized bit array. Importantly the server does not learn the true value v with confidence even when an infinite number of reports are submitted by the client. This is achieved through the the following three steps:
+This means we have differential privacy with the level \\(\epsilon = \ln(0.75/(1 − 0.75)) = \ln(3)\\), but only for the first time responses are collected. This guarantee degrades if the same survey is administered repeatedly (where the same respondants generate new randomness for each query). RAPPOR is a way to ensure strong privacy protection even for a single respondent who is surveyed often.
 
-Signal
-Hash client’s value v onto the Bloom filter B of size k using h hash functions
-	
-	A Bloom filter is a probabilistic data structure optimized for determining set membership.
+On a high level, RAPPOR achieves this by having each client machine report a “noisy” representation of the true value \\(v\\) by submitting a \\(k\\)-sized bit array to a server. This representation of \\(v\\) is selected in order to reveal a specific amount of information about \\(v\\) in order to limit the information the server learns from the \\(k\\)-sized bit array. Importantly the server does not learn the true value \\(v\\) with confidence even when an infinite number of reports are submitted by the client. 
+
+This is achieved through the the following three steps:
+
+1. _Signal_ - hash the client’s value \\(v\\) onto the Bloom filter \\(B\\) of size \\(k\\) using \\(h\\) hash functions. 
+A Bloom filter is a probabilistic data structure optimized for determining set membership.
 Permanent Randomized Response
-For each value v from a client, and for each bit i in the bloom filter B, create a binary reporting value Bi’ such that
+For each value \\(v\\) from a client, and for each bit \\(i\\) in the bloom filter \\(B\\), create a binary reporting value \\(B_i’\\) such that TODO:missing equation here??? where \\(f\\) is a user-defined tuning variable, \\(f \in (0,1)\\). This \\(B’\\) is memorized and reused as the basis for all future reports on value \\(v\\).
 
-where f is a user-defined tuning variable, f ∈ (0,1)
+2. _Instantaneous Randomized Response_. Next, allocate a bit array \\(S\\) of size \\(k\\) and initialize to 0. Set each bit \\(i\\) in \\(S\\) with the following probabilities: TODO:???
 
-This B’ is memorized and reused as the basis for all future reports on value v.
-Instantaneous Randomized Response
-Next, allocate a bit array S of size k and initialize to 0. Set each bit i in S with the following probabilities
-Report
-Send the bit array S to the server.
+3. _Report_. Send the bit array \\(S\\) to the server.
 
 How private are RAPPOR’s aggregated results in reality? If you assume infinite sampling, there is a privacy guarantee of:
 
+TODO:???
+
 ## Towards Practical Differential Privacy for SQL Queries 
 
-Johnson, Noah, Joseph P. Near, and Dawn Song. "Towards Practical Differential Privacy for SQL Queries." [[PDF](https://arxiv.org/pdf/1706.09479.pdf)] 
+> Johnson, Noah, Joseph P. Near, and Dawn Song. _Towards Practical Differential Privacy for SQL Queries_. Proceedings of the VLDB Endowment, January 2018. [[PDF](https://arxiv.org/pdf/1706.09479.pdf)]  (Images below are taken from this paper.)
 
 #### Motivation
 The recent increase in data collection in large organizations has exposed personal user data to analysis that have an impact on user privacy. This paper investigates the methods that can be used to increase differential privacy, protecting individual privacy. By taking a practical approach to differential privacy, the authors are able to provide an implementation of differential privacy that is compatible with any existing database.
@@ -109,7 +108,9 @@ Since non-equijoins need information about both datasets, the operation is not s
 <br> <b>Figure:</b> FLEX design structure
 </p>
 
-FLEX is an implementation of elastic sensitivity that is highly compatible with existing databases. The FLEX database structure is shown in the figure above. By targeting support for specific SQL queries, their system can enforce differential privacy on most real world queries to databases. For a given SQL query, FLEX calculates its elastic sensitivity given an analysis of the query. FLEX then applies smooth sensitivity to the elastic sensitivity and adds noise drawn from the Laplace distribution to the original query results. 
+FLEX is an implementation of elastic sensitivity that is highly compatible with existing databases. The FLEX database structure is shown in the figure above. TODO: this is the wrong figure
+
+By targeting support for specific SQL queries, their system can enforce differential privacy on most real world queries to databases. For a given SQL query, FLEX calculates its elastic sensitivity given an analysis of the query. FLEX then applies smooth sensitivity to the elastic sensitivity and adds noise drawn from the Laplace distribution to the original query results. 
 
 <p align="center">
 <img src="/images/class4/flexPerf.PNG" width="600" >
@@ -134,9 +135,9 @@ This paper moves towards more practical approaches of differential privacy in SQ
 
 ## Deep learning with differential privacy
 
-> Abadi, Martin, et al. "Deep learning with differential privacy." [[PDF](https://arxiv.org/pdf/1607.00133.pdf)]
+> Martin Abadi, Andy Chu, Ian Goodfellow, H Brendan McMahan, Ilya Mironov, Kinal Talwar, and Li Zhang. _Deep learning with differential privacy_. ACM CCS 2016 [[PDF](https://arxiv.org/pdf/1607.00133.pdf)] (All figures below are taken from this paper)
 
-#### What is Differential Privacy?
+#### Differential Privacy Recap
 
 Differential Privacy can be defined in terms of the application-specific concept of adjacent databases. Suppose, for adjacent databases where each training dataset contains a set of image-label pairs, we say that two of these sets are adjacent if one image-label pair is present in one training set while absent in the other. A randomized mechanism \\( \mathcal{M}: D \rightarrow R\\) with domain D and range R satisfies \\( (\epsilon, \delta) \\)-differential privacy if for any two adjacent inputs \\( d,d'~\epsilon ~D\\) and for any subset of outputs \\( S \subseteq R\\) it holds that
 
@@ -147,12 +148,11 @@ Authors used Dwork et al.[1] privacy definition of allowing the possibility that
 
 ## Approach
 
-Their proposed technique consists of three components. They are Differentially private SGD (Stochastic Gradient Descent) Algorithm, Moments Accountant and Hyperparameter Tuning.
+Their proposed technique consists of three components: differentially private SGD (Stochastic Gradient Descent) Algorithm, Moments Accountant and Hyperparameter Tuning.
 
 #### Differentially private SGD Algorithm
 
-
-Algorithm 1 describes their method for training a model with parameters \\( \theta \\) by minimizing the loss function \\( L(\theta) \\). At each step of computing of SGD, they calculated the gradient \\( \nabla \theta L(\theta, x_i)\\) for a random subset then clip the (\\ l_2 \\) norm of each gradient. After that they computed the average and for ensuring the privacy they added noise in those. They took the opposite direction of this average noisy gradient. Finally, they ouputted the model with the privacy loss. 
+Algorithm 1 describes their method for training a model with parameters \\( \theta \\) by minimizing the loss function \\( L(\theta) \\). At each step of computing of SGD, they calculated the gradient \\( \nabla \theta L(\theta, x_i)\\) for a random subset then clip the \\(L_2\\) norm of each gradient. After that they computed the average and for ensuring the privacy they added noise in those. They took the opposite direction of this average noisy gradient. Finally, they ouput the model with the privacy loss. 
 
 <p align="center">
 <img src="/images/class4/algorithm_diff_priv_sgd.png" width="600" >
@@ -163,14 +163,12 @@ Algorithm 1 describes their method for training a model with parameters \\( \the
 
 
 Each lot is \\( (\epsilon, \delta)\\)-DP if we choose \\(\sigma \\) in Algorithm 1 as \\( \sigma \\) = \\(\frac{\sqrt{ 2\log(\frac{1.5}{\delta})}} {\epsilon} \\) for Gaussian noise. Thus, each step is \\( \mathcal{O}((q \epsilon),q\delta) \\)-DP over the dataset, where q = \\( \frac{L}{N}\\) is the sampling probability of a lot over the dataset and \\(\epsilon \leq 1 \\).
-The result in the literature which gives the best overall bound is the strong composition theorem [2]. Strong composition theorem does not take into account any particular noise distribution under consideration. Authors invent a stronger accounting method, which is the moments accountant. In Algorithm 1, over T iterations, naive composition gives the bound of \\( \mathcal{O}((qT \epsilon),qT\delta) \\)-DP. Over T iterations, strong composition gives the bound of \\( \mathcal{O}((q \epsilon \sqrt{T \log \frac{1}{\delta}}),qT\delta) \\)-DP. Whereas, over T iterations, moments accountant gives a tighter bound of \\( \mathcal{O}((q \epsilon \sqrt{T}),\delta) \\)-DP.
+The result in the literature which gives the best overall bound is the strong composition theorem [2]. Strong composition theorem does not take into account any particular noise distribution under consideration. Authors invent a stronger accounting method, which is the moments accountant. In Algorithm 1, over \\(T\\) iterations, naive composition gives the bound of \\( \mathcal{O}((qT \epsilon),qT\delta) \\)-DP. Over \\(T\\) iterations, strong composition gives the bound of \\( \mathcal{O}((q \epsilon \sqrt{T \log \frac{1}{\delta}}),qT\delta) \\)-DP. Whereas, over \\(T\\) iterations, moments accountant gives a tighter bound of \\( \mathcal{O}((q \epsilon \sqrt{T}),\delta) \\)-DP.
 
 **Theorem:** There exist constants \\(c_1\\) and \\(c_2\\) so that given the sampling probability q = L/N and the number of steps T, for any \\( \epsilon < c_1q^{2}T \\), Algorithm 1 is \\( (\epsilon,\delta) \\)-differentially private for any \\(\delta > 0\\) if we choose $$ \sigma \geq c_2 \frac{q \sqrt{T\log(\frac{1}{\delta})}}{\epsilon} $$
 
 If we use the strong composition theorem, we will then need to choose \\( \sigma = \Omega(q\sqrt{T\log(1/\delta)\log(T/\delta)}/\epsilon)\\)
-For L = 0.01N, \\(\sigma\\) = 4, \\(\delta\\) = \\(10^{-5}\\), and T = 10000, we have \\(\epsilon\\) ≈ 1.26 using the moments accountant, and \\(\epsilon\\) ≈ 9.34 using the strong composition theorem.
-
-
+For \\(L = 0.01N\\), \\(\sigma\\) = 4, \\(\delta\\) = \\(10^{-5}\\), and \\(T = 10000\\), we have \\(\epsilon\\) ≈ 1.26 using the moments accountant, and \\(\epsilon\\) ≈ 9.34 using the strong composition theorem.
 
 #### Hyperparameter Tuning
 
