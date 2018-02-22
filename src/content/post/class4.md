@@ -6,19 +6,54 @@ author = "Team Panda"
 slug = "class4"
 +++
 
+Two weeks ago we took a look at [privacy in machine learning](https://secml.github.io/class2/) and introduced differential privacy as one possible approach to perform statistical analysis on data while maintaining user privacy.  Today we explore three applications of differential privacy: Google's RAPPOR for obtaining user data from client-side software, the FLEX system to enforce differential privacy for SQL queries, and an algorithm for training deep neural networks that can provide differential privacy guarantees. 
 
-(Short Summary of What topic's are covered)
-
-## Google's RAPPOR
+## Google's RAPPOR - Nishant
 
 Erlingsson, Úlfar, Vasyl Pihur, and Aleksandra Korolova. "Rappor: Randomized aggregatable privacy-preserving ordinal response." [[PDF](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/42852.pdf)] 
 
-- Rappors Goal
-- Randomized Response in RAPPOR
-- Bloom Filter
-- Result Analysis
-- Attack Models
-- Limitations
+
+The goal of Randomized Aggregatable Privacy-Preserving Ordinal Response or RAPPOR is to ensure anonymity for those participating in crowd-sourced statistics with a strong privacy guarantee. For example, if student who has cheated is participating in a study on cheating in school it is unlikely they would respond truthfully without strong plausible deniability.
+
+
+A simple algorithm that constructs such plausible deniability is shown below:
+
+STEP ONE
+flip coin
+if (coin==HEADS):
+	answer truthfully
+else:
+	go to step 2
+
+STEP TWO
+flip coin
+if (coin==HEADS):
+	answer yes
+else:
+	answer truthfully
+
+Utilizing this algorithm will result in a truthful response rate of 75%. Therefore if we let Y = [Number of raised hands] / [Size of class] then [Number of true cheaters] = 2(Y − 0.25).
+
+This means we have differential privacy with the level ε = ln(0.75/(1 − 0.75)) = ln(3), but only for the first time responses are collected. This guarantee degrades if the same survey is administered repeatedly. RAPPOR is a way to ensure strong privacy protection even for a single respondent who is surveyed often.
+
+On a high level, RAPPOR achieves this by having each client machine report a “noisy” representation of the true value v by submitting a k-sized bit array to a server. This representation of v is selected in order to reveal a specific amount of information about v in order to limit the information the server learns from the k-sized bit array. Importantly the server does not learn the true value v with confidence even when an infinite number of reports are submitted by the client. This is achieved through the the following three steps:
+
+Signal
+Hash client’s value v onto the Bloom filter B of size k using h hash functions
+	
+	A Bloom filter is a probabilistic data structure optimized for determining set membership.
+Permanent Randomized Response
+For each value v from a client, and for each bit i in the bloom filter B, create a binary reporting value Bi’ such that
+
+where f is a user-defined tuning variable, f ∈ (0,1)
+
+This B’ is memorized and reused as the basis for all future reports on value v.
+Instantaneous Randomized Response
+Next, allocate a bit array S of size k and initialize to 0. Set each bit i in S with the following probabilities
+Report
+Send the bit array S to the server.
+
+How private are RAPPOR’s aggregated results in reality? If you assume infinite sampling, there is a privacy guarantee of:
 
 ## Towards Practical Differential Privacy for SQL Queries 
 
@@ -36,12 +71,14 @@ The recent increase in data collection in large organizations has exposed person
 #### Elastic sensitivity
 Elastic sensitivity is the paper’s main contribution and proposed approach to enforcing differential privacy on a system that is locally sensitivity-based. Local sensitivity is the “maximum of the difference between the query run on a true database and any neighbor of it.” The practical nature of their design exists because instead of being a property of all possible databases, local sensitivity is a property of one true database.
 <p align="center">
-<img src="/images/class4/ls.png" width="600" >
+<img src="/images/class4/ls.png" width="300" >
 <br> <b>Figure:</b> Local Sensitivity
 </p>
 The paper describes and proves their theorem shown below using aspects of database local sensitivity. 
+
+
 <p align="center">
-<img src="/images/class4/proof.PNG" width="600" >
+<img src="/images/class4/proof.PNG" width="500" >
 <br> <b>Figure:</b> Elastic Sensitivity
 </p>
 
@@ -59,7 +96,7 @@ As seen in the chart above, other approaches address parts of the requirements, 
 
 
 <p align="center">
-<img src="/images/class4/sqlcode.PNG" width="600" >
+<img src="/images/class4/sqlcode.PNG" width="500" >
 <br> <b>Figure:</b> SQL non-equijoin statement
 </p>
 
@@ -68,13 +105,15 @@ Since non-equijoins need information about both datasets, the operation is not s
 #### FLEX
 
 <p align="center">
-<img src="/images/class4/flexPerf.PNG" width="600" >
+<img src="/images/class4/flexPerf.PNG" width="500" >
 <br> <b>Figure:</b> FLEX design structure
 </p>
+
 FLEX is an implementation of elastic sensitivity that is highly compatible with existing databases. The FLEX database structure is shown in the figure above. By targeting support for specific SQL queries, their system can enforce differential privacy on most real world queries to databases. For a given SQL query, FLEX calculates its elastic sensitivity given an analysis of the query. FLEX then applies smooth sensitivity to the elastic sensitivity and adds noise drawn from the Laplace distribution to the original query results. 
 
 <p align="center">
 <img src="/images/class4/flexPerf.PNG" width="600" >
+<br> <b>Figure:</b> FLEX Performance
 </p>
 
 - Elastic sensitivity for 76% of queries
@@ -86,7 +125,7 @@ FLEX is an implementation of elastic sensitivity that is highly compatible with 
 
 
 <p align="center">
-<img src="/images/class4/wPINQComp.PNG" width="600" >
+<img src="/images/class4/wPINQComp.PNG" width="1000" >
 <br> <b>Figure:</b> wPINQ and Flex performance comparison
 </p>
 
