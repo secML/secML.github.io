@@ -1,39 +1,38 @@
 ## Teams
 
 <table>
-<tr bgcolor="#CCC"><td align="center"><b>Team Bus</b></td><td align="center"><b>Team Gibbon</b></td><td align="center"><b>Team Panda</b></td></tr>
+<tr bgcolor="#CCC"><td align="center"><b>Team Bus</b></td><td align="center"><b>Team Gibbon</b></td><td align="center"><b>Team Panda</b></td><td align="center"><b>Team Nematode</b></td></tr>
 <tr>
 <td>
 Anant Kharkar<br>
-Ashley Gao  <br>
 Atallah Hezbor  <br>
 Bhuvanesh Murali<br>
-Jeffrey Tan<br>
-Joshua Holtzman  <br>
-Mainuddin Ahmad Jonas<br>  
+Mainuddin Jonas<br>  
 Weilin Xu<br>
 </td>
 <td>
 Aditi Narvekar<br>  
 Austin Chen  <br>
-Beth Naylor<br>
 Ethan Lowman  <br>
-Guy "Jack" Verrier<br>  
 Jialei Fu  <br>
 Jin Ding  <br>
 Suya
 </td>
 <td>
-Bargav Jayaraman<br>  
 Christopher Geier  <br>
 Faysal Hossain Shezan  <br>
 Helen Simecek<br>
 Lawrence Hook<br>
-Nan Yang<br>
 Nathaniel Grevatt  <br>
 Nishant Jha  <br>
-Tanmoy Sen  
 </td>
+<td>
+Bargav Jayaraman<br>  
+Guy "Jack" Verrier<br>  
+Joshua Holtzman  <br>
+Max Naylor<br>
+Nan Yang<br>
+Tanmoy Sen  
 </tr>
 </table>
 

@@ -148,6 +148,28 @@ Evans&lt;/a&gt;.&lt;/p&gt;
     
     <item>
       <title></title>
+      <link>https://secml.github.io/resources/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/resources/</guid>
+      <description>
+
+&lt;h1 id=&#34;resources-for-adversarial-machine-learning-research&#34;&gt;Resources for Adversarial Machine Learning Research&lt;/h1&gt;
+
+&lt;h2 id=&#34;adversarial-machine-learning-toolkits&#34;&gt;Adversarial Machine Learning Toolkits&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;evademl.org/zoo&#34;&gt;EvadeML-Zoo&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/tensorflow/cleverhans&#34;&gt;cleverhans&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;machine-learning-systems&#34;&gt;Machine Learning Systems&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/facebookresearch/Detectron&#34;&gt;Detectron&lt;/a&gt; - Facebook&amp;rsquo;s research platform for object detection research (including RetinaNet)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>https://secml.github.io/schedule/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -155,18 +177,26 @@ Evans&lt;/a&gt;.&lt;/p&gt;
       <description>&lt;p&gt;See &lt;a href=&#34;https://secml.github.io/teams&#34;&gt;Teams&lt;/a&gt; for the class teams and responsibilities.&lt;/p&gt;
 
 &lt;table&gt;
-&lt;tr bgcolor=&#34;#CCC&#34;&gt;&lt;td style=&#34;text-align:center&#34; width=&#34;22%&#34;&gt;&lt;b&gt;Date&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;&gt;&lt;b&gt;Topic&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; width=&#34;14%&#34;&gt;&lt;b&gt;Bus&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; width=&#34;14%&#34;&gt;&lt;b&gt;Gibbon&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; width=12%&gt;&lt;b&gt;Panda&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr bgcolor=&#34;#CCC&#34;&gt;&lt;td style=&#34;text-align:center&#34; width=&#34;20%&#34;&gt;&lt;b&gt;Date&lt;/b&gt;&lt;/td&gt;&lt;td width=&#34;30%&#34; style=&#34;text-align:center&#34;&gt;&lt;b&gt;Topic&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; width=&#34;10%&#34;&gt;&lt;b&gt;Bus&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; width=&#34;10%&#34;&gt;&lt;b&gt;Gibbon&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; width=10%&gt;&lt;b&gt;Panda&lt;/b&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; width=12%&gt;&lt;b&gt;&lt;font size=&#34;-1&#34;&gt;Nematode&lt;/font&gt;&lt;/b&gt;&lt;/tr&gt;
 
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class1&#34;&gt;Class 1&lt;/a&gt; (26 Jan)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td&gt;Food&lt;/td&gt;&lt;td bgcolor=&#34;#44AAEE&#34;&gt;Blog&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class2&#34;&gt;Class 2&lt;/a&gt; (2 Feb)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td bgcolor=&#34;#44AAEE&#34;&gt;Blog&lt;/td&gt;&lt;td bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td&gt;Food&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class3&#34;&gt;Class 3&lt;/a&gt; (9 Feb)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;Food&lt;/td&gt;&lt;td bgcolor=&#34;#44AAEE&#34;&gt;Blog&lt;/td&gt;&lt;td bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class4&#34;&gt;Class 4&lt;/a&gt; (16 Feb)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td&gt;Food&lt;/td&gt;&lt;td bgcolor=&#34;#44AAEE&#34;&gt;Blog&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;A href=&#34;https://secml.github.io/class5&#34;&gt;Class 5&lt;/a&gt; (23 Feb)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td bgcolor=&#34;#44AAEE&#34;&gt;Blog&lt;/td&gt;&lt;td bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td&gt;Food&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class6&#34;&gt;Class 6&lt;/a&gt; (2 Mar)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;Food&lt;/td&gt;&lt;td bgcolor=&#34;#44AAEE&#34;&gt;Blog&lt;/td&gt;&lt;td bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td colapsn=5 bgcolor=&#34;#66EEAA&#34; style=&#34;text-align:center&#34; colspan=5&gt;Spring Break&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class1&#34;&gt;Class 1&lt;/a&gt; (26 Jan)&lt;/td&gt;&lt;td&gt;Intro to Adversarial ML&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class2&#34;&gt;Class 2&lt;/a&gt; (2 Feb)&lt;/td&gt;&lt;td&gt;Privacy and ML&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class3&#34;&gt;Class 3&lt;/a&gt; (9 Feb)&lt;/td&gt;&lt;td&gt;Adversarial Examples and Defenses&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class4&#34;&gt;Class 4&lt;/a&gt; (16 Feb)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class5&#34;&gt;Class 5&lt;/a&gt; (23 Feb)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class6&#34;&gt;Class 6&lt;/a&gt; (2 Mar)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan=6 bgcolor=&#34;#66EEAA&#34; style=&#34;text-align:center&#34;&gt;Spring Break&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class7&#34;&gt;Class 7&lt;/a&gt; (16 Mar)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class8&#34;&gt;Class 8&lt;/a&gt; (23 Mar)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class9&#34;&gt;Class 9&lt;/a&gt; (30 Mar)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class10&#34;&gt;Class 10&lt;/a&gt; (6 Apr)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class11&#34;&gt;Class 11&lt;/a&gt; (13 Apr)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class12&#34;&gt;Class 12&lt;/a&gt; (20 Apr)&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34; &gt;Food&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCC&#34;&gt;&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#DEF&#34;&gt;Blog&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  bgcolor=&#34;#CCDD55&#34;&gt;Lead&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class13&#34;&gt;Class 13&lt;/a&gt; (26 Apr)&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  colspan=5 bgcolor=&#34;#FF3&#34; style=&#34;text-align:center&#34;&gt;Mini-Conference&lt;/td&gt;&lt;/tr&gt;
+
 &lt;/table&gt;
-
-&lt;p&gt;(Schedule after Spring Break to be determined later, but continue similarly.)&lt;/p&gt;
 </description>
     </item>
     
@@ -292,39 +322,38 @@ counts for a particular area requirement.&lt;/p&gt;
 &lt;h2 id=&#34;teams&#34;&gt;Teams&lt;/h2&gt;
 
 &lt;table&gt;
-&lt;tr bgcolor=&#34;#CCC&#34;&gt;&lt;td align=&#34;center&#34;&gt;&lt;b&gt;Team Bus&lt;/b&gt;&lt;/td&gt;&lt;td align=&#34;center&#34;&gt;&lt;b&gt;Team Gibbon&lt;/b&gt;&lt;/td&gt;&lt;td align=&#34;center&#34;&gt;&lt;b&gt;Team Panda&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr bgcolor=&#34;#CCC&#34;&gt;&lt;td align=&#34;center&#34;&gt;&lt;b&gt;Team Bus&lt;/b&gt;&lt;/td&gt;&lt;td align=&#34;center&#34;&gt;&lt;b&gt;Team Gibbon&lt;/b&gt;&lt;/td&gt;&lt;td align=&#34;center&#34;&gt;&lt;b&gt;Team Panda&lt;/b&gt;&lt;/td&gt;&lt;td align=&#34;center&#34;&gt;&lt;b&gt;Team Nematode&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;
 Anant Kharkar&lt;br&gt;
-Ashley Gao  &lt;br&gt;
 Atallah Hezbor  &lt;br&gt;
 Bhuvanesh Murali&lt;br&gt;
-Jeffrey Tan&lt;br&gt;
-Joshua Holtzman  &lt;br&gt;
-Mainuddin Ahmad Jonas&lt;br&gt;  
+Mainuddin Jonas&lt;br&gt;  
 Weilin Xu&lt;br&gt;
 &lt;/td&gt;
 &lt;td&gt;
 Aditi Narvekar&lt;br&gt;  
 Austin Chen  &lt;br&gt;
-Beth Naylor&lt;br&gt;
 Ethan Lowman  &lt;br&gt;
-Guy &#34;Jack&#34; Verrier&lt;br&gt;  
 Jialei Fu  &lt;br&gt;
 Jin Ding  &lt;br&gt;
 Suya
 &lt;/td&gt;
 &lt;td&gt;
-Bargav Jayaraman&lt;br&gt;  
 Christopher Geier  &lt;br&gt;
 Faysal Hossain Shezan  &lt;br&gt;
 Helen Simecek&lt;br&gt;
 Lawrence Hook&lt;br&gt;
-Nan Yang&lt;br&gt;
 Nathaniel Grevatt  &lt;br&gt;
 Nishant Jha  &lt;br&gt;
-Tanmoy Sen  
 &lt;/td&gt;
+&lt;td&gt;
+Bargav Jayaraman&lt;br&gt;  
+Guy &#34;Jack&#34; Verrier&lt;br&gt;  
+Joshua Holtzman  &lt;br&gt;
+Max Naylor&lt;br&gt;
+Nan Yang&lt;br&gt;
+Tanmoy Sen  
 &lt;/tr&gt;
 &lt;/table&gt;
 
@@ -451,6 +480,19 @@ language that can be used to easily generate both HTML and other
 output document formats.  You can probably figure out everything you
 need by looking at previous posts, but for a summary of Markdown,
 see &lt;a href=&#34;https://daringfireball.net/projects/markdown/syntax&#34;&gt;Markdown: Syntax&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;You can incorporate latex math into your markdown. Use &lt;code&gt;\\(&lt;/code&gt; inline &lt;code&gt;\\)&lt;/code&gt; for inline math, e.g., &lt;code&gt;\\( J_{min}\\}&lt;/code&gt; and &lt;code&gt;$$ ... $$&lt;/code&gt; for display math.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Your post should include credits for any external material you use,
+especially for any images you incorporate that you didn&amp;rsquo;t produce.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Please include full references to the papers, and links to the most
+definitive source available (usually this is to arxiv or a
+conference site, but could be the author&amp;rsquo;s page). You should include
+additional links to relevant and useful reference or code
+repositories. Its good to have an overview section at the beginning
+of the post with links to all the main papers covered, and then to
+have links in specific sections to what is being covered.&lt;/p&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;p&gt;To test the post, run &lt;code&gt;make develop&lt;/code&gt; (in the &lt;code&gt;web/&lt;/code&gt; subdirectory of
 your repository).  This starts the Hugo development server, usually

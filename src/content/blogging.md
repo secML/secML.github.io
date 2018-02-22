@@ -46,6 +46,19 @@ and we can discuss alternative options.
   need by looking at previous posts, but for a summary of Markdown,
   see [Markdown: Syntax](https://daringfireball.net/projects/markdown/syntax).
 
+- You can incorporate latex math into your markdown. Use `\\(` inline `\\)` for inline math, e.g., `\\( J_{min}\\}` and `$$ ... $$` for display math.
+
+- Your post should include credits for any external material you use,
+  especially for any images you incorporate that you didn't produce.
+
+- Please include full references to the papers, and links to the most
+  definitive source available (usually this is to arxiv or a
+  conference site, but could be the author's page). You should include
+  additional links to relevant and useful reference or code
+  repositories. Its good to have an overview section at the beginning
+  of the post with links to all the main papers covered, and then to
+  have links in specific sections to what is being covered.
+
 - To test the post, run `make develop` (in the `web/` subdirectory of
   your repository).  This starts the Hugo development server, usually
   on port 1313 (unless that port is already in use).  Then, you can

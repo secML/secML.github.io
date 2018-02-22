@@ -39,7 +39,6 @@ Johnson, Noah, Joseph P. Near, and Dawn Song. "Towards Practical Differential Pr
 
 ## Deep learning with differential privacy
 
-
 > Abadi, Martin, et al. "Deep learning with differential privacy." [[PDF](https://arxiv.org/pdf/1607.00133.pdf)]
 
 #### What is Differential Privacy?
@@ -164,6 +163,8 @@ In the above figure, authors showed the result of the accuracy and privacy cost 
 
 
 
+
+
 --- Team Panda
 Christopher Geier, Faysal Hossain Shezan, Helen Simecek, Lawrence Hook, Nishant Jha
 
@@ -177,4 +178,3 @@ Christopher Geier, Faysal Hossain Shezan, Helen Simecek, Lawrence Hook, Nishant 
 [[3]](https://arxiv.org/pdf/0903.4510.pdf) A. Gupta, K. Ligett, F. McSherry, A. Roth, and K. Talwar. Differentially private combinatorial optimization. In SODA, pages 1106–1125, 2010.\
 
 [[4]](http://kunaltalwar.org/papers/PrivatePCA.pdf) C. Dwork, K. Talwar, A. Thakurta, and L. Zhang. Analyze Gauss: Optimal bounds for privacy-preserving principal component analysis. In STOC, pages 11–20. ACM, 2014.\
-
