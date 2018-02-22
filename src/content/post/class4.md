@@ -42,17 +42,37 @@ On a high level, RAPPOR achieves this by having each client machine report a “
 This is achieved through the the following three steps:
 
 1. _Signal_ - hash the client’s value \\(v\\) onto the Bloom filter \\(B\\) of size \\(k\\) using \\(h\\) hash functions. 
+
+<p align="center">
+<img src="/images/class4/rappor_signal.png" width="500" >
+<br> <b>Figure:</b> Bloom Filter
+</p>
+
 A Bloom filter is a probabilistic data structure optimized for determining set membership.
-Permanent Randomized Response
+
+2. _Permanent_ Randomized Response
 For each value \\(v\\) from a client, and for each bit \\(i\\) in the bloom filter \\(B\\), create a binary reporting value \\(B_i’\\) such that TODO:missing equation here??? where \\(f\\) is a user-defined tuning variable, \\(f \in (0,1)\\). This \\(B’\\) is memorized and reused as the basis for all future reports on value \\(v\\).
 
-2. _Instantaneous Randomized Response_. Next, allocate a bit array \\(S\\) of size \\(k\\) and initialize to 0. Set each bit \\(i\\) in \\(S\\) with the following probabilities: TODO:???
+<p align="center">
+<img src="/images/class4/rappor_perm_prob.png" width="500" >
+<br> <b>Figure:</b> Permanent B'
+</p>
 
-3. _Report_. Send the bit array \\(S\\) to the server.
+3. _Instantaneous Randomized Response_. Next, allocate a bit array \\(S\\) of size \\(k\\) and initialize to 0. Set each bit \\(i\\) in \\(S\\) with the following probabilities: TODO:???
+
+<p align="center">
+<img src="/images/class4/rappor_inst_prob.png" width="500" >
+<br></p>
+
+4. _Report_. Send the bit array \\(S\\) to the server.
 
 How private are RAPPOR’s aggregated results in reality? If you assume infinite sampling, there is a privacy guarantee of:
 
-TODO:???
+<p align="center">
+<img src="/images/class4/rappor_epsilon_inf.png" width="500" >
+<br></p>
+
+An attacker with "unlimited collection capabilities... is also bounded by the privacy guarantee of ε∞ and cannot improve upon this bound with more data collection."
 
 ## Towards Practical Differential Privacy for SQL Queries 
 
