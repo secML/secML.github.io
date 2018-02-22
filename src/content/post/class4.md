@@ -24,17 +24,73 @@ Erlingsson, Úlfar, Vasyl Pihur, and Aleksandra Korolova. "Rappor: Randomized ag
 
 Johnson, Noah, Joseph P. Near, and Dawn Song. "Towards Practical Differential Privacy for SQL Queries." [[PDF](https://arxiv.org/pdf/1706.09479.pdf)] 
 
-- Motivation
-- Contribution
-- Background (definition of global and local sensitivity and stability)
-- Discussion on Five crucial Properties of Dataset
-- Requirement for DP
-- Limitation of existing approach
-- Counting Triangles
-- Unsupported Queries and other aggregate functions
-- FLex
-- Performance Analysis
-- Compaison with wPINQ
+#### Motivation
+The recent increase in data collection in large organizations has exposed personal user data to analysis that have an impact on user privacy. This paper investigates the methods that can be used to increase differential privacy, protecting individual privacy. By taking a practical approach to differential privacy, the authors are able to provide an implementation of differential privacy that is compatible with any existing database.
+
+#### Contributions
+- Empirical study of 8.1 million real-world SQL queries
+- Elastic sensitivity
+- FLEX: An end-to-end differential privacy system
+- Experimental evaluation of FLEX
+
+#### Elastic sensitivity
+Elastic sensitivity is the paper’s main contribution and proposed approach to enforcing differential privacy on a system that is locally sensitivity-based. Local sensitivity is the “maximum of the difference between the query run on a true database and any neighbor of it.” The practical nature of their design exists because instead of being a property of all possible databases, local sensitivity is a property of one true database.
+<p align="center">
+<img src="/images/class4/ls.png" width="600" >
+<br> <b>Figure:</b> Local Sensitivity
+</p>
+The paper describes and proves their theorem shown below using aspects of database local sensitivity. 
+<p align="center">
+<img src="/images/class4/proof.PNG" width="600" >
+<br> <b>Figure:</b> Elastic Sensitivity
+</p>
+
+#### Limitation of existing approaches
+Two main requirements of differential privacy are stated. The first is that the implementation of differential privacy must be compatible with existing databases, and have support for heterogeneous databases. Also it should have robust support for equijoins, which include self and non-self joins, relationship types and an arbitrary number of nested joins.
+
+<p align="center">
+<img src="/images/class4/g1.PNG" width="600" >
+<br> <b>Figure:</b> Comparison of various differential privacy implementations
+</p>
+
+As seen in the chart above, other approaches address parts of the requirements, and elastic sensitivity seems to cover all of the requirements set forth in this paper for differential privacy. One lacking requirement among previous approaches was adequate database compatibility.
+
+#### Unsupported Queries and other aggregate functions
+
+
+<p align="center">
+<img src="/images/class4/sqlcode.PNG" width="600" >
+<br> <b>Figure:</b> SQL non-equijoin statement
+</p>
+
+Since non-equijoins need information about both datasets, the operation is not supported in elastic sensitivity. Elastic sensitivity also sometimes fails to provide support for max-frequency metrics. However, not having support for either of these operations does not impact a majority of operations in either case.
+
+#### FLEX
+
+<p align="center">
+<img src="/images/class4/flexPerf.PNG" width="600" >
+<br> <b>Figure:</b> FLEX design structure
+</p>
+FLEX is an implementation of elastic sensitivity that is highly compatible with existing databases. The FLEX database structure is shown in the figure above. By targeting support for specific SQL queries, their system can enforce differential privacy on most real world queries to databases. For a given SQL query, FLEX calculates its elastic sensitivity given an analysis of the query. FLEX then applies smooth sensitivity to the elastic sensitivity and adds noise drawn from the Laplace distribution to the original query results. 
+
+<p align="center">
+<img src="/images/class4/flexPerf.PNG" width="600" >
+</p>
+
+- Elastic sensitivity for 76% of queries
+- Large error for unsupported queries: 14.14%
+- Parsing errors: 6.58%
+
+
+#### Comparison with wPINQ
+
+
+<p align="center">
+<img src="/images/class4/wPINQComp.PNG" width="600" >
+<br> <b>Figure:</b> wPINQ and Flex performance comparison
+</p>
+
+This paper moves towards more practical approaches of differential privacy in SQL queries by proposing elastic sensitivity. The concept of elastic sensitivity was then tested through their implementation in FLEX. A comparison of FLEX and wPINQ is shown in the figure above. Adoption of this method by Uber for internal data analytics demonstrates the potential of their approach for having a large impact on data privacy.
 
 
 ## Deep learning with differential privacy
