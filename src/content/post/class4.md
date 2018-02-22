@@ -1,6 +1,6 @@
 +++
 date = "22 Feb 2018"
-draft = true
+draft = false
 title = "Class 4: Differential Privacy In Action"
 author = "Team Panda"
 slug = "class4"
