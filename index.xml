@@ -1384,6 +1384,10 @@ These are just suggestions, not meant to be an exhaustive list or limit the scop
 
 &lt;p&gt;Kexin Pei, Yinzhi Cao, Junfeng Yang, Suman Jana. &lt;em&gt;DeepXplore: Automated Whitebox Testing of Deep Learning Systems&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/abs/1705.06640&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
 
+&lt;h3 id=&#34;adversarial-training&#34;&gt;Adversarial Training&lt;/h3&gt;
+
+&lt;p&gt;Alex Kurakin, Dan Boneh, Florian Tramèr, Ian Goodfellow, Nicolas Papernot, Patrick McDaniel. &lt;em&gt;Ensemble Adversarial Training: Attacks and Defenses&lt;/em&gt;. ICLR 2018. &lt;a href=&#34;https://research.google.com/pubs/pub46638.html&#34;&gt;Web&lt;/a&gt;&lt;/p&gt;
+
 &lt;h3 id=&#34;malware-detection-and-evasion&#34;&gt;Malware Detection and Evasion&lt;/h3&gt;
 
 &lt;p&gt;Robin Sommer and Vern Paxson. &lt;em&gt;Outside the Closed World: On Using Machine Learning For Network Intrusion Detection&lt;/em&gt;. &lt;a href=&#34;https://oaklandsok.github.io/papers/sommer2010.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
@@ -1406,6 +1410,11 @@ Reducing Gender Bias Amplification using Corpus-level Constraints&lt;/em&gt;. &l
 
 &lt;p&gt;&lt;a href=&#34;https://fatconference.org/2018/program.html&#34;&gt;Conference on Fairness, Accountability, and
 Transparency&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;assessing-risks&#34;&gt;Assessing Risks&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;The Malicious Use of Artificial Intelligence: Forecasting, Prevention, and Mitigation&lt;/em&gt;. February 2018
+&lt;a href=&#34;https://www.eff.org/files/2018/02/20/malicious_ai_report_final.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;poisoning&#34;&gt;Poisoning&lt;/h3&gt;
 
