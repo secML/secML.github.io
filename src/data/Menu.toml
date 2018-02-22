@@ -10,6 +10,10 @@
     Name = "Teams"
     URL = "/teams"
 
+[3topics]
+    Name = "Topics"
+    URL = "/topics"
+
 [5posts]
     Name = "Posts"
     Title = "Show list of posts"

@@ -1,6 +1,6 @@
 +++
 date = "26 Jan 2018"
-draft = true
+draft = false
 title = "Class 1: Intro to Adversarial Machine Learning"
 author = "Team Panda"
 slug = "class1"
@@ -163,7 +163,7 @@ One criticism of deep neural networks is that their nonlinearity creates vulnera
 
    <p align="center">
 <img src="/images/capacity.png" width="650" >
-<br>Image credit: [IEEE Security & Privacy](https://pdfs.semanticscholar.org/a69e/5b952a3d334d88555ad767b29ddd52d67cad.pdf)
+<br>Image credit: [McDaniel, Papernot, and Celik, <em>IEEE Security & Privacy Magazine</em>](https://www.papernot.fr/files/16-mcdaniel-sp-machine-learning-in-adversarial-settings.pdf)
    </p>
 
 #### Solutions
@@ -181,7 +181,13 @@ For example, [Papernot et al.](https://arxiv.org/abs/1605.07277), took advantage
 
 To explicitly demonstrate the phenomenon of both intra and cross-technique transferability, [Papernot et al.](https://arxiv.org/abs/1605.07277) used five different machine learning algorithms on five disjoint training sets of MNIST dataset. With this setup, adversarial samples trained from one technique on one subset of the training data fools -- to varying degrees -- models trained by a different subset of the training data as well as a different technique. Furthermore, an ensemble classifier could be fooled at a rate of up to 44%.
 
---- Team Panda
+--- Team Panda:  
+Christopher Geier,
+Faysal Hossain Shezan,
+Helen Simecek,
+Lawrence Hook,
+Nishant Jha 
+
 
 #### References
 

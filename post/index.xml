@@ -6,8 +6,640 @@
     <description>Recent content in Post-rsses on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 20 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 20 Feb 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://secml.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Topic Suggestions</title>
+      <link>https://secml.github.io/topic-suggestions/</link>
+      <pubDate>Tue, 20 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/topic-suggestions/</guid>
+      <description>&lt;p&gt;To help with topics for future classes, I&amp;rsquo;ve created a
+&lt;a href=&#34;https://secml.github.io/topics&#34;&gt;Topics&lt;/a&gt; page with some possible ideas and links to papers.
+This is not meant to be exhaustive by any stretch; any topics loosely
+connected to machine learning security and privacy is within scope,
+and there are lots of great papers on these topics not included on
+this page.  But, hopefully it will be a useful starting point for
+teams looking for ideas for topics for future classes.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Class 3: Adversarial Machine Learning</title>
+      <link>https://secml.github.io/class3/</link>
+      <pubDate>Fri, 09 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/class3/</guid>
+      <description>
+
+&lt;p&gt;This week’s topic covered some proposed adversarial example attacks and defenses. The underlying problem is that machine learning techniques assume that training and testing data are generated from the same distribution. Therefore, adversaries can choose inputs to exploit the algorithms by manipulating data. We began class by discussing common distance metrics,
+\(L_0, L_2\), and \(L\infty\), popular benchmarking datasets, and the history of adversarial ML. However, the main theme was defense techniques can be used safely to prevent adversarial attacks. Below we discuss four papers that discuss both effective and ineffective defenses.&lt;/p&gt;
+
+&lt;h2 id=&#34;distillation-as-a-defense&#34;&gt;Distillation as a Defense&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Nicolas Papernot and
+               Patrick D. McDaniel,
+               Xi Wu,
+               Somesh Jha, and
+               Ananthram Swami. &lt;em&gt;Distillation as a Defense to Adversarial Perturbations against Deep
+               Neural Networks&lt;/em&gt;. IEEE Symposium on Security and Privacy, 2016. [&lt;a href=&#34;https://arxiv.org/abs/1511.04508&#34;&gt;PDF&lt;/a&gt;]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;what-is-distillation&#34;&gt;What is Distillation&lt;/h3&gt;
+
+&lt;p&gt;Neural networks typically produce class probabilities by using a “softmax” output layer that converts the logit, \(z_i\), computed for each class into a probability, \(q_i\), by comparing \(z_i\) with the other logits.&lt;/p&gt;
+
+&lt;p&gt;$$ q_i = \frac{\exp(z_i/T)}{\sum_j exp(z_j/T)} $$&lt;/p&gt;
+
+&lt;p&gt;where \(T\) is a temperature that is normally set to 1. Using a higher value for \(T\) produces a softer probability distribution over classes.&lt;/p&gt;
+
+&lt;p&gt;In the simplest form of distillation, knowledge is transferred to the distilled model by training it on a transfer set and using a soft target distribution for each case in the transfer set that is produced by using the cumbersome model with a high temperature in its softmax. The same high temperature is used when training the distilled model, but after it has been trained it uses a temperature of 1. It could reduce the computing resources required to run a network, allowing usage on a smaller scale like in embedded chips and IoT devices.&lt;/p&gt;
+
+&lt;h3 id=&#34;how-does-distillation-work&#34;&gt;How does Distillation Work?&lt;/h3&gt;
+
+&lt;p&gt;1) A Deep Neural Network(DNN) is trained with a high temperature, the \(T\) we mentioned before. The training of this first DNN is a high temperature because the high temperature forces the DNN to produce probability vectors with relatively large values for each class. The high temperature of a softmax is, the more ambiguous its probability distribution will be. The smaller the temperature of a softmax is, the more discrete its probability distribution will be.&lt;/p&gt;
+
+&lt;p&gt;2) A second Deep Neural Network is trained by replacing the hard labels of the training set with class probabilities output by the first Deep Neural Network.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class3/DNN.png&#34; alt=&#34;&#34; /&gt;
+&lt;div class=&#34;caption&#34;&gt;TODO: add source&lt;/div&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;softmax-function-under-distillation&#34;&gt;Softmax Function under distillation&lt;/h3&gt;
+
+&lt;p&gt;Softmax function is the Last layer of network. It’s used to normalize the outputs of the second to last layer. Under distillation situation, it has a parameter temperature (\(T\)).
+To perform distillation in softmax layer, a large network whose output layer is softmax is first trained on the original dataset. The softmax layer is a layer that considers a vector \(Z(X)\) of outputs produced by the last hidden layer of a DNN. Then we normalizes them into a probability vector \(F(X)\), the output of DNN assigning a probability to each class of dataset for input \(X\). \(T\) means temperature and shared across the softmax layer.  (See the paper for the equations for \(F(X)\).)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class3/softmax.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;using-distillation-as-a-defense&#34;&gt;Using Distillation as a Defense&lt;/h3&gt;
+
+&lt;p&gt;In distillation as a defense, the same network architecture is used in the distilled DNN as in the original DNN. First, this paper trained an initial network \(F\) on data \(X\) with a softmax temperature of \(T\).&lt;/p&gt;
+
+&lt;p&gt;Then, this paper uses the probability vector \(F(X)\), which includes additional knowledge about classes compared to a class label, predicted by network \(F\) to train a distilled network  at temperature \(T\) on the same data \(X\).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class3/defense.png&#34; alt=&#34;&#34; /&gt;
+&lt;div class=&#34;caption&#34;&gt;TODO: add source&lt;/div&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;results&#34;&gt;Results&lt;/h3&gt;
+
+&lt;p&gt;This paper evaluated Resilience, Sensitivity and Robustness on 2 datasets: MNIST and CIFAR10&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class3/table.png&#34; alt=&#34;&#34; /&gt;
+&lt;div class=&#34;caption&#34;&gt;
+Resilience: success rate of adversarial crafting.
+&lt;/div&gt;
+&lt;div class=&#34;caption&#34;&gt;
+  Sensitivity: amplitude of adversarial gradients.
+&lt;/div&gt;
+&lt;div class=&#34;caption&#34;&gt;
+  Robustness: amount of perturbation required to achieve adversarial targets.
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;This paper also evaluated effect of Temperature on Adversarial Success
+Success of adversarial samples when changing at most 112 features.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class3/res.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;These results seem promising, but subsequent work found that Defensive
+Distillation is not actually robust to adversarial examples.&lt;/p&gt;
+
+&lt;h3 id=&#34;why-distillation-seems-to-work&#34;&gt;Why Distillation Seems to Work&lt;/h3&gt;
+
+&lt;p&gt;First some attacks use the gradient of the logits, where softmax do not work here. Second, big difference in relative impact of changes in input to the softmax layer. Third, training at temperature \(T\) effectively increases all inputs to the softmax layer by a factor of \(T\), for example, Undistilled logits with Mean of 5.8/std of 6.4 and Distilled logits (T=100) with Mean of 482/std of 457.&lt;/p&gt;
+
+&lt;h3 id=&#34;breaking-distillation&#34;&gt;Breaking Distillation&lt;/h3&gt;
+
+&lt;p&gt;Instead of using the gradient of the input to the softmax layer, the gradient of the output of the softmax layer was used.Due to the problem of vanishing gradients, artificially divide the inputs to the softmax by \(T\). This method achieves a successful misclassification rate of 96.4%.&lt;/p&gt;
+
+&lt;h2 id=&#34;towards-evaluating-the-robustness-of-neural-networks&#34;&gt;Towards Evaluating the Robustness of Neural Networks&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Carlini, Nicholas, and David Wagner. &lt;em&gt;Towards evaluating the robustness of neural networks&lt;/em&gt;. IEEE Symposium on Security and Privacy (&amp;ldquo;Oakland&amp;rdquo;) 2017. [&lt;a href=&#34;https://arxiv.org/pdf/1608.04644.pdf&#34;&gt;PDF&lt;/a&gt;]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1608.04644.pdf&#34;&gt;Carlini et al.&lt;/a&gt; proposed an optimization based attack to break the distillation defense mechanism developed by Papernot et al and other undistilled networks. This poses severe security problems to machine learning classifiers as the current defense strategy becomes vulnerable to this new type of strong white-box attacks. The attack is based on optimization approach, where the problem is formulated as&lt;/p&gt;
+
+&lt;p&gt;$$ \text{minimize}~\mathcal{D}(x,x+\delta) + cf(x+\delta)\\ \text{such that:}~x+ \delta \in [0,1]^{n} $$&lt;/p&gt;
+
+&lt;p&gt;where \(f(x+\delta) \leq 0\) iff the classification result of \((x+\delta)\) is in class \(t\) (i.e. \(C(x+\delta) = t)\). \(c\) is a coefficient controling the relative importance of misclassification and norm minimization. Intuitive understanding of the optimization problem above is, we want a smaller perturbation (unobservable by human) by minimizing the norm \(||\delta||\) and causing misclassification by minimizing the function \(f(x+\delta)\). The constraint of \(x+\delta \in [0,1]^{n}\) is because this attack is conducted in image domain and has to generate valid images whose pixel value is in \([0,1]\) range. In order to further avoid the constraint, the authors apply \(tanh\) function to change the variables. Specifically, \(\delta_i = \frac{1}{2}(tanh(w_i)+1)-x_i \) and we directly optimize the unconstrained variable \(w_i \) instead of \(\delta_i\). &lt;a href=&#34;https://arxiv.org/pdf/1412.6980.pdf&#34;&gt;ADAM&lt;/a&gt; is deployed to solve the above unconstrained optimization problem. A special note is the author implemented different \(p\)-norms \((p = 0, 2, \infty)\) under the optimization framework described above.&lt;/p&gt;
+
+&lt;p&gt;The evaluation part is compared to other existing white-box attack methods. Specifically, &lt;a href=&#34;https://arxiv.org/pdf/1412.6572.pdf&#34;&gt;Fast Gradient Sign (FGS)&lt;/a&gt;, &lt;a href=&#34;https://arxiv.org/pdf/1607.02533.pdf&#34;&gt;Iterative Fast Gradient Sign (IFGS)&lt;/a&gt; methods are suitable for \(L_\infty \)-norm, &lt;a href=&#34;https://arxiv.org/pdf/1511.04599.pdf&#34;&gt;Deepfool&lt;/a&gt; method is suitable for \(L_2\)-norm attack, &lt;a href=&#34;https://arxiv.org/pdf/1511.07528.pdf&#34;&gt;JSMA&lt;/a&gt; method is suitable for \(L_0\)-norm attack. The target model for the listed attacks are &lt;a href=&#34;https://arxiv.org/pdf/1511.04508.pdf&#34;&gt;distillation based network&lt;/a&gt; (defensitive strategy proposed for defending against FGS and IFGS methods) and normally trained neural networks. The final evaluation results demonstrate that the attack proposed in this work is far stronger than existing attack method in that it achieves highest attack success rate (this method achieves \(100\%\) success rate while other methods don&amp;rsquo;t) and lowest perturbation magnitude. Some sample images generated from this attack are shown below. This attack is also now broadly accepted as a standard baseline for evaluating newly proposed defense mechanisms.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class3/class3_img1.png&#34; alt=&#34;&#34; /&gt;
+&lt;div class=&#34;caption&#34;&gt;
+Source: &lt;a href=&#34;(https://arxiv.org/pdf/1608.04644.pdf)&#34;&gt;&lt;em&gt;Towards evaluating the robustness of neural networks&lt;/em&gt;&lt;/a&gt; [1]
+&lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;obfuscated-gradients&#34;&gt;Obfuscated Gradients&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Athalye, A., Carlini, N., &amp;amp; Wagner, D. &amp;ldquo;Obfuscated Gradients Give a False Sense of Security: Circumventing Defenses to Adversarial Examples.&amp;rdquo; ArXiv e-prints, arXiv: 1802.00420. February 2018.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Optimization-based attacks such as the Basic Iterative Method, Projected Gradient Descent, and Carlini and Wagner’s attack are powerful threat to most defenses against adversarial examples in machine learning classifiers. New defenses have been proposed that appear to be resistant to optimization-based attacks, but Athalye, Carlini, and Wagner argue that these defenses are not as robust as they claim.&lt;/p&gt;
+
+&lt;p&gt;Optimization-based attacks generate adversarial examples using gradients obtained through backpropagation. The authors identify obfuscated gradients as an element of many defenses that provides a facade of security by causing the attacker’s gradient descent to fail. Obfuscated gradients come in at least three forms: shattered gradients, stochastic gradients, and vanishing/exploding gradients.&lt;/p&gt;
+
+&lt;p&gt;A defense uses &lt;strong&gt;shattered gradients&lt;/strong&gt; when it introduces non-differentiable operations, numeric instability, or otherwise causes the attacker’s gradient signal to be incorrect. A defense uses &lt;strong&gt;stochastic gradients&lt;/strong&gt; when the inputs to the classifier are randomized or a stochastic classifier is used, resulting in a different gradient each time it is evaluated. &lt;strong&gt;Vanishing/exploding gradients&lt;/strong&gt; are issues encountered in training some networks in which the gradient grows or shrinks exponentially during backpropagation. Some defenses involve multiple iterations of neural network evaluation. This can be viewed as evaluating one very deep neural network, which obfuscates the gradient signal by forcing the vanishing/exploding gradient problem.&lt;/p&gt;
+
+&lt;h3 id=&#34;detecting-obfuscated-gradients&#34;&gt;Detecting Obfuscated Gradients&lt;/h3&gt;
+
+&lt;p&gt;The authors propose a number of tests that might help detect when a defense relies on obfuscated gradients.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Iterative attacks should work better than single-step attacks, since iterative attacks are strictly stronger than single-step attacks.&lt;/li&gt;
+&lt;li&gt;White-box attacks should perform better than black-box attacks, since the black-box threat model is a strict subset of the white-box threat model.&lt;/li&gt;
+&lt;li&gt;Attacks with an unbounded distortion metric (e.g. \(L_2\) norm) should find adversarial examples with 100% success.&lt;/li&gt;
+&lt;li&gt;Optimization-based attacks should perform better than brute-force sampling of nearby inputs (sampling within an \(\epsilon\)-ball).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These tests may not cover all cases of obfuscated gradients, but they indicate when intuitive properties start to break down. All defenses with obfuscated gradients discussed by the authors fail at least one test.&lt;/p&gt;
+
+&lt;h3 id=&#34;attack-techniques&#34;&gt;Attack Techniques&lt;/h3&gt;
+
+&lt;p&gt;The authors introduce attack techniques to address each of the three types of obfuscated gradients.&lt;/p&gt;
+
+&lt;p&gt;Shattered gradients can be attacked using a technique called Backward Pass Differentiable Approximation. For a classifier \(f(\cdot)\), some defenses make gradients unavailable to attackers by incorporating a non-differentiable preprocessing step \(g(\cdot)\), making the secured classifier \(\hat{f}(\cdot) = f(g(\cdot))\). Backward Pass Differentiable Approximation estimates gradients by substituting a smooth, differentiable approximation of \(g\).&lt;/p&gt;
+
+&lt;p&gt;Stochastic gradient-based defenses that randomly transform inputs can be defeated using the Expectation over Transformation technique to compute the gradient over the expected transformation of the input. If a stochastic classifier is used, the gradient can be similarly computed over the expectation of random parameters.&lt;/p&gt;
+
+&lt;p&gt;Defenses that use vanishing/exploding gradients can be circumvented by reparameterizing the secured classifier and optimizing over a space where vanishing/exploding gradients do not occur.&lt;/p&gt;
+
+&lt;p&gt;Seven of the eight defense techniques accepted to ICLR 2018 are based on a form of obfuscated gradients, and are therefore vulnerable to these attacks. The defense by Madry, et al., discussed below, was the only approach evaluated that doesn’t cause obfuscated gradients. Athalye, Carlini, and Wagner recommend that future defenses should be presented with specific, realistic threat models, testable claims with bounded test parameters, and evaluations against new defense-aware attacks.&lt;/p&gt;
+
+&lt;h2 id=&#34;resistance-to-adversarial-attacks&#34;&gt;Resistance to Adversarial Attacks&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Aleksander Madry, Aleksandar Makelov, Ludwig Schmidt, Dimitris Tsipras, and Adrian Vladu. &lt;em&gt;Towards Deep Learning Models Resistant to Adversarial Attacks&lt;/em&gt;.  ICLR 2018. [&lt;a href=&#34;https://arxiv.org/pdf/1706.06083.pdf&#34;&gt;PDF&lt;/a&gt;]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1706.06083.pdf&#34;&gt;Madry et al.&lt;/a&gt; propose a general framework to study the defense of deep learning models against adversarial attacks.  The goal of their framework is to provide precise security guarantees about how a particular defense stacks up against entire classes of attacks.  Specifically, they offer the following saddle point problem:&lt;/p&gt;
+
+&lt;p&gt;$$\underset{\theta}{\text{min}} \, \rho(\theta), \quad \text{where} \quad \rho(\theta) = \mathbb{E}_{(x, y) \sim \mathcal{D}} \bigg[ \underset{\delta \in \mathcal{S}}{\text{max}} \, L(\theta, x + \delta, y) \bigg] \, .$$&lt;/p&gt;
+
+&lt;p&gt;Let’s break this down:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;\( \theta \) is the set of parameters of the model.  The attacker aims to exploit an existing model with a predetermined \( \theta \), and the defender can tune \( \theta \) as they wish.&lt;/li&gt;
+&lt;li&gt;\( x \) and \( y \) are the example and label.&lt;/li&gt;
+&lt;li&gt;\( L \) is the loss function.&lt;/li&gt;
+&lt;li&gt;\( \mathbb{E} \) is a risk function.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is a classic saddle point problem, consisting of two connected parts: an inner maximization problem, and an outer minimization problem. An adversary seeks to find an example that maximizes the model’s loss (the inner problem), and the defender seeks to tune their model such that the potential loss is minimized (the outer problem).  Therefore, solving this problem (by minimizing rho) maximizes the robustness of a deep learning model.&lt;/p&gt;
+
+&lt;p&gt;The inner loss function was modeled with a fast gradient sign method (FGSM) attack. The FGSM perturbed data was used for as training data on the defense side. The outer minimization function was a little more complicated. It’s not simple enough to train on FGSM adversaries. We want something that’s universally robust, so we use PGD, a first-order method to solve constrained optimization problems. The authors used PGD to find local maxima, since they are the areas of highest loss.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class3/Madry1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;These graphs show how the loss scales as the number of PGD iterations increases.  The loss grows and plateaus as the number of iterations grows (as expected for any model).  However, the adversarially-trained models display much less loss than the naturally-trained models, indicating that Madry et. al.’s defense works well against their attacks.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class3/Madry2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;These graphs show the distributions of loss values, for various starting points.  The loss values are obtained by randomly sampling points within an \(L\infty\)-ball centered at the starting point, then using PGD to find the local maxima near those random points.  Although the locations of the points are widely distributed, the loss values are all clustered together.  The authors claim that these graphs display the universality of PGD: any local maxima with significantly higher losses would likely be infeasible for any other first-order method to find.&lt;/p&gt;
+
+&lt;p&gt;— Team Gibbon: &lt;br /&gt;
+Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya&lt;/p&gt;
+
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1608.04644.pdf&#34;&gt;[1]&lt;/a&gt; Carlini N, Wagner D. Towards evaluating the robustness of neural networks. InSecurity and Privacy (SP), 2017 IEEE Symposium on 2017 May 22 (pp. 39-57). IEEE.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1412.6980.pdf&#34;&gt;[2]&lt;/a&gt; Kingma DP, Ba J. Adam: A method for stochastic optimization. arXiv preprint arXiv:1412.6980. 2014 Dec 22.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1412.6572.pdf&#34;&gt;[3]&lt;/a&gt; Goodfellow IJ, Shlens J, Szegedy C. Explaining and harnessing adversarial examples. arXiv preprint arXiv:1412.6572. 2014 Dec 20.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1607.02533.pdf&#34;&gt;[4]&lt;/a&gt; Kurakin A, Goodfellow I, Bengio S. Adversarial examples in the physical world. arXiv preprint arXiv:1607.02533. 2016 Jul 8.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1511.04599.pdf&#34;&gt;[5]&lt;/a&gt; Moosavi Dezfooli SM, Fawzi A, Frossard P. Deepfool: a simple and accurate method to fool deep neural networks. InProceedings of 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR) 2016 (No. EPFL-CONF-218057).&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1511.07528.pdf&#34;&gt;[6]&lt;/a&gt; Papernot N, McDaniel P, Jha S, Fredrikson M, Celik ZB, Swami A. The limitations of deep learning in adversarial settings. InSecurity and Privacy (EuroS&amp;amp;P), 2016 IEEE European Symposium on 2016 Mar 21 (pp. 372-387). IEEE.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1511.04508.pdf&#34;&gt;[7]&lt;/a&gt; Papernot N, McDaniel P, Wu X, Jha S, Swami A. Distillation as a defense to adversarial perturbations against deep neural networks. InSecurity and Privacy (SP), 2016 IEEE Symposium on 2016 May 22 (pp. 582-597). IEEE.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.cs.cornell.edu/~shmat/shmat_oak17.pdf&#34;&gt;[8]&lt;/a&gt; A. Madry, A. Makelov, L. Schmidt, D. Tsipras, A. Vladu, &amp;ldquo;Towards Deep Learning Models Resistant to Adversarial Attacks&amp;rdquo;.  February 2018.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Class 2: Privacy in Machine Learning</title>
+      <link>https://secml.github.io/class2/</link>
+      <pubDate>Fri, 02 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/class2/</guid>
+      <description>
+
+&lt;p&gt;In today’s post we introduce some key concepts crucial to understanding the current state of privacy in machine learning. In a time where novel machine learning applications are seemingly announced weekly, privacy is becoming more relevant as learning algorithms play varied and sometimes critical roles in our lives. We introduce differential privacy and common ‘solutions’ that fail to protect individual privacy, explore membership inference attacks on blackbox machine learning models, and discuss a case study involving privacy in the field of pharmacogenetics, where machine learning models are used to guide patient treatment.&lt;/p&gt;
+
+&lt;h2 id=&#34;membership-inference-attacks&#34;&gt;Membership inference attacks&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Reza Shokri, Marco Stronati, Congzheng Song, and Vitaly Shmatikov. &lt;em&gt;Membership Inference Attacks Against Machine Learning Models&lt;/em&gt;. IEEE Symposium on Security and Privacy (&amp;ldquo;Oakland&amp;rdquo;) 2017. [&lt;a href=&#34;https://www.cs.cornell.edu/~shmat/shmat_oak17.pdf&#34;&gt;PDF&lt;/a&gt;]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.cs.cornell.edu/~shmat/shmat_oak17.pdf&#34;&gt;Shokri et al.&lt;/a&gt; attempt to attack black box machine learning models based on subtle data leaks based on the outputs. If the membership of a datapoint can be identified in the training set of a black box machine, it poses a significant privacy risk to the data of users of machine learning services. This is especially important for machine learning services such as Google Prediction and Amazon ML, as an inability to guarantee the privacy of training data would preclude a significant number of customers from using their services.&lt;/p&gt;
+
+&lt;p&gt;The attack is based on the idea that there are noticeable patterns in outputs when the input is given to the model as training data. While no human would be able to pick up on a pattern of that nature, a machine learning model with a theoretically limitless data source has that power. As the purpose of machine learning is to notice and evaluate patterns beyond human recognition, using a machine learning model to attack black box machine learning models makes sense.&lt;/p&gt;
+
+&lt;p&gt;For a machine learning model to attack the black box, it first needs to train against other models where it can verify its own accuracy. For this, similar models need to be created for evaluation. These models are called shadow models, and need to be trained on similar sample data to the original model. To generate training data, these models use hill climbing methods on the black box to seek high confidence areas. By then sampling data using a simple distribution about those points, somewhat accurate training sets can be created. Ideally, these sets will be roughly the same size and distribution of the target model.&lt;/p&gt;
+
+&lt;p&gt;The attack model is then trained on a set of shadow models, using classifications based on whether or not the datapoint was in the training set of the shadow model. This theoretically works based on the attack model being able to locate areas in which the curves are overfitted in the shadow models and translate that into membership. Ultimately, the study produced results that ranged from 70% to 95% precision overall based on the target model. The model gave nearly no false negatives.&lt;/p&gt;
+
+&lt;p&gt;To limit the power of these attacks, more regularization can be used to minimize overfitting, as the overfitting patterns become less apparent as the curve fitting is minimized. However, differential privacy is the more general class of solutions that is the defining foundation of the current state of the field of privacy in machine learning.&lt;/p&gt;
+
+&lt;h2 id=&#34;differential-privacy&#34;&gt;Differential privacy&lt;/h2&gt;
+
+&lt;p&gt;With the explosion of data collection from various social platforms and the increasing usage of machine learning on personalized applications like personalized medication, medical diagnostics, genomics and face recognition, the collection of sensitive human data is inevitable. When dealing with personal information, it is paramount to preserve the privacy of any individual participating in the data set. In a word, it is necessary to ensure that an adversary does not learn about the presence or absence of any individual’s information from looking at the synopsis of the data set. This goal is the central motivation the concept of differential privacy.&lt;/p&gt;
+
+&lt;p&gt;To fully appreciate differential privacy, let us discuss some &lt;a href=&#34;http://www.lrdc.pitt.edu/schunn/cdi2009/presentations/Dwork.pdf&#34;&gt;alternative solutions&lt;/a&gt; to preserving individual privacy in a data set identify how each one fails in achieving the goal of privacy.&lt;/p&gt;
+
+&lt;h4 id=&#34;failed-alternatives&#34;&gt;Failed alternatives&lt;/h4&gt;
+
+&lt;h6 id=&#34;1-allowing-only-group-queries&#34;&gt;1. Allowing only group queries&lt;/h6&gt;
+
+&lt;p&gt;It seems intuitive that individual data privacy can be preserved by restricting a user to only group queries. For example, a group query can be: “How many students in this class earned an A?”. But this blatantly violates the privacy if the user also queries “How many students in this class apart from Rick earned an A?”, where the end user can know if Rick received an A or not based on the answer to the two queries.&lt;/p&gt;
+
+&lt;h6 id=&#34;2-add-random-noise-to-the-query-result&#34;&gt;2. Add random noise to the query result&lt;/h6&gt;
+
+&lt;p&gt;Adding random noise to the query result tends to obfuscate the relation between the input and the output, but an adversary can determine the noise distribution by repeated querying. Hence, this approach also fails.&lt;/p&gt;
+
+&lt;h6 id=&#34;3-deterministic-perturbation-in-answering&#34;&gt;3. Deterministic perturbation in answering&lt;/h6&gt;
+
+&lt;p&gt;We can deterministically map every output to another value in the vector space to obfuscate the input-output relation. But this becomes far too computationally complex in a high-dimensional regime.&lt;/p&gt;
+
+&lt;h6 id=&#34;4-withholding-sensitive-information&#34;&gt;4. Withholding sensitive information&lt;/h6&gt;
+
+&lt;p&gt;An easy, straightforward notion is to simply withhold any sensitive data before executing any query; however, this very action reveals information about the presence or absence of sensitive data.&lt;/p&gt;
+
+&lt;h6 id=&#34;5-make-output-independent-of-any-individual-record&#34;&gt;5. Make output independent of any individual record&lt;/h6&gt;
+
+&lt;p&gt;This approach certainly does not reveal the presence or absence of an individual in the data set. But this method is not of any practical use since, by mathematical induction, the output does not depend on the data set itself.&lt;/p&gt;
+
+&lt;h6 id=&#34;6-k-anonymity&#34;&gt;6. K-anonymity&lt;/h6&gt;
+
+&lt;p&gt;Another way to achieve obfuscation of a record is to group it with \(k\) other records for each attribute. Unfortunately, this method also fails in high-dimensional cases, where it has been shown to be feasible to still distinguish an individual record.&lt;/p&gt;
+
+&lt;h6 id=&#34;7-semantic-security&#34;&gt;7. Semantic Security&lt;/h6&gt;
+
+&lt;p&gt;Semantic security is a strict notion in cryptography which ensures that the advantage of an adversary with an auxiliary information should be cryptographically small with or without the access to the output (ciphertext). In our query model, this definition is too strong and does not allow learning any useful information from the data set.&lt;/p&gt;
+
+&lt;h4 id=&#34;defining-differential-privacy&#34;&gt;Defining differential privacy&lt;/h4&gt;
+
+&lt;p&gt;The &lt;a href=&#34;https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf&#34;&gt;formal definition&lt;/a&gt; of differential privacy is given as:&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;A randomized computation \(M\) satisfies \(\epsilon\)-differential privacy if for any adjacent data sets \(x\) and \(x’\), and any subset \(C\) of possible outcomes \(Range(M)\),&lt;/p&gt;
+
+&lt;p&gt;$$Pr[M(x) \in C] \leq \exp(\epsilon) \times Pr[M(x&amp;rsquo;) \in C]$$&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;In other words, this means that the chance that an event occurs &lt;em&gt;with your data&lt;/em&gt; and the chance it would occur &lt;em&gt;without your data&lt;/em&gt; is closely bounded by a privacy budget \(\epsilon\). The figure below depicts the equation where the two lines denote the probability distribution over \(x\) and \(x’\).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img1.png&#34; alt=&#34;&#34; title=&#34;Response probability distribution&#34; /&gt;
+   &lt;div class=&#34;caption&#34;&gt;
+Source: &lt;a href=&#34;(http://www.lrdc.pitt.edu/schunn/cdi2009/presentations/Dwork.pdf)&#34;&gt;&lt;em&gt;Differential Privacy and Pan-Private Algorithms&lt;/em&gt;&lt;/a&gt; [6]
+   &lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;There is another relaxed version of the above definition of differential privacy, called \((\epsilon,\delta)\)-differential privacy, &lt;a href=&#34;https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf&#34;&gt;defined&lt;/a&gt; as below:&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;A randomized computation \(M\) satisfies \((\epsilon,\delta)\)-differential privacy if for any adjacent data sets \(x\) and \(x’\), and any subset \(C\) of possible outcomes \(Range(M)\),&lt;/p&gt;
+
+&lt;p&gt;$$Pr[M(x) \in C] \leq \exp(\epsilon) \times Pr[M(x&amp;rsquo;) \in C] + \delta$$&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;The above definition basically implies that with probability \((1-\delta)\), \(M\) preserves \(\epsilon\)-differential privacy.&lt;/p&gt;
+
+&lt;h4 id=&#34;properties-of-differential-privacy&#34;&gt;Properties of differential privacy&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;Group Privacy&lt;/strong&gt;: An \(\epsilon\)-differentially private algorithm can be extended to provide group privacy for a group size of \(k\) by scaling the privacy budget to \(k\epsilon\).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Composition&lt;/strong&gt;: Composition of \(k \epsilon\)-differential privacy and \((\epsilon,\delta)\)-differential privacy methods leads to \(k \epsilon\)-differential privacy and \((k \epsilon, k \delta)\)-differential privacy methods respectively.&lt;/p&gt;
+
+&lt;h4 id=&#34;differential-privacy-with-laplace-noise&#34;&gt;Differential privacy with Laplace noise&lt;/h4&gt;
+
+&lt;p&gt;To ensure \(\epsilon\)-differential privacy for a function \(f(x)\), we can add &lt;a href=&#34;https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf&#34;&gt;Laplace noise&lt;/a&gt; to it:&lt;/p&gt;
+
+&lt;p&gt;$$ f(x) + \text{Laplace}(0, \sigma)^d $$&lt;/p&gt;
+
+&lt;p&gt;where \(\Delta f = \text{max} || f(x)-f(x&amp;rsquo;) ||_1 \)  and \(\sigma \geq \frac{\Delta f}{\epsilon}\).&lt;/p&gt;
+
+&lt;p&gt;Let us consider a working example. Consider that there are two adjacent data sets \(D\) and \(D&amp;rsquo;\) consisting of scores of students of a class, such that \(D\) and \(D’\) differ by only one student’s record.&lt;/p&gt;
+
+&lt;p&gt;Consider the function \(f\) that computes the class average. If, say, the minimum and maximum attainable scores are \(0\) and \(100\) respectively, then the sensitivity of \(f\) is \( \frac{100-0}{4} = 25\).&lt;/p&gt;
+
+&lt;p&gt;Thus, to release the class average of \(D\) is given by
+\(\frac{65+83+77+56}{4}\) with \(\epsilon\)-differential privacy,
+we would add the result of sampling \(\text{Laplace}(0,
+\frac{25}{\epsilon})\) to the computed value. This preserves the
+privacy of the student differing in \(D\) and \(D’\).&lt;/p&gt;
+
+&lt;h2 id=&#34;privacy-in-pharmacogenetics&#34;&gt;Privacy in Pharmacogenetics&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Matthew Fredrikson, Eric Lantz, Eric and Jha, Somesh and Lin, Simon and Page, David and Ristenpart, Thomas
+&lt;em&gt;Privacy in Pharmacogenetics: An End-to-End Case Study of Personalized Warfarin Dosing&lt;/em&gt;. USENIX Security Symposium 2014. [&lt;a href=&#34;https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-fredrikson-privacy.pdf&#34;&gt;PDF&lt;/a&gt;]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In their case study, &lt;a href=&#34;https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-fredrikson-privacy.pdf&#34;&gt;Fredrikson et al.&lt;/a&gt;
+analyze personalized Warfarin doses, a widely used anticoagulant. Finding the correct dose of Warfarin is vitally important as both low and high doses may result in death of the patient &amp;ndash; literally, a matter of life and death.&lt;/p&gt;
+
+&lt;p&gt;This experiment was done on the available IWPC dataset which contains and uses demographic information &lt;em&gt;(age, height, weight, race)&lt;/em&gt;, genetic markers &lt;em&gt;(CYP2C9/VKORC1)&lt;/em&gt; and clinical histories of people around the world to predict their appropriate Warfarin dose. The IWPC has found that linear regression is the best learning model to fit the data and has made the model available for physicians&amp;rsquo; use in calculating the initial dose of the Warfarin.&lt;/p&gt;
+
+&lt;p&gt;Let’s highlight how an adversary can use model inversion attack to violate the genomic privacy of a patient. We first initially assume that an adversary has black-box access to the trained model. As it turns out, due to the highly linear nature of the data, by running the model backwards, the sensitive genotype can be predicted given the stable dose of Warfarin, some basic demographic facts regarding the patient, and the marginal priors of the patient distribution.&lt;/p&gt;
+
+&lt;p&gt;How does the attack work? First, the adversary computes all the values of the missing variables that could potentially agree with the given information. Then, the adversary runs the model forward for each hypothetical patient in the dataset to predict the stable Warfarin doses. Finally, the adversary performs a likelihood computation to find out which configuration of the missing variables are most probable. Given the information and model inversion setting, this algorithm is optimal, as it minimizes the adversaries misprediction rate. With respect to the baseline, the accuracy of the model inversion attack is only 5% lower in comparison to ideal prediction.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img2.png&#34; alt=&#34;&#34; title=&#34;Model inversion attack&#34; /&gt;
+   &lt;div class=&#34;caption&#34;&gt;
+Source: &lt;a href=&#34;https://www.usenix.org/sites/default/files/conference/protected-files/sec14_slides_fredrikson.pdf&#34;&gt;Privacy in Pharmacogenetics presentation&lt;/a&gt; [2]
+   &lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;As seen in this image, the attacker computes the values of missing variables, then predicts the Warfarin doses; and finally, using this information, finds the most likely configuration.&lt;/p&gt;
+
+&lt;p&gt;Adding noise using differential privacy strategy can be a countermeasure against the model inversion attack. But using differential privacy decreases the utility of the trained model. Based on their simulated trials, authors claim that there is no such privacy budget that can prevent model inversion, without introducing  risk of overfixed dosing.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img3.png&#34; alt=&#34;&#34; title=&#34;Privacy budget plot&#34; /&gt;
+   &lt;div class=&#34;caption&#34;&gt;
+Source: &lt;a href=&#34;https://www.usenix.org/sites/default/files/conference/protected-files/sec14_slides_fredrikson.pdf&#34;&gt;Privacy in Pharmacogenetics presentation&lt;/a&gt; [2]
+   &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;the-netflix-prize-semi-supervised-deep-learning-from-private-training-data&#34;&gt;The Netflix Prize: Semi-supervised deep learning from private training data&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Frank McSherry and Ilya Mironov, &lt;em&gt;Differentially Private Recommender Systems: Building Privacy into the Netflix Prize Contenders&lt;/em&gt;. KDD 2009. [&lt;a href=&#34;https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf&#34;&gt;PDF&lt;/a&gt;]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Traditional recommender systems are usually not designed with an emphasis on privacy, which can be detrimental when the adversary are able to create multiple accounts to affect the recommendation at will. &lt;a href=&#34;https://www.cs.utexas.edu/~shmat/shmat_oak08netflix.pdf&#34;&gt;Researchers&lt;/a&gt; have been successful in developing powerful attack linking records in the Netflix Prize data set with other public user data. The implication is that sensitive information as the input of a recommender system can be linked and made inference about. &lt;a href=&#34;https://www.cs.utexas.edu/~shmat/shmat_oak11ymal.pdf&#34;&gt;Similar practical examples&lt;/a&gt; include making inference about purchase history through Amazon’s recommendations.&lt;/p&gt;
+
+&lt;p&gt;McSherry and Mironov’s &lt;a href=&#34;https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf&#34;&gt;paper&lt;/a&gt; adapted the leading recommendation algorithms (factor models and neighborhood models) to the differential privacy framework in order to develop a recommender system based on the Netflix data set while providing privacy guarantees. As mentioned in the above section, differential privacy enables privacy preserving computation by substantially precluding inference from the output data, unlike the prior efforts focusing mainly on cryptographic solutions that limit access to data of users. By doing so, it is conceivable that more uncertainty/noise is added to computation.&lt;/p&gt;
+
+&lt;p&gt;One interesting aspect this paper dealt with is the privacy vs. accuracy tradeoff. Evaluation of their approach was applied to the Netflix Prize data set which bears extremely high dimensionality. The root mean squared error (RMSE) was used as the metric for accuracy. The findings are as the quality of privacy increases, the accuracy of the recommendation drops.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img4.png&#34; alt=&#34;&#34; title=&#34;RMSE for four algorithms as a function of θ \\(\propto\\\) 1/σ on the Netflix Prize set.&#34; /&gt;
+   &lt;div class=&#34;caption&#34;&gt;
+Source: &lt;a href=&#34;(https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf)&#34;&gt;&lt;em&gt;Differentially Private Recommender Systems&lt;/em&gt;&lt;/a&gt; [3]
+   &lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;Privacy vs. accuracy over time was also studied to explore how the loss of accuracy due to privacy-preserving decreased as more data become available for a fixed value of the privacy parameter. The results are summarized in the following figure.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/secML/secML.github.io/master/src/content/images/img5.png&#34; alt=&#34;&#34; title=&#34;Left scale—accuracy loss, right scale—the
+number of records. The \\(x\\\)-axis is the number of days
+elapsed since 7/1/2000.&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;caption&#34;&gt;
+Source: &lt;a href=&#34;(https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf)&#34;&gt;&lt;em&gt;Differentially Private Recommender Systems&lt;/em&gt;&lt;/a&gt; [3]
+   &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;We have introduced differential privacy and formally defined what is meant by preservation of \(\epsilon\)-differential privacy; discussed common solutions and how they fail; explained the properties of a differentially private algorithm, and how adding Laplace Noise enables \(\epsilon\)-differential private functions. We also discussed how in Membership Inference Attacks Against Machine Learning Models, Shokri et al. discuss attacking a black box model by training on a set of shadow models. Finally,  we discussed how in Privacy in Pharmacogenetics: An End-to-End Case Study of Personalized Warfarin Dosing Fredrikson et al. demonstrate how a model inversion attack can be employed to infer patient genotype information.&lt;/p&gt;
+
+&lt;p&gt;— Team Nematode: &lt;br /&gt;
+Bargav Jayaraman, Guy &amp;ldquo;Jack&amp;rdquo; Verrier, Joshua Holtzman, Max Naylor, Nan Yang, Tanmoy Sen&lt;/p&gt;
+
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.cs.cornell.edu/~shmat/shmat_oak17.pdf&#34;&gt;[1]&lt;/a&gt; R. Shokri, M. Stronati, C. Song, V. Shmatikov, &amp;ldquo;Membership Inference Attacks Against Machine Learning Models.&amp;rdquo; May 2017.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.usenix.org/system/files/conference/usenixsecurity14/sec14-paper-fredrikson-privacy.pdf&#34;&gt;[2]&lt;/a&gt; M. Fredrikson, E. Lantz, S. Jha, S. Lin, D. Page, T. Ristenpart, &amp;ldquo;Privacy in Pharmacogenetics: An End-to-End Case Study of Personalized Warfarin Dosing.&amp;rdquo; August 2014.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.microsoft.com/en-us/research/wp-content/uploads/2009/06/NetflixPrivacy.pdf&#34;&gt;[3]&lt;/a&gt; F. McSherry, I. Mironov, &amp;ldquo;Differentially Private Recommender Systems: Building Privacy into the Netflix Prize Contenders.&amp;rdquo; June 2009.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.cs.utexas.edu/~shmat/shmat_oak08netflix.pdf&#34;&gt;[4]&lt;/a&gt; A. Narayanan, V. Shmatikov, &amp;ldquo;Robust De-anonymization of Large Sparse Datasets.&amp;rdquo; May 2008.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.cs.utexas.edu/~shmat/shmat_oak11ymal.pdf&#34;&gt;[5]&lt;/a&gt; J. A. Calandrino, A. Kilzer, A. Narayanan, E. W. Felten, V. Shmatikov, &amp;ldquo;&amp;lsquo;You Might Also Like&amp;rsquo;: Privacy Risks of Collaborative Filtering.&amp;rdquo; May 2011.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.lrdc.pitt.edu/schunn/cdi2009/presentations/Dwork.pdf&#34;&gt;[6]&lt;/a&gt; C. Dwork, &amp;ldquo;Differential Privacy and Pan-Private Algorithms.&amp;rdquo; August 2016.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=OfWj89oRD7g&#34;&gt;[7]&lt;/a&gt; C. Dwork, &amp;ldquo;Differential Privacy - Lecture 1&amp;rdquo;. August 2016.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Class 1: Intro to Adversarial Machine Learning</title>
+      <link>https://secml.github.io/class1/</link>
+      <pubDate>Fri, 26 Jan 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/class1/</guid>
+      <description>
+
+&lt;h2 id=&#34;machine-learning-background&#34;&gt;Machine Learning Background&lt;/h2&gt;
+
+&lt;!-- - Other ML algorithms use linear decision boundaries (SVM, LR, ...)
+- Deep learning uses linear units with nonlinear composition
+    - More susceptible to attacks
+- Define terms like gradient and loss --&gt;
+
+&lt;p&gt;In supervised Machine Learning, we train models with training data
+along with the label associated with it. We extract features from each
+sample, and use an algorithm to train a model where the inputs are
+those features and the output is the label.&lt;/p&gt;
+
+&lt;p&gt;For classifying the testing data, the classifier uses decision
+boundary to separate points of the data belonging to each class. In a
+statistical-classification problem with two classes, a decision
+boundary partitions all the underlying vector space into two separate
+classes. A support vector machine (SVM) is a linear classifier which
+constructs a boundary by focusing two closest points from different
+classes and it finds the line that is equidistant to these two points.&lt;/p&gt;
+
+&lt;h4 id=&#34;loss-functions&#34;&gt;Loss Functions&lt;/h4&gt;
+
+&lt;p&gt;A loss function define that how good a given model is at making
+predictions for a given scenario. It has its own curve and its own
+gradients. The slope of the curve indicates the appropriate way of
+updating the parameters to make the model more accurate in case of
+prediction. A frequently used loss function is the 0-1 loss function.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/01_loss_function.png&#34; width=&#34;150&#34; &gt;
+&lt;/p&gt;
+
+&lt;p&gt;where \(I\) is the indicator notation. Hinge loss function is also popular in machine learning field. It provides a relatively tight, convex upper bound on the 0-1 indicator function.
+s
+&lt;!-- &lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/hinge_function.png&#34; width=&#34;150&#34; &gt;
+&lt;/p&gt; --&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;gradient-descent&#34;&gt;Gradient Descent&lt;/h4&gt;
+
+&lt;p&gt;Gradient Descent is an optimization algorithm which is used to minimize cost function by iteratively moving the direction of the steepest descent. In machine learning, we use gradient descent to update the parameters (coefficients in Linear Regression and weight in neural networks) of our model.&lt;/p&gt;
+
+&lt;p&gt;&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/gradient_descent_graph.png&#34; width=&#34;300&#34; &gt;
+&lt;br&gt;
+Image credit: &lt;a href=&#34;https://sebastianraschka.com/faq/docs/closed-form-vs-gd.html&#34;&gt;Sebastian Raschka&lt;/a&gt;
+   &lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;In the figure, weight is slowly decreasing from the initial stage. \(J_{min}\) is the minimum value of the cost function which can be obtained by optimizing the algorithm.&lt;/p&gt;
+
+&lt;p&gt;Recently, there have been many successful applications of Deep Neural
+Networks (DNN) in the fields of information retrieval, computer
+vision, and speech recognition. Despite their potential, deep neural
+architectures, like all other machine learning approaches, are
+vulnerable to what are known as adversarial samples. These systems can
+be fooled by targeted manipulations which slightly modifying a real
+example to trick the model into “believing” that this modified sample
+belongs to an incorrect class with high confidence. To defend against
+these adversarial attacks, many researchers are exploring several
+directions including data augmentation, increasing model complexity,
+retraining, pre-processing, etc. Their main goal is to protect the
+model against adversarial manipulations by the attackers.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;applications-and-vulnerabilities&#34;&gt;Applications and Vulnerabilities&lt;/h2&gt;
+
+&lt;p&gt;To get a better idea of what security and privacy mean in a machine learning context, we highlight a few
+applications and examine the possible consequences of vulnerabilities in these domains.&lt;/p&gt;
+
+&lt;p&gt;One of the most commonly-discussed applications is in self-driving
+cars, which use machine learning algorithms for image recognition
+tasks, such as identifying traffic signs and road hazards.  If an
+attacker were to cause an erroneous classification, e.g. mistaking a
+stop sign for a speed limit sign or missing a pedestrian in a
+crosswalk, both property and human lives would be in
+jeopardy. (Although luckily self-driving cars use a variety of other
+techniques to avoid collisions, including detailed maps and LIDAR, so
+are likely to not be directly vulnerable to image mis-classification
+attacks.)&lt;/p&gt;
+
+&lt;p&gt;Machine learning has also found a place in the medical world, being used to identify patterns and trends in patient histories that can be used for diagnoses, to recognize abnormalities in medical imaging, and even to evaluate the efficiency of a hospital&amp;rsquo;s workflow.  The use of machine learning in healthcare introduces a new concern - how can patient data be effectively utilized for beneficial purposes, like predicting appropriate drug dosages, without compromising patient privacy?&lt;/p&gt;
+
+&lt;p&gt;There are numerous other uses of ML today (targeted advertising, fraud detection, malware detection, etc.) and each carries particular security and privacy concerns.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;adversarial-examples&#34;&gt;Adversarial Examples&lt;/h2&gt;
+
+&lt;p&gt;In machine learning, an adversarial example is an input that has been manipulated so that the model returns a different, incorrect output.  A classic adversarial example for image classification is from a paper by &lt;a href=&#34;https://arxiv.org/pdf/1412.6572.pdf&#34;&gt;Goodfellow et al.&lt;/a&gt;, which features a photo of a panda that was originally classified correctly, but is misclassified when carefully-crafted noise is added.  The model classifies the new image as a gibbon, even though human eyes can easily see it is a panda.&lt;/p&gt;
+
+&lt;p&gt;&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/panda.png&#34; width=&#34;600&#34; &gt;
+&lt;br&gt; Source: &lt;a href=&#34;https://arxiv.org/pdf/1412.6572.pdf&#34;&gt;Goodfellow Paper&lt;/a&gt;
+   &lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;As outlined in &lt;a href=&#34;https://arxiv.org/pdf/1712.03141.pdf&#34;&gt;Biggio et al.&amp;rsquo;s&lt;/a&gt; paper on the history of adversarial machine learning, adversarial examples were first described in 2004 in the context of email spam filters. At this time, &lt;a href=&#34;https://homes.cs.washington.edu/~pedrod/papers/kdd04.pdf&#34;&gt;Dalvi et al.&lt;/a&gt; and &lt;a href=&#34;https://ix.cs.uoregon.edu/~lowd/kdd05lowd.pdf&#34;&gt;Lowd and Meek&lt;/a&gt; realized that slight modifications to spam emails allowed them to pass through the filters, without greatly affecting the content of the message. From this point, the field expanded to study the potential for adversarial examples in other realms, like machine-learning-based image and malware classification.  The increased usage of deep learning techniques for object recognition led to a surge in interest around 2014, when Szegedy et al. showed that deep convolutional neural networks were also susceptible to adversarial examples.  Since then, interest in this field has only continued to increase, with more and more papers published each year.&lt;/p&gt;
+
+&lt;h3 id=&#34;classifying-attacks&#34;&gt;Classifying Attacks&lt;/h3&gt;
+
+&lt;p&gt;Attacks can be categorized by many different characteristics, but are often referred to in terms of the attack method, the goal of the attack, and the adversary&amp;rsquo;s level of knowledge, as detailed in &lt;a href=&#34;https://arxiv.org/pdf/1611.03814.pdf&#34;&gt;Papernot et al.&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;attack-method&#34;&gt;Attack Method&lt;/h4&gt;
+
+&lt;p&gt;A poisoning attack is when the adversary adds carefully-crafted samples into the training data, thereby disrupting the learning process and manipulating the final trained model.  An evasion attack occurs when a sample originally correctly classified into class A is manipulated and fed back into the model, now receiving an output that is &lt;em&gt;not&lt;/em&gt; class A.  A key difference between these two attacks is where each occurs in the ML pipeline: poisoning attacks occur before the training stage and evasion attacks occuring after training, during the testing stage.&lt;/p&gt;
+
+&lt;p&gt;&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/ml_pipeline.jpg&#34; width=&#34;650&#34; &gt;
+&lt;br&gt; Source: &lt;a href=&#34;https://docs.google.com/presentation/d/1dFRjRfCIz1TChZYfIY_FLYiSk7nNmdBY2luJ8T_TCAE/edit?usp=sharing&#34;&gt;Presentation Slides&lt;/a&gt;
+   &lt;/p&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;goal-of-attack&#34;&gt;Goal of Attack&lt;/h4&gt;
+
+&lt;p&gt;The goal of the adversary is another way to categorize attacks, which
+in this case means whether or not there was a specific goal
+classification or not.  &lt;em&gt;Error-generic&lt;/em&gt; (also called &lt;em&gt;untargeted&lt;/em&gt;)
+attacks aim to find a sample close to a given seed that is
+misclassified, but do not have a specific target output
+class. &lt;em&gt;Error-specific&lt;/em&gt; (&lt;em&gt;targeted&lt;/em&gt;) attacks deliberately change the
+seed sample&amp;rsquo;s classification from the original class A to a chosen
+class B.&lt;/p&gt;
+
+&lt;h4 id=&#34;adversary-knowledge&#34;&gt;Adversary Knowledge&lt;/h4&gt;
+
+&lt;p&gt;The level of knowledge the adversary possesses generally falls into one of three loosely defined categories: black box, grey box, and white box attacks.  Black box attacks assume the lowest level of adversary knowledge, generally only allowing the final classification to be known without any finer details about the model.  On the other end of the spectrum, white box attacks assume that the attacker knows everything about the model, including the specific algorithm used, the feature set, the training data, etc. An attack by an adversary who knows more about the model than a black box but less than a white box is called a grey box attack, although the exact definition tends to vary.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/boxes.png&#34; width=&#34;600&#34; &gt;
+&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;modern-machine-learning-as-a-potemkin-village&#34;&gt;Modern Machine Learning as a Potemkin village&lt;/h2&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/potemkin.jpeg&#34; width=&#34;350&#34; &gt;
+&lt;/p&gt;
+
+&lt;p&gt;The term &amp;ldquo;Potemkin village&amp;rdquo; describes a difference between appeance and reality. In a &lt;a href=&#34;https://arxiv.org/abs/1412.6572&#34;&gt;paper&lt;/a&gt; by Goodfellow, Shlens, and Szegdy, modern machine learning methods are described as building &amp;ldquo;a Potemkin village that works well on naturally occuring data, but is exposed as a fake when one visits points in space that do not have high probability in the data distribution.&amp;rdquo; The apparent fragility of deep neural networks has been particuarly exposed, as seen in the panda picture above.&lt;/p&gt;
+
+&lt;p&gt;The two-faced nature of machine learning models to be both fragile and robout from two different angles leads to concerns in the security of machine learning algorithms. High confidence in classifying adversarial examples poses a threat to the integrity of the model&amp;rsquo;s output.&lt;/p&gt;
+
+&lt;h4 id=&#34;fast-gradient-sign-method-fgsm&#34;&gt;Fast gradient sign method (FGSM)&lt;/h4&gt;
+
+&lt;p&gt;Also the &lt;a href=&#34;https://arxiv.org/abs/1412.6572&#34;&gt;paper&lt;/a&gt; mentioned a method for generating adversarial examples. Fast gradient sign method maximizes the error between the ground truth classification of the sample and minimizes the error to the target classification. The method is effecitve is generating the best pixels to change to achieve a higher loss, essentially acting as a reverse optimization method. FGSM simply traverses the loss curve by moving in the opposite direction of the gradient loss.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/formula.png&#34; width=&#34;200&#34; &gt;
+&lt;/p&gt;
+
+&lt;p&gt;As we discussed, the sign method in the FGSM is an approximation to the actual gradient. Although the most accurate method would use the true gradient, the sign of the gradient is taken for the sake efficiency: since \(\epsilon\) reflect the adversarial strength (the maximum size perturbation allowed), this represents taking the largest step possible in each dimension in the direction given by the gradient. (There are many variations on FGSM that we&amp;rsquo;ll discuss in later posts, including iterative versions where a sequence of smaller steps is used.) FGSM showcases the fragility of machine learning models especially through visualizations such as the panda example.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;adversarial-training&#34;&gt;Adversarial training&lt;/h2&gt;
+
+&lt;h4 id=&#34;effects-of-nonlinearities&#34;&gt;Effects of nonlinearities&lt;/h4&gt;
+
+&lt;p&gt;One criticism of deep neural networks is that their nonlinearity creates vulnerabilities that can be exploited by adversarial examples.  As shown below, the mode function cuts through the data points linearly, while the function drawn by the neural network conforms more tightly to the training data points.  This overfitting to training data creates pockets in which the class chosen by the function does not match the ground truth class value for a given data point.&lt;/p&gt;
+
+&lt;p&gt;&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/capacity.png&#34; width=&#34;650&#34; &gt;
+&lt;br&gt;Image credit: &lt;a href=&#34;https://www.papernot.fr/files/16-mcdaniel-sp-machine-learning-in-adversarial-settings.pdf&#34;&gt;McDaniel, Papernot, and Celik, &lt;em&gt;IEEE Security &amp;amp; Privacy Magazine&lt;/em&gt;&lt;/a&gt;
+   &lt;/p&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;solutions&#34;&gt;Solutions&lt;/h4&gt;
+
+&lt;p&gt;As a possible solution, &lt;a href=&#34;https://arxiv.org/pdf/1312.6199.pdf&#34;&gt;Szegedy et al.&lt;/a&gt; proposed incorporating adversarial examples into the training data.  Using various techniques to find the vulnerable pockets in the model, the authors were able to generate examples that would fall into those adversarial region.  Adding those samples to the training data results in a new model that does not follow the original training points as closely, creating a smoother, more accurate function.&lt;/p&gt;
+
+&lt;p&gt;Using an adversarial &lt;a href=&#34;https://en.wikipedia.org/wiki/Regularization_(mathematics)&#34;&gt;regularizer&lt;/a&gt; is also a technique to limit overfitting and vulnerability to adversarial examples. &lt;a href=&#34;https://arxiv.org/abs/1412.6572&#34;&gt;Goodfellow et al.&lt;/a&gt; describes a technique using the fast gradient sign method mentioned above as a regularizer. Their method generates adversarial examples using the fast gradient sign method and then trains the model with the adversarial examples. By continually updating the adversarial examples to the model, the adversarial regions are minimized. In the paper, they were able to reduce the error rate on adversarial examples from 0.94% to 0.84% using this approach. In order to reduce this error further, they also increased the model size and introduced early stopping on adversarial validation set error. Using these additional techniques they were able to drop the error rate on adversarial examples based on the FGSM from 89.4% to 17.9%. A combination of techniques introduced in training can significantly decrease the vunerability to simple adversarial attacks.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;transferability-of-adversarial-samples&#34;&gt;Transferability of adversarial samples&lt;/h2&gt;
+
+&lt;p&gt;As shown above, an adversarial sample can fool a machine-learned model to misclassify it with high confidence. In particular, the adversarial samples made to fool image classifiers show how an adversarial sample can be indistinguishable to humans from legitimate samples. Additionally, examples that evade one classifier tend to evade others. This poses a vulnerability for machine learned models, one that can be exploited with cross-evasion.&lt;/p&gt;
+
+&lt;h4 id=&#34;learning-classifier-substitutes&#34;&gt;Learning classifier substitutes&lt;/h4&gt;
+
+&lt;p&gt;For example, &lt;a href=&#34;https://arxiv.org/abs/1605.07277&#34;&gt;Papernot et al.&lt;/a&gt;, took advantage of the transferability of adversarial examples on a remote DNN by training a new model with their own synthetic data. By using a relatively small number of queries to label their data, they trained a substitute model which they then used to craft adversarial samples. Demonstrating transferability, 84.24% of the adversarial samples trained from the substitute model fooled the remote DNN.&lt;/p&gt;
+
+&lt;p&gt;To explicitly demonstrate the phenomenon of both intra and cross-technique transferability, &lt;a href=&#34;https://arxiv.org/abs/1605.07277&#34;&gt;Papernot et al.&lt;/a&gt; used five different machine learning algorithms on five disjoint training sets of MNIST dataset. With this setup, adversarial samples trained from one technique on one subset of the training data fools &amp;ndash; to varying degrees &amp;ndash; models trained by a different subset of the training data as well as a different technique. Furthermore, an ensemble classifier could be fooled at a rate of up to 44%.&lt;/p&gt;
+
+&lt;p&gt;&amp;mdash; Team Panda:&lt;br /&gt;
+Christopher Geier,
+Faysal Hossain Shezan,
+Helen Simecek,
+Lawrence Hook,
+Nishant Jha&lt;/p&gt;
+
+&lt;h4 id=&#34;references&#34;&gt;References&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1412.6572.pdf&#34;&gt;[1]&lt;/a&gt; I.J. Goodfellow, J. Shlens, C. Szegedy, &amp;ldquo;Explaining
+and Harnessing Adversarial Examples.&amp;rdquo; &lt;em&gt;ArXiv e-prints&lt;/em&gt;, December 2014.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1712.03141.pdf&#34;&gt;[2]&lt;/a&gt; B. Biggio, F. Roli, &amp;ldquo;Wild patterns: Ten years after the rise of
+adversarial machine learning.&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1712.03141&lt;/em&gt;, 2017.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://homes.cs.washington.edu/~pedrod/papers/kdd04.pdf&#34;&gt;[3]&lt;/a&gt; N. Dalvi, P. Domingos, Mausam, S. Sanghai, D. Verma, &amp;ldquo;Adversarial classification,&amp;rdquo;&amp;rdquo; &lt;em&gt;Int’l Conf. Knowl. Disc. and Data Mining&lt;/em&gt;, 2004, pp. 99–108.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://ix.cs.uoregon.edu/~lowd/kdd05lowd.pdf&#34;&gt;[4]&lt;/a&gt; D. Lowd, C. Meek, &amp;ldquo;Adversarial learning,&amp;rdquo; &lt;em&gt;Int’l Conf. Knowl. Disc. and Data Mining&lt;/em&gt;, ACM Press, Chicago, IL, USA, 2005, pp. 641–647.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1611.03814.pdf&#34;&gt;[5]&lt;/a&gt; N. Papernot, P. McDaniel, A. Sinha, M. Wellman, &amp;ldquo;Towards the science of security and privacy in machine learning.&amp;rdquo; &lt;em&gt;IEEE European Symposium on Security and Privacy&lt;/em&gt;,
+2018.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/abs/1605.07277&#34;&gt;[6]&lt;/a&gt; N. Papernot, P. Mcdaniel, I.J. Goodfellow, &amp;ldquo;Transferability in machine learning: from phenomena to black-box attacks using adversarial samples&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1605.07277&lt;/em&gt;, 2016.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1312.6199.pdf&#34;&gt;[7]&lt;/a&gt; C. Szegedy, W. Zaremba, I. Sutskever, J Bruna, D. Erhan, I.J. Goodfellow, R. Fergus. &amp;ldquo;Intriguing properties of neural networks.&amp;rdquo; &lt;em&gt;ICLR,&lt;/em&gt; abs/1312.6199, 2014.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>First Week</title>
