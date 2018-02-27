@@ -23,7 +23,7 @@ Initially, the authors calculate contribution of each word towards determining t
 The paper performs their experimental results on two datasets- IMDB movie review dataset for sentiment analysis and twitter dataset for gender classification. They compare the efficiency of their method with the existing method TextFool by measuring the accuracy of the model
 obtained at different configurations. For both the cases, the proposed model was generated using Convolutional Neural Network (CNN). 
 
-Figure below show the results for IMDB dataset. From the figure, it is obvious that the proposed method of adversarial sample crafting for text is capable of synthesizing semantically correct adversarial text samples from the original text sample. In addition, the inclusion of genre specific keywords definitely boost up the quality of sample crafting. This is evident from the fact the drop in accuracy of the classifier before re-training for original text sample and the adversarialy crafted text sample is more when genre specific keywords are being used.
+Figure below shows the results for IMDB dataset. From the figure, it is obvious that the proposed method of adversarial sample crafting for text is capable of synthesizing semantically correct adversarial text samples from the original text sample. In addition, the inclusion of genre specific keywords definitely boost up the quality of sample crafting. This is evident from the fact the drop in accuracy of the classifier before re-training for original text sample and the adversarialy crafted text sample is more when genre specific keywords are being used.
 <p align="center">
 <img src="/images/result_imdb.PNG" width="500" >
 <br>  <b>Figure:</b> Performance results on IMDB movie review dataset.
