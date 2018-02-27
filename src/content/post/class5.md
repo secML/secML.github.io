@@ -43,7 +43,7 @@ For the Twitter dataset, the proposed method shows similar performance as the IM
 
 ### Example
 <p align="center">
-<img src="/images/example_NLP.PNG" width="500" >
+<img src="/images/example_nlp.PNG" width="500" >
 <br>  <b>Figure:</b> Examples of adversarial samples crafted from Twitter and IMDB dataset using (i)TextFool and
 (ii) proposed method.
 </p>
