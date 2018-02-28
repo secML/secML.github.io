@@ -8,7 +8,9 @@ slug = "class5"
 
 ## Beyond Images
 
-[Add introduction]
+While Machine Learning is largely being tested by research communities on image recognition, ML is being used for a vartiety of tasks in the real world and attacks on each particular use needs to be tailored to the purpose of the ML process.
+Among the most significant uses of ML are natural language processing and voice recognition. Within these fields, attacks look very different to those on images. With images, individual pixels can be changed large amounts without making the image unrecognizable, whereas in voice recognition, the audio needs to remain smooth. 
+These attacks are becoming more and more significant as always active listening devices like Amazon Alexa are becoming more common in the public sector. A televized attack could be used to access personal accounts and devices of thousands of people simultaneously without many of those being attacked even noticing.
 
 ## Adversarial Audio
 
@@ -69,18 +71,16 @@ which avoids reducing loss and forces it to be more strongly classified, the mea
 
 #### Attack Sources and Targets
 
-Speech-to-Speech
-Non-Speech-to-Speech
-Targeting Silence
+Attack models worked consistently regardless of context, meaning that an attack using white noise or non-speech is as easy to craft as one using speech. Targeting silence turned out to be even easier than targeting speech.
 
 #### Robustness
 
-#### Observations
+Random pointwise noise of less than -30dB is sufficient to corrupt an attack; although stronger attacks can be crafted using larger dB changes. The attacks did manage to be MP3 resistent, which speaks to the minimization of loss in MP3 compression as well as the fidelity of the attack model.
 
-Counteracting Effects of Long Source Phrases
-Over-the-Air Attacks
-Transferability
-Existing Defenses
+These attacks do become easier with longer sources, as the pacing of the target speech can be varied more, giving a larger attack space in which to work. In an ideal case for an attacker, they would be working with a prerecorded broadcast, which gives them a large continuous space to attack. 
+That said, Over-The-Air attacks were not viable due to the white noise and variation in speakers and the rooms. Hidden voice commands did, however, show some promise for broadcast attacks.
+
+Transferability was shown to hold, as it is somewhat fundamental to ML systems. As of yet, defence techniques on the ML layers have not yet been developed, although random noise added post-attack is a viable defence.
 
 ## Natural Language Processing
 
