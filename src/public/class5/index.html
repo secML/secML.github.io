@@ -51,7 +51,7 @@
     },
     "datePublished": "2018-02-23",
     "description": "",
-    "wordCount":  1866 
+    "wordCount":  2079 
   }
 </script>
 
@@ -265,7 +265,9 @@ obtained at different configurations. For both the cases, the proposed model was
 <br>  <b>Figure:</b> Performance results on IMDB movie review dataset.
 </p></p>
 
-<p>The following figure shows a graph that indicates the number of changes required to create successful adversarial samples with and without using the genre-specific keywords.
+<p>A significant factor for evaluating the effectiveness of adversarial samples is to measure the semantic similarity between the original samples and their corresponding tainted counterparts. A lower similarity score denotes that the semantic meaning of the original and the modified samples are quite different, which is not acceptable from the language viewpoint. The authors found the average semantic similarity between the original text sample and their adversarial counterparts (for test set only) as 0.9164 and 0.9732 with and without using the genre specific keywords respectively. Although the semantic similarity between the original and their corresponding perturbed samples does decrease a bit while the genre specific keywords in the candidate pool, the number of valid adversarial samples generated increases as it can be seen from the percentage of the perturbed samples for genre specific keywords in the above figure.</p>
+
+<p>Another key component for the evaluation of adversarial samples is to measure the number of changes incurred to obtain the adversarial sample. The number of changes made to craft a successful adversarial sample should be ideally low.The following figure shows a graph that indicates the number of changes required to create successful adversarial samples with and without using the genre-specific keywords. From the figure, it is evident that, if we consider same number of modifications the number of tainted sample produced using genre specific keywords for creating adversarial samples is more than that when genre specific keywords are not used.
 <p align="center">
 <img src="/images/result_modifications.PNG" width="500" >
 <br>  <b>Figure:</b> Plot showing the number of adversarial samples produced against the number of changes incurred
