@@ -6,8 +6,203 @@
     <description>Recent content on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 22 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 23 Feb 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://secml.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Class 5: Adversarial Machine Learning in Non-Image Domains</title>
+      <link>https://secml.github.io/class5/</link>
+      <pubDate>Fri, 23 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/class5/</guid>
+      <description>
+
+&lt;h2 id=&#34;beyond-images&#34;&gt;Beyond Images&lt;/h2&gt;
+
+&lt;p&gt;While the bulk of adversarial machine learning work has focused on image classification, ML is being used for a vartiety of tasks in the real world and attacks (and defenses) for different domains need to be tailored to the purpose of the ML process.
+Among the most significant uses of ML are natural language processing and voice recognition. Within these fields, attacks look very different from those on images. With images, individual pixels can be changed large amounts without making the image unrecognizable, whereas in voice recognition, the audio needs to remain smooth, but many transformations can be done that are not noticable to humans.
+These attacks are becoming more and more significant as always active listening devices like Amazon Alexa are becoming more common in the public sector. A broadcast television attack could be used to access personal accounts and devices of thousands of people simultaneously without many of those being attacked even noticing.&lt;/p&gt;
+
+&lt;h2 id=&#34;adversarial-audio&#34;&gt;Adversarial Audio&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Nicholas Carlini and David Wagner. &lt;em&gt;Audio Adversarial Examples: Targeted Attacks on Speech-to-Text&lt;/em&gt;. University of California, Berkeley. 5 January 2018. [&lt;a href=&#34;https://arxiv.org/pdf/1801.01944.pdf&#34;&gt;PDF&lt;/a&gt;]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If classic science fiction authors, painting grandiose visions of artificial intelligence in the future, could read some of the tech headlines of today, they might be surprised by how their predictions panned out:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class5/headlines.png&#34; alt=&#34;&#34; title=&#34;Google Home and Alexa in the news&#34; /&gt;
+  &lt;div class=&#34;caption&#34;&gt;
+Source: &lt;a href=&#34;(https://google.com)&#34;&gt;&lt;em&gt;Slides by Team Bus&lt;/em&gt;&lt;/a&gt;
+   &lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;These news articles recount recent incidents in which smart home voice-controlled devices have been activated by voices in television advertisements and shows, rather than from a physically-present human voice. While these untargeted, accidental (we assume) occurrences perhaps make for amusing news, they reflect a significant potential vulnerability in speech-to-text systems against targeted, adversarial attacks.&lt;/p&gt;
+
+&lt;p&gt;In their 2018 paper, authors &lt;a href=&#34;https://arxiv.org/pdf/1801.01944.pdf&#34;&gt;Carlini and Wagner&lt;/a&gt; develop and demonstrate a white-box attack against automated speech recognition systems: “given any audio waveform, we can produce another that is over 99.9% similar, but transcribes as any phrase of choice”. That is, a virtually unaltered sample, which might sound, at worst, noisy or mildly distorted to human ears, will be translated as an entirely different set of characters by the system.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class5/waveform_illustration.png&#34; alt=&#34;&#34; title=&#34;Illustration of the attack: adding small perturbations causes an audio waveform to transcribe to any desired target phrase.&#34; /&gt;
+   &lt;div class=&#34;caption&#34;&gt;
+Source: &lt;a href=&#34;(https://arxiv.org/pdf/1801.01944.pdf)&#34;&gt;&lt;em&gt;Audio Adversarial Examples&lt;/em&gt;&lt;/a&gt; [1]
+   &lt;/div&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;audio-distortion&#34;&gt;Audio distortion&lt;/h4&gt;
+
+&lt;p&gt;The goal of this attack is twofold: (a) to add the least possible amount of distortion to the original audio, and (b) to cause the distorted audio to map to an arbitrary sequence of transcribed characters. This thus becomes an optimization problem.&lt;/p&gt;
+
+&lt;p&gt;To measure distortion, we use \(dB(v)\) to represent the loudness of a given sample \(v\) measured in decibels. First, let the change between the original and distorted samples be&lt;/p&gt;
+
+&lt;p&gt;$$dB_x(\delta) := dB(\delta) - dB(x)$$&lt;/p&gt;
+
+&lt;p&gt;where \(x\) is original and \(\delta\) distorted. Then, let&lt;/p&gt;
+
+&lt;p&gt;$$C(v) = \mathop{\arg\,\max}\limits_p Pr[p | f(v)]$$&lt;/p&gt;
+
+&lt;p&gt;be the most likely transcribed phrase given some sample \(v\).&lt;/p&gt;
+
+&lt;p&gt;Our optimization problem becomes thus:&lt;/p&gt;
+
+&lt;p&gt;$$\text{minimize } dB_x(\delta)$$
+$$\text{such that } C(x+\delta)=t$$
+$$\text{with } x+\delta \in [-M,M]$$&lt;/p&gt;
+
+&lt;p&gt;where \(t\) is the target transcribed phrase and \(M\) is the maximum representable value (no distorted samples that are out of range &amp;ndash; in the authors&amp;rsquo; case, this happens to be \(2^{15}\) dB)).&lt;/p&gt;
+
+&lt;p&gt;However, due to the nonlinearity of \(C(\cdot)\), gradient descent fails, so instead we minimize&lt;/p&gt;
+
+&lt;p&gt;$$dB_x(\delta) + C(\cdot) \cdot \ell(x+\delta,t)$$
+$$\text{with } \ell(x&amp;rsquo;,t) = \text{CTC-Loss}(x&amp;rsquo;,t)$$&lt;/p&gt;
+
+&lt;p&gt;where the \(\text{CTC-Loss}\) (Connectionist Temporal Classification Loss) function is just the negative log-likelihood function.&lt;/p&gt;
+
+&lt;p&gt;After solving this optimization problem, the authors constructed targeted examples on the first 100 test instances of Mozilla&amp;rsquo;s Common Voice dataset, attempting to distort 10 of these to achieve 10 target incorrect transcriptions &amp;ndash; with 100% success for source-target pairs, and a mean perturbation magnititude of -31 dB.&lt;/p&gt;
+
+&lt;p&gt;Even after changing the loss function to&lt;/p&gt;
+
+&lt;p&gt;$$\ell(x,pi) = \sum_i \max (f(x)^i_{\pi^i}-\max_{t&amp;rsquo;\neq \pi^i} f(x)^i_{t&amp;rsquo;},0) $$&lt;/p&gt;
+
+&lt;p&gt;which avoids reducing loss and forces it to be more strongly classified, the mean distortion was only reduced from -31 dB to -38 dB, still a barely-noticeable to unnoticeable change.&lt;/p&gt;
+
+&lt;h4 id=&#34;attack-sources-and-targets&#34;&gt;Attack Sources and Targets&lt;/h4&gt;
+
+&lt;p&gt;Attack models worked consistently regardless of context, meaning that an attack using white noise or non-speech is as easy to craft as one using speech. Targeting silence turned out to be even easier than targeting speech.&lt;/p&gt;
+
+&lt;h4 id=&#34;robustness&#34;&gt;Robustness&lt;/h4&gt;
+
+&lt;p&gt;Random pointwise noise of less than -30dB is sufficient to corrupt an attack; although stronger attacks can be crafted using larger dB changes. The attacks did manage to be MP3 resistent, which speaks to the minimization of loss in MP3 compression as well as the fidelity of the attack model.&lt;/p&gt;
+
+&lt;p&gt;These attacks do become easier with longer sources, as the pacing of the target speech can be varied more, giving a larger attack space in which to work. In an ideal case for an attacker, they would be working with a prerecorded broadcast, which gives them a large continuous space to attack.
+That said, Over-The-Air attacks were not viable due to the white noise and variation in speakers and the rooms. Hidden voice commands did, however, show some promise for broadcast attacks.&lt;/p&gt;
+
+&lt;p&gt;Transferability was shown to hold, as it is somewhat fundamental to ML systems. As of yet, defence techniques on the ML layers have not yet been developed, although random noise added post-attack is a viable defence.&lt;/p&gt;
+
+&lt;h2 id=&#34;natural-language-processing&#34;&gt;Natural Language Processing&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Suranjana Samanta and Sameep Mehta. &lt;a href=&#34;https://arxiv.org/pdf/1707.02812.pdf&#34;&gt;Towards Crafting Text Adversarial Samples&lt;/a&gt;. 2017.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Adversarial samples are strategically modified samples, which are crafted with the purpose of fooling a classifier at hand. Although most of the prior works have been focused on synthesizing adversarial samples in the image domain, NLP based text classifiers can also be the focal point of such exploit. This paper introduces a method of crafting adversarial text samples by modification of the original samples. To be precise, the authors propose to modify the original text samples by deleting or replacing the important  words in the text or by introducing new words in the text sample. While crafting adversarial samples, the paper focuses on generating meaningful sentences which can pass off as legitimate from language viewpoint.&lt;/p&gt;
+
+&lt;h3 id=&#34;approach&#34;&gt;Approach&lt;/h3&gt;
+
+&lt;p&gt;Initially, the authors calculate contribution of each word towards determining the class-label.  A word in the text is highly contributing if its removal from the text is going to change the class probability value to a large extent. In their proposed approach, modification of the sample text by considering each word at a time, in the order of the ranking based on the class-contribution factor. For the modification purpose, a candidate pool for each word in sample text is created considering synonyms and typos of each of the words as well as the genre or sub-category specific keywords. The assumption behind choosing sub-category or genre-specific keywords based on the fact that certain words may contribute to positive sentiment for a particular genre but can emphasis negative sentiment for other kind of genre. For example, we can consider the sentence, &amp;ldquo;The movie was hilarious&amp;rdquo;. This indicates a positive sentiment for a comedy movie. But the same sentence denotes a negative sentiment for a horror movie.  Thus, the word &amp;lsquo;hilarious&amp;rsquo; contributes to the sentiment of the review based on the genre of the movie. Finally, replacement, addition or removal of words are performed on a given text sample at each iteration, so that the modified sample flips its class label.&lt;/p&gt;
+
+&lt;h3 id=&#34;experiments&#34;&gt;Experiments&lt;/h3&gt;
+
+&lt;p&gt;The paper performs their experimental results on two datasets: IMDB movie review dataset for sentiment analysis and twitter dataset for gender classification. They compare the efficiency of their method with the existing method TextFool by measuring the accuracy of the model
+obtained at different configurations. For both the cases, the proposed model was generated using Convolutional Neural Network (CNN).&lt;/p&gt;
+
+&lt;p&gt;The figure below (taken from the paper) shows the results for IMDB dataset. From the figure, it is obvious that the proposed method of adversarial sample crafting for text is capable of synthesizing semantically correct adversarial text samples from the original text sample. In addition, the inclusion of genre specific keywords appears to increase the quality of sample crafting. This is evident from the fact the drop in accuracy of the classifier before re-training for original text sample and the adversarialy crafted text sample is more when genre specific keywords are being used.
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/result_imdb.PNG&#34; width=&#34;500&#34; &gt;
+&lt;br&gt;  &lt;b&gt;Figure:&lt;/b&gt; Performance results on IMDB movie review dataset.
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;The following figure shows a graph that indicates the number of changes required to create successful adversarial samples with and without using the genre-specific keywords.
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/result_modifications.PNG&#34; width=&#34;500&#34; &gt;
+&lt;br&gt;  &lt;b&gt;Figure:&lt;/b&gt; Plot showing the number of adversarial samples produced against the number of changes incurred
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;For the Twitter dataset, the proposed method shows similar performance as the IMDB dataset.
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/result_twitter.PNG&#34; width=&#34;500&#34; &gt;
+&lt;br&gt;  &lt;b&gt;Figure:&lt;/b&gt; Performance results on Twitter gender classification dataset.
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;example&#34;&gt;Example&lt;/h3&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/example_nlp.PNG&#34; width=&#34;500&#34; &gt;
+&lt;br&gt;  &lt;b&gt;Figure:&lt;/b&gt; Examples of adversarial samples crafted from Twitter and IMDB dataset using (i)TextFool and
+(ii) proposed method.
+&lt;/p&gt;
+
+&lt;h4 id=&#34;face-recognition&#34;&gt;Face Recognition&lt;/h4&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Mahmood Sharif, Sruti Bhagavatula, Lujo Bauer, Michael K. Reiter. &lt;a href=&#34;https://www.cs.cmu.edu/~sbhagava/papers/face-rec-ccs16.pdf&#34;&gt;&lt;em&gt;Accessorize to a Crime: Real and Stealthy Attacks on State-of-the-Art Face Recognition&lt;/em&gt;&lt;/a&gt;. ACM CCS 2016.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Face recognition and face detection algorithms are extensively used in surveillance and access control applications. This paper focuses on fooling the state-of-art machine learning algorithms that are practically deployed for these tasks. More concretely, the paper carries out two types of attacks: dodging and impersonation. In dodging, the attacker tries to conceal his/her identity, whereas, in impersonation, the attacker tries to trick the algorithm into recognizing him/her as a different target individual. The authors realize these attacks by printing a wearable glass which, upon wearing, allows the attacker to successfully launch the attacks. The glasses used in the attack are shown below.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class5/glasses.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Glass frames used for the attacks
+&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.robots.ox.ac.uk/~vgg/publications/2015/Parkhi15/parkhi15.pdf&#34;&gt;Parikh et al.&lt;/a&gt; proposed the state-of-art 39 layer deep neural network trained on 2,622 celebrities which achieved an accuracy of 98.95% for the task of face detection. The authors of this paper use this model to launch their attacks.&lt;/p&gt;
+
+&lt;p&gt;The objective function of the deep neural network&amp;rsquo;s softmax layer is given as below:
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class5/objective.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;For impersonation, the objective is to add the minimum amount of noise \(r\) in the input image \(x\) to convert the class lable to the target label \(c_t\), as given below:
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class5/impersonation_obj.png&#34; width=&#34;450&#34; &gt;
+&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;For dodging, the objective is to add minimum amount of noise \(r\) in the input image \(x\) to deviate from the correct class label \(c_x\).
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class5/dodging_obj.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;The noises are then carefully added to the 3D printed glasses.&lt;/p&gt;
+
+&lt;h4 id=&#34;experiments-1&#34;&gt;Experiments&lt;/h4&gt;
+
+&lt;p&gt;The paper launches successful dodging and impersonation attacks. Figure below shows an example of impersonation where a female celebrity (left) is classified as a male celebrity (right) by the algorithm when the glass frame is used (center).
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class5/example1.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Successful impersonation using the glasses
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;Figure below shows an example of dodging the face detection algorithm with minor changes to the image that donot affect a normal human judgement. Left image is the original image and the center and right images are the perturbed images where the algorithm does not detect the faces.
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class5/example2.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Dodging the face detection
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;Further results show 100% dodging success rate and very high impersonation success rate.&lt;/p&gt;
+
+&lt;h4 id=&#34;summary&#34;&gt;Summary&lt;/h4&gt;
+
+&lt;p&gt;While the authors perform white-box attacks on the state-of-the-art face detection and face recognition algorithms, they also discuss about successfully carrying out the black-box attacks.&lt;/p&gt;
+
+&lt;p&gt;— Team Nematode: &lt;br /&gt;
+Bargav Jayaraman, Guy &amp;ldquo;Jack&amp;rdquo; Verrier, Joshua Holtzman, Max Naylor, Nan Yang, Tanmoy Sen&lt;/p&gt;
+
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1801.01944.pdf&#34;&gt;[1]&lt;/a&gt; Nicholas Carlini and David Wagner, &amp;ldquo;Audio Adversarial Examples: Targeted Attacks on Speech-to-Text.&amp;rdquo; January 2018.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.cs.cmu.edu/~sbhagava/papers/face-rec-ccs16.pdf&#34;&gt;[2]&lt;/a&gt; Mahmood Sharif, Sruti Bhagavatula, Lujo Bauer, and Michael K. Reiter, &amp;ldquo;Accessorize to a Crime: Real and Stealthy Attacks on State-of-the-Art Face Recognition.&amp;rdquo; October 2016.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Class 4: Differential Privacy In Action</title>
@@ -1384,6 +1579,12 @@ These are just suggestions, not meant to be an exhaustive list or limit the scop
 
 &lt;p&gt;Kexin Pei, Yinzhi Cao, Junfeng Yang, Suman Jana. &lt;em&gt;DeepXplore: Automated Whitebox Testing of Deep Learning Systems&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/abs/1705.06640&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
 
+&lt;h3 id=&#34;defining-adversarial-examples&#34;&gt;Defining Adversarial Examples&lt;/h3&gt;
+
+&lt;p&gt;Mahmood Sharif, Lujo Bauer, Michael K. Reiter. _On the Suitability of \(L&lt;em&gt;p\)-norms for Creating and Preventing Adversarial Examples&lt;/em&gt;. arxiv, Feb 2018. &lt;a href=&#34;https://arxiv.org/abs/1802.09653&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Gamaleldin F. Elsayed, Shreya Shankar, Brian Cheung, Nicolas Papernot, Alex Kurakin, Ian Goodfellow, Jascha Sohl-Dickstein. &lt;em&gt;Adversarial Examples that Fool both Human and Computer Vision&lt;/em&gt;. arxiv, Feb 2018. &lt;a href=&#34;https://arxiv.org/abs/1802.08195&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
+
 &lt;h3 id=&#34;adversarial-training&#34;&gt;Adversarial Training&lt;/h3&gt;
 
 &lt;p&gt;Alex Kurakin, Dan Boneh, Florian Tramèr, Ian Goodfellow, Nicolas Papernot, Patrick McDaniel. &lt;em&gt;Ensemble Adversarial Training: Attacks and Defenses&lt;/em&gt;. ICLR 2018. &lt;a href=&#34;https://research.google.com/pubs/pub46638.html&#34;&gt;Web&lt;/a&gt;&lt;/p&gt;
@@ -1426,82 +1627,6 @@ Tasks&lt;/em&gt;. &lt;a href=&#34;http://192.167.131.140/sites/default/files/big
 &lt;p&gt;Scott Alfeld, Xiaojin Zhu, and Paul Barford.  &lt;em&gt;Data Poisoning Attacks
 against Autoregressive
 Models&lt;/em&gt;. &lt;a href=&#34;http://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12049/11758&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Blogging Mechanics</title>
-      <link>https://secml.github.io/blogging/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://secml.github.io/blogging/</guid>
-      <description>&lt;p&gt;Here are some suggestions for how to create the class blog posts for
-your assigned classes.  I believe each team has at least a few members
-with enough experience using git and web contruction tools that
-following these instructions won&amp;rsquo;t be a big burden, but if you have
-other ways you want to build your blog page for a topic let me know
-and we can discuss alternative options.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Install &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt;.  Hugo is a static website
-generator that builds a site from Markdown pages.  (With homebrew on
-Mac OS X, this is easy: &lt;code&gt;brew update &amp;amp;&amp;amp; brew install hugo&lt;/code&gt;.)&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Clone the github repository,
-&lt;a href=&#34;https://github.com/secML/secML.github.io&#34;&gt;&lt;em&gt;https://github.com/secML/secML.github.io&lt;/em&gt;&lt;/a&gt;.
-This is what is used to build the
-&lt;a href=&#34;https://secml.github.io/&#34;&gt;https://secml.github.io/&lt;/a&gt; site.  If you are
-working with multiple teammates on the blog post (which you probably
-should be), you can add write permissions for everyone to the cloned
-repository.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;You should create your page in the &lt;code&gt;web/content/post/&lt;/code&gt;
-subdirectory. You can start by copying an earlier file in that
-directory (e.g., &lt;code&gt;class1.md&lt;/code&gt;) and updating the header section
-(between the &lt;code&gt;+++&lt;/code&gt; marks) and replacing everything after that with
-your content.  Don&amp;rsquo;t forget to &lt;strong&gt;update the date&lt;/strong&gt; so your page will
-appear in the right order. You can put &lt;code&gt;draft = true&lt;/code&gt; in the header,
-so your page will not appear on the course website until it is
-ready.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;You can use multiple files (but probably only one in
-the &lt;code&gt;post/&lt;/code&gt; directory (this will show up as pages on the front
-list).  Use the &lt;code&gt;web/content/images&lt;/code&gt; directory for images and the
-&lt;code&gt;web/content/docs&lt;/code&gt; directory for papers.  Using images and other
-resources to make your post interesting and visually compelling is
-highly encouraged!&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Write the blog page using Markdown.  Markdown is a simple markup
-language that can be used to easily generate both HTML and other
-output document formats.  You can probably figure out everything you
-need by looking at previous posts, but for a summary of Markdown,
-see &lt;a href=&#34;https://daringfireball.net/projects/markdown/syntax&#34;&gt;Markdown: Syntax&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;You can incorporate latex math into your markdown. Use &lt;code&gt;\\(&lt;/code&gt; inline &lt;code&gt;\\)&lt;/code&gt; for inline math, e.g., &lt;code&gt;\\( J_{min}\\}&lt;/code&gt; and &lt;code&gt;$$ ... $$&lt;/code&gt; for display math.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Your post should include credits for any external material you use,
-especially for any images you incorporate that you didn&amp;rsquo;t produce.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Please include full references to the papers, and links to the most
-definitive source available (usually this is to arxiv or a
-conference site, but could be the author&amp;rsquo;s page). You should include
-additional links to relevant and useful reference or code
-repositories. Its good to have an overview section at the beginning
-of the post with links to all the main papers covered, and then to
-have links in specific sections to what is being covered.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;To test the post, run &lt;code&gt;make develop&lt;/code&gt; (in the &lt;code&gt;web/&lt;/code&gt; subdirectory of
-your repository).  This starts the Hugo development server, usually
-on port 1313 (unless that port is already in use).  Then, you can
-view the site with a browser at &lt;code&gt;localhost:1313&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;When you are ready, submit a pull request to incorporate your
-changes into the main repository (and public course website).  Also,
-send a message to me (dave) on slack, so I know the post is ready to
-review.  At this stage, I will probably make some requests for
-improvements, and then will post the edited version to the course
-site.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </description>
     </item>
     

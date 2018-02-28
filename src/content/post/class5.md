@@ -1,6 +1,6 @@
 +++
 date = "23 Feb 2018"
-draft = true
+draft = false
 title = "Class 5: Adversarial Machine Learning in Non-Image Domains"
 author = "Team Nematode"
 slug = "class5"
@@ -8,9 +8,9 @@ slug = "class5"
 
 ## Beyond Images
 
-While Machine Learning is largely being tested by research communities on image recognition, ML is being used for a vartiety of tasks in the real world and attacks on each particular use needs to be tailored to the purpose of the ML process.
-Among the most significant uses of ML are natural language processing and voice recognition. Within these fields, attacks look very different to those on images. With images, individual pixels can be changed large amounts without making the image unrecognizable, whereas in voice recognition, the audio needs to remain smooth. 
-These attacks are becoming more and more significant as always active listening devices like Amazon Alexa are becoming more common in the public sector. A televized attack could be used to access personal accounts and devices of thousands of people simultaneously without many of those being attacked even noticing.
+While the bulk of adversarial machine learning work has focused on image classification, ML is being used for a vartiety of tasks in the real world and attacks (and defenses) for different domains need to be tailored to the purpose of the ML process.
+Among the most significant uses of ML are natural language processing and voice recognition. Within these fields, attacks look very different from those on images. With images, individual pixels can be changed large amounts without making the image unrecognizable, whereas in voice recognition, the audio needs to remain smooth, but many transformations can be done that are not noticable to humans. 
+These attacks are becoming more and more significant as always active listening devices like Amazon Alexa are becoming more common in the public sector. A broadcast television attack could be used to access personal accounts and devices of thousands of people simultaneously without many of those being attacked even noticing.
 
 ## Adversarial Audio
 
@@ -54,9 +54,9 @@ $$\text{with } x+\delta \in [-M,M]$$
 
 where \\(t\\) is the target transcribed phrase and \\(M\\) is the maximum representable value (no distorted samples that are out of range -- in the authors' case, this happens to be \\(2^{15}\\) dB)).
 
-However, due to the nonlinearity of \\(C(.)\\), gradient descent fails, so instead we minimize 
+However, due to the nonlinearity of \\(C(\cdot)\\), gradient descent fails, so instead we minimize 
 
-$$dB_x(\delta) + C(.) \cdot \ell(x+\delta,t)$$
+$$dB_x(\delta) + C(\cdot) \cdot \ell(x+\delta,t)$$
 $$\text{with } \ell(x',t) = \text{CTC-Loss}(x',t)$$
 
 where the \\(\text{CTC-Loss}\\) (Connectionist Temporal Classification Loss) function is just the negative log-likelihood function.
@@ -83,19 +83,19 @@ That said, Over-The-Air attacks were not viable due to the white noise and varia
 Transferability was shown to hold, as it is somewhat fundamental to ML systems. As of yet, defence techniques on the ML layers have not yet been developed, although random noise added post-attack is a viable defence.
 
 ## Natural Language Processing
-[Towards Crafting Text Adversarial Samples](https://arxiv.org/pdf/1707.02812.pdf)
-Suranjana Samanta and Sameep Mehta
+
+> Suranjana Samanta and Sameep Mehta. [Towards Crafting Text Adversarial Samples](https://arxiv.org/pdf/1707.02812.pdf). 2017. 
 
 Adversarial samples are strategically modified samples, which are crafted with the purpose of fooling a classifier at hand. Although most of the prior works have been focused on synthesizing adversarial samples in the image domain, NLP based text classifiers can also be the focal point of such exploit. This paper introduces a method of crafting adversarial text samples by modification of the original samples. To be precise, the authors propose to modify the original text samples by deleting or replacing the important  words in the text or by introducing new words in the text sample. While crafting adversarial samples, the paper focuses on generating meaningful sentences which can pass off as legitimate from language viewpoint.  
 
 ### Approach
-Initially, the authors calculate contribution of each word towards determining the class-label.  A word in the text is highly contributing if its removal from the text is going to change the class probability value to a large extent. In their proposed approach, modification of the sample text by considering each word at a time, in the order of the ranking based on the class-contribution factor. For the modification purpose, a candidate pool for each word in sample text is created considering synonyms and typos of each of the words as well as the genre or sub-category specific keywords. The assumption behind choosing sub-category or genre specific keywords based on the fact that certain words may contribute to positive sentiment for a particular genre but can emphasis negative sentiment for other kind of genre. For example, we can consider the sentence, "The movie was hilarious". This indicates a positive sentiment for a comedy movie. But the same sentence denotes a negative sentiment for a horror movie.  Thus, the word 'hilarious' contributes to the sentiment of the review based on the genre of the movie. Finally, replacement, addition or removal of words are performed on a given text sample at each iteration, so that the modified sample flips its class label.
+Initially, the authors calculate contribution of each word towards determining the class-label.  A word in the text is highly contributing if its removal from the text is going to change the class probability value to a large extent. In their proposed approach, modification of the sample text by considering each word at a time, in the order of the ranking based on the class-contribution factor. For the modification purpose, a candidate pool for each word in sample text is created considering synonyms and typos of each of the words as well as the genre or sub-category specific keywords. The assumption behind choosing sub-category or genre-specific keywords based on the fact that certain words may contribute to positive sentiment for a particular genre but can emphasis negative sentiment for other kind of genre. For example, we can consider the sentence, "The movie was hilarious". This indicates a positive sentiment for a comedy movie. But the same sentence denotes a negative sentiment for a horror movie.  Thus, the word 'hilarious' contributes to the sentiment of the review based on the genre of the movie. Finally, replacement, addition or removal of words are performed on a given text sample at each iteration, so that the modified sample flips its class label.
 
 ### Experiments
-The paper performs their experimental results on two datasets- IMDB movie review dataset for sentiment analysis and twitter dataset for gender classification. They compare the efficiency of their method with the existing method TextFool by measuring the accuracy of the model
+The paper performs their experimental results on two datasets: IMDB movie review dataset for sentiment analysis and twitter dataset for gender classification. They compare the efficiency of their method with the existing method TextFool by measuring the accuracy of the model
 obtained at different configurations. For both the cases, the proposed model was generated using Convolutional Neural Network (CNN). 
 
-Figure below shows the results for IMDB dataset. From the figure, it is obvious that the proposed method of adversarial sample crafting for text is capable of synthesizing semantically correct adversarial text samples from the original text sample. In addition, the inclusion of genre specific keywords definitely boost up the quality of sample crafting. This is evident from the fact the drop in accuracy of the classifier before re-training for original text sample and the adversarialy crafted text sample is more when genre specific keywords are being used.
+The figure below (taken from the paper) shows the results for IMDB dataset. From the figure, it is obvious that the proposed method of adversarial sample crafting for text is capable of synthesizing semantically correct adversarial text samples from the original text sample. In addition, the inclusion of genre specific keywords appears to increase the quality of sample crafting. This is evident from the fact the drop in accuracy of the classifier before re-training for original text sample and the adversarialy crafted text sample is more when genre specific keywords are being used.
 <p align="center">
 <img src="/images/result_imdb.PNG" width="500" >
 <br>  <b>Figure:</b> Performance results on IMDB movie review dataset.
@@ -121,10 +121,11 @@ For the Twitter dataset, the proposed method shows similar performance as the IM
 </p>
 
 #### Face Recognition
-[Accessorize to a Crime: Real and Stealthy Attacks on State-of-the-Art Face Recognition](https://www.cs.cmu.edu/~sbhagava/papers/face-rec-ccs16.pdf)
-Mahmood Sharif, Sruti Bhagavatula, Lujo Bauer, Michael K. Reiter
 
-Face recognition and face detection algorithms are extensively used in surveillance and access control applications. This paper focuses on fooling the state-of-art machine learning algorithms that are practically deployed for these tasks. More concretely, the paper carries out two type of attacks, namely, dodging and impersonation. In dodging, the attacker tries to conceal his/her identity, whereas, in impersonation, the attacker tries to trick the algorithm into recognizing him/her as a different target individual. The authors realize these attacks by printing a wearable glass which, upon wearing, allows the attacker to successfully launch the attacks. The glasses used in the attack are shown below.
+> Mahmood Sharif, Sruti Bhagavatula, Lujo Bauer, Michael K. Reiter. [_Accessorize to a Crime: Real and Stealthy Attacks on State-of-the-Art Face Recognition_](https://www.cs.cmu.edu/~sbhagava/papers/face-rec-ccs16.pdf). ACM CCS 2016.
+
+
+Face recognition and face detection algorithms are extensively used in surveillance and access control applications. This paper focuses on fooling the state-of-art machine learning algorithms that are practically deployed for these tasks. More concretely, the paper carries out two types of attacks: dodging and impersonation. In dodging, the attacker tries to conceal his/her identity, whereas, in impersonation, the attacker tries to trick the algorithm into recognizing him/her as a different target individual. The authors realize these attacks by printing a wearable glass which, upon wearing, allows the attacker to successfully launch the attacks. The glasses used in the attack are shown below.
 
 <p align="center">
 <img src="/images/class5/glasses.png" width="500" >
@@ -139,13 +140,13 @@ The objective function of the deep neural network's softmax layer is given as be
 <br>
 </p>
 
-For impersonation, the objective is to add the minimum amount of noise 'r' in the input image 'x' to convert the class lable to the target label 'c_t', as given below:
+For impersonation, the objective is to add the minimum amount of noise \\(r\\) in the input image \\(x\\) to convert the class lable to the target label \\(c_t\\), as given below:
 <p align="center">
 <img src="/images/class5/impersonation_obj.png" width="450" >
 <br>
 </p>
 
-For dodging, the objective is to add minimum amount of noise 'r' in the input image 'x' to deviate from the correct class label 'c_x'.
+For dodging, the objective is to add minimum amount of noise \\(r\\) in the input image \\(x\\) to deviate from the correct class label \\(c_x\\).
 <p align="center">
 <img src="/images/class5/dodging_obj.png" width="500" >
 <br>

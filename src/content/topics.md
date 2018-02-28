@@ -15,6 +15,12 @@ J. Zico Kolter, Eric Wong. _Provable defenses against adversarial examples via t
 
 Kexin Pei, Yinzhi Cao, Junfeng Yang, Suman Jana. _DeepXplore: Automated Whitebox Testing of Deep Learning Systems_. [PDF](https://arxiv.org/abs/1705.06640)
 
+### Defining Adversarial Examples
+
+Mahmood Sharif, Lujo Bauer, Michael K. Reiter. _On the Suitability of \\(L_p\\)-norms for Creating and Preventing Adversarial Examples_. arxiv, Feb 2018. [PDF](https://arxiv.org/abs/1802.09653)
+
+Gamaleldin F. Elsayed, Shreya Shankar, Brian Cheung, Nicolas Papernot, Alex Kurakin, Ian Goodfellow, Jascha Sohl-Dickstein. _Adversarial Examples that Fool both Human and Computer Vision_. arxiv, Feb 2018. [PDF](https://arxiv.org/abs/1802.08195)
+
 ### Adversarial Training
 
 Alex Kurakin, Dan Boneh, Florian Tramèr, Ian Goodfellow, Nicolas Papernot, Patrick McDaniel. _Ensemble Adversarial Training: Attacks and Defenses_. ICLR 2018. [Web](https://research.google.com/pubs/pub46638.html)
