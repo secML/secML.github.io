@@ -1,6 +1,6 @@
 +++
 date = "02 Mar 2018"
-draft = true
+draft = false
 title = "Class 6: Measuring Robustness of ML Models"
 author = "Team Bus"
 slug = "class6"

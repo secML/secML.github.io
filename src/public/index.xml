@@ -6,8 +6,247 @@
     <description>Recent content on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 02 Mar 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://secml.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Class 6: Measuring Robustness of ML Models</title>
+      <link>https://secml.github.io/class6/</link>
+      <pubDate>Fri, 02 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/class6/</guid>
+      <description>
+
+&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;
+
+&lt;p&gt;In what seems to be an endless back-and-forth between new adversarial attacks and new defenses against those attacks, we would like a means of formally verifying the robustness of machine learning algorithms to adversarial attacks.
+ In the privacy domain, there is the idea of a differential privacy budget, which quantifies privacy over all possible attacks. In the following three papers, we see attempts at deriving an equivalent benchmark for security, one that will allow the evaluation of defenses against all possible attacks instead of just a specific one.&lt;/p&gt;
+
+&lt;h2 id=&#34;provably-minimally-distorted-adversarial-examples&#34;&gt;Provably Minimally Distorted Adversarial Examples&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Nicholas Carlini, Guy Katz, Clark Barrett, David L. Dill. &lt;em&gt;Provably Minimally-Distorted Adversarial Examples&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/abs/1709.10207&#34;&gt;arXiv preprint arXiv:1709.10207&lt;/a&gt;. September 2017.&lt;/p&gt;
+
+&lt;p&gt;Guy Katz, Clark Barrett, David Dill, Kyle Julian, Mykel Kochenderfer. &lt;em&gt;Reluplex: An efficient SMT solver for verifying deep neural networks&lt;/em&gt;. International Conference on Computer Aided Verification. 2017. &lt;a href=&#34;https://arxiv.org/pdf/1702.01135.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;There have been many attacking techniques against deep learning models that can effectively generate adversarial examples, such as FGSM, JSMA, DeepFool and the Carlini &amp;amp; Wagner attacks. But most of them couldn&amp;rsquo;t verify the absence of adversarial examples even if they fail to find any result.&lt;/p&gt;
+
+&lt;p&gt;Researchers have started to borrow the idea and techniques from the program verification field to verify the robustness of neural networks. In order to verify the correctness of a program, we can encode a program into SAT-modulo-theories (SMT) formulas and use some off-the-shelf solvers (e.g. Microsoft Z3) to verify a correctness property. An SMT solver generates sound and complete results, either telling you the program never violates the property, or giving you some specific counter-examples. However, we may not be able to get the results for some large programs in our lifetime, because it is an NP-complete problem.&lt;/p&gt;
+
+&lt;p&gt;Similarly, the current neural network verification techniques haven&amp;rsquo;t been able to deal with deep learning models of arbitrary size. But one of the prototype named Reluplex has produced some promising results on the MNIST dataset.&lt;/p&gt;
+
+&lt;p&gt;The Reluplex is an extension of the Simplex algorithm. It introduces a new domain theory solver to take care of the ReLU activation function because the Simplex only deals with linear real arithmetic. You can find more details about Reluplex in:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Guy Katz, Clark Barrett, David Dill, Kyle Julian, Mykel Kochenderfer. &lt;em&gt;Reluplex: An Efficient SMT Solver for Verifying Deep Neural Networks&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/abs/1702.01135&#34;&gt;Arxiv&lt;/a&gt;. 2017.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The paper we discuss here uses Reluplex to verify the &lt;em&gt;local adversarial robustness&lt;/em&gt; of two MNIST classification models. We say a model is delta-locally-robust at input \(x\) if for every \(x&amp;rsquo;\) such that \( ||x-x&amp;rsquo;||p \le \delta \), the model predicts the same label for \(x\) and \(x&amp;rsquo;\). Local robustness is certified for individual inputs, which is substantially different from the &lt;em&gt;global robustness&lt;/em&gt; that certifies the whole input space. The paper performs binary search on delta to find the minimal distortion at a certain precision, and each delta corresponds to one execution instance of Reluplex. The paper only considers the \(L_{infinity}\) norm and the \(L_1\) norm because it is easier to encode these constraints with Reluplex. For example, the \(L_1\) norm could be encoded as
+\( |x| = max(x, -x)=ReLu(2x)-x \).&lt;/p&gt;
+
+&lt;p&gt;The evaluation is conducted on a fully-connected, 3-layer network that has 20k weights and fewer than 100 hidden neurons. The testing accuracy of the model is 97%. The model is smaller than most of the state-of-the-art models and has inferior accuracy, but should be good enough for the model verification prototype. The authors arbitrarily selected 10 source images with known labels from the MNIST test set, which produced 90 targeted attack instances in total.&lt;/p&gt;
+
+&lt;p&gt;Even though the Reluplex method is faster than most of the existing general SMT solvers, it is not fast enough for verifying the MNIST classification models. For every configuration with different target models and different \(L_p\) norm constraints, Reluplex always timed out for some of the 90 instances. The experiments with the \(L_1\) constraint were generally slower than those with the
+L_infinity constraint, because it introduced more ReLU components. However, we still found some interesting results from the successful verification instances.&lt;/p&gt;
+
+&lt;p&gt;The paper compared the minimally-distorted adversarial examples found by Reluplex with those generated by the CW attack and concluded that iterative optimization-based attacks are effective because the CW attack produced adversarial examples within 12% of optimal on the specific models.&lt;/p&gt;
+
+&lt;p&gt;The paper also evaluated a particular defense technique proposed by Madry et al. which is an adversarial training method that uses the PGD attack and enlarges the model capacity. The paper concluded that the PGD-based adversarial training increased the robustness to adversarial examples by 4.2x on the examined samples. Even though this result doesn&amp;rsquo;t guarantee the efficacy at larger scale, it proves that the defense increases the robustness against all future attacks while it is only trained with the PGD attack.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;evaluating-the-robustness-of-neural-networks&#34;&gt;Evaluating the Robustness of Neural Networks&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Tsui-Wei Weng, Huan Zhang, Pin-Yu Chen, Jinfeng Yi, Dong Su, Yupeng Gao, Cho-Jui Hsieh, Luca Daniel. &lt;em&gt;Evaluating the Robustness of Neural Networks: An Extreme Value Theory Approach&lt;/em&gt;. ICLR 2018. January 2018 &lt;a href=&#34;https://arxiv.org/pdf/1801.10578.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Little work has been done towards developing a comprehensive measure of robustness for neural networks, primarily due to them growing mathematically complex as the number of layers increases. The authors contribute a lower bound on the minimal perturbation needed to generate an adversarial sample. They accomplish this by using the extreme value theorem to estimate the local Lipschitz constant for a given sample.&lt;/p&gt;
+
+&lt;p&gt;The work is motivated by the success of a particular attack by Carlini and Wagner against several previous defense strategies such as defensive distillation, adversarial training, and model ensemble &lt;a href=&#34;https://arxiv.org/pdf/1608.04644.pdf&#34;&gt;[2]&lt;/a&gt;. This highlights the need for a means for evaluating a defenses effectiveness against &lt;em&gt;all&lt;/em&gt; attacks rather than just the ones tested against.&lt;/p&gt;
+
+&lt;p&gt;Previous attempts at deriving such a lower bound have shortcomings of their own. Szegedy et al. compute the product of the global Lipschitz constant of each layer of the network to derive a metric of instability of a deep neural network&amp;rsquo;s output; however the global Lipschitz constant is a loose bound &lt;a href=&#34;https://arxiv.org/pdf/1312.6199.pdf&#34;&gt;[3]&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Hein and Andriushchenko derived a closed-form bound using the local Lipschitz constant, but such a bound is only feasible for networks with one hidden layer. Several other approaches used linear programming to verify properties of neural networks, but they are also infeasible for large networks &lt;a href=&#34;https://arxiv.org/pdf/1705.08475.pdf&#34;&gt;[4]&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The most similar work uses a linear programming formulation to derive an &lt;em&gt;upper&lt;/em&gt; bound on the minimum distortion needed, which is not as useful as a universal robustness metric, and also is infeasible for large networks due to the computational complexity of linear programming.&lt;/p&gt;
+
+&lt;h3 id=&#34;robustness-metric&#34;&gt;Robustness metric&lt;/h3&gt;
+
+&lt;p&gt;In order to derive a formal robustness guarantee, the authors formulate the lower bound for the minimum adversarial distortion needed to be a successful perturbed example (success here meaning fooling the classifier, thus becoming adversarial). They accomplish this by relating p-norm of the perturbation \(\lVert \delta \rVert_p \) to the local Lipschitz constant \( L_q^j \), local meaning defined over a l-ball around the input
+They use properties of Lipschitz continuous functions to prove the following:&lt;/p&gt;
+
+&lt;p&gt;$$ \lVert \delta \rVert \le \min_{j \ne c}  \frac{f_c(x_0) - f_j(x_0)}{L_q^j} $$&lt;/p&gt;
+
+&lt;p&gt;That is to say that if the the p-norm of the perturbation is less than the difference between any two classifications of the input, \((x_0\)), divided by the local Lipschitz constant.&lt;/p&gt;
+
+&lt;p&gt;The authors go on to provide a similar guarantee for networks where the activation function is not differentiable, for example an ReLU network. In such a case, the local Lipschitz constant can be replaced with the supremum of the directional derivatives for each direction heading towards the non-differentiable point.&lt;/p&gt;
+
+&lt;h3 id=&#34;clever-robustness-metric&#34;&gt;CLEVER Robustness Metric&lt;/h3&gt;
+
+&lt;p&gt;Since the above formulations of the lower bound are difficult to compute, the authors present a technique for estimating the lower bound, which is much more feasible computationally. They make use of the extreme value theorem, which claims that for any random variable, the maximum value of infinite samples of it follows a known distribution. In this case, the random variable is the p-norm of the gradient of a given sample. The authors assume a Weibull non-degenerate distribution for this paper and verify it as a reasonable assumption empirically.&lt;/p&gt;
+
+&lt;p&gt;To apply the theorem, they generate N samples in a ball around a given sample and calculate the gradient norm of each sample. Using the maximum value of the gradient over those N samples, they apply maximum likelihood to get distribution parameters that maximize the probability of those gradients. It should be noted that this approach assumes that the adversarial examples are well-distributed enough that enough random noise will generate them.&lt;/p&gt;
+
+&lt;p&gt;The resulting CLEVER score is an approximate lower bound on the distortion needed for an attack to succeed.&lt;/p&gt;
+
+&lt;h3 id=&#34;experiments-and-results&#34;&gt;Experiments and Results&lt;/h3&gt;
+
+&lt;p&gt;To evaluate how effective an indicator of robustness the CLEVER score is, the authors conducted experiments using the CIFAR-10, MNIST, and ImageNet data sets, pairing each data set with a set of neural network architectures and corresponding popular defenses for those networks.&lt;/p&gt;
+
+&lt;p&gt;They estimate the Weibull distribution parameter and conduct a goodness-of-fit test to verify that the distribution fits the data empirically.&lt;/p&gt;
+
+&lt;p&gt;They then apply two recent state-of-the-art attacks to their models, the Carlini and Wagner attack &lt;a href=&#34;https://arxiv.org/pdf/1608.04644.pdf&#34;&gt;[2]&lt;/a&gt;, covered in a previous blog post, and I-FGSM &lt;a href=&#34;https://arxiv.org/pdf/1412.6572.pdf&#34;&gt;[3]&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;To evaluate the CLEVER score&amp;rsquo;s effectiveness, the authors compare it with the average \( L_2 \) and
+L_infinity distortions for each adversarial example generated by each type of attack. Since the score is an estimate of the lower bound of the minimal distortion needed, if it is an accurate estimate, then no attack should succeed with a distortion less than the lower bound. Their results show that this holds under both distortion metrics.&lt;/p&gt;
+
+&lt;p&gt;These results also show that the Carlini Wagner attack produces adversarial examples with distortion much closer to minimal than I-FGSM, which demonstrates the CLEVER score&amp;rsquo;s ability to evaluate the strength of attacks themselves. The score also serves as a metric for the effectiveness of of defenses against adversarial attacks since the score was shown to increase for defensively distilled networks. The authors generally contribute a means of providing theoretical guarantees about neural networks that is no limited by the size of the network.&lt;/p&gt;
+
+&lt;p&gt;However, there does not seem to be a correlation between the CLEVER score and the distortion needed by the Carlini Wagner attack. If the score were to truly indicate how hard it is to generate adversarial examples, then we would expect that networks with a higher CLEVER score to have higher average distortions than networks with lower scores, but this was not always the case.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;lower-bounds-on-the-robustness-to-adversarial-perturbations&#34;&gt;Lower bounds on the Robustness to Adversarial Perturbations&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Jonathan Peck, Joris Roels, Bart Goossens, Yvan Saeys &lt;a href=&#34;https://papers.nips.cc/paper/6682-lower-bounds-on-the-robustness-to-adversarial-perturbations.pdf&#34;&gt;Lower bounds on the robustness to adversarial perturbations&lt;/a&gt;. NIPS 2017.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In this paper, the authors propose theoretical lower bounds on the adversarial
+perturbations on different types of layers in neural networks. They then combine
+these theoretical lower bounds derived layer-by-layer, and apply it to the
+entire network to calculate the theoretical lower bound for adversarial
+perturbations for the network. In contrast to previous work on this topic, the
+authors derive the lower bounds directly in terms of the model parameters.
+This is useful for applying the bounds on real-world DNN models.&lt;/p&gt;
+
+&lt;h3 id=&#34;lower-bounds-on-different-classifiers&#34;&gt;Lower bounds on different classifiers&lt;/h3&gt;
+
+&lt;p&gt;The authors use a modular approach to find the lower bound of a feedforward
+neural network. In this approach, they derive the lower bound at a particular
+layer by working their way backward starting from the output layer, and
+gradually towards the input layer. More precisely, given a layer that takes as
+input \(y\) and computes a function \(h\) on the input, if we know the
+robustness bound of the following layer \(k\), then the goal at the current
+layer is to find the perturbation \(r\) such that,&lt;/p&gt;
+
+&lt;p&gt;$$||h(y+r)|| = ||h(y)|| + k$$&lt;/p&gt;
+
+&lt;p&gt;Any adversarial perturbation to that layer, \(q\) is guaranteed to satisfy
+\(||q|| \geq ||r||\).&lt;/p&gt;
+
+&lt;p&gt;The lower bounds for different types of layers, as proposed in the paper, is
+shown below. The proofs can be found in the &lt;a href=&#34;https://papers.nips.cc/paper/6682-lower-bounds-on-the-robustness-to-adversarial-perturbations-supplemental.zip&#34;&gt;supplemental materials provided by
+the authors of the paper&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;softmax-output-layers&#34;&gt;Softmax output layers&lt;/h4&gt;
+
+&lt;p&gt;Let \(r\) be the smallest perturbations to the input \(x\) of a softmax
+layer such that \(f(x+r) \neq f(x)\). The authors have shown that this
+condition is then satisfied:
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class6/softmax.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;fully-connected-layers&#34;&gt;Fully connected layers&lt;/h4&gt;
+
+&lt;p&gt;Here, the assumption is that the next layer has a robustness of \(k\). In that
+case, the authors have shown that the minimum perturbations \(r\) satisfies
+this condition:
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class6/fulllayers.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;Here, \(J(x)\) is the Jacobian matrix of \(h_L\) at \(x\), and \(M\) is the
+bound of the second order derivative of \(h_L\).&lt;/p&gt;
+
+&lt;h4 id=&#34;convolutional-layers&#34;&gt;Convolutional layers&lt;/h4&gt;
+
+&lt;p&gt;For a convolutional layer with filter tensor \(W \in R^{k \times c \times q
+\times q}\), and input tensor \(X\), the adversarial perturbation \(R\)
+satisfies this condition:
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class6/convolutional.png&#34; width=&#34;200&#34; &gt;
+&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;pooling-layers&#34;&gt;Pooling layers&lt;/h4&gt;
+
+&lt;p&gt;For a MAX or average pooling layer, the adversarial perturbation \(R\)
+satisfies:
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class6/maxpooling.png&#34; width=&#34;200&#34; &gt;
+&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;And for \(L_p\) pooling:
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class6/lppooling.png&#34; width=&#34;200&#34; &gt;
+&lt;br&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;results&#34;&gt;Results&lt;/h3&gt;
+
+&lt;p&gt;The authors conducted their experiments using the MNIST and CIFAR-10 datasets on
+the LeNet network. For generating the adversarial perturbations for testing the
+theoretical bounds, they used the fast gradient sign method (FGSM). They used a
+binary search to find the smallest perturbation parameter of FGSM that resulted
+in misclassification of a sample.&lt;/p&gt;
+
+&lt;p&gt;In their experiments, the authors did not find any adversarial sample that
+violated the theoretical lower bounds. The experimental and theoretical
+perturbation norms can be seen in the following two tables:&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class6/fgsm.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Summary of norms of adversarial perturbations found by FGSM
+&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class6/theoretical.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Summary of theoretical bound of adversarial perturbations
+&lt;/p&gt;
+
+&lt;p&gt;It can be seen that the mean theoretical perturbation is much lower than the
+experimental ones for both MNIST and CIFAR-10 datasets. The authors suggest this
+is due to FGSM not being the most efficient attacking technique.&lt;/p&gt;
+
+&lt;p&gt;In conclusion, the authors suggest it is still unclear how tight these
+theoretical bounds are. It will be interesting to verify how close they are to
+the minimal distortion achieved by more efficient attacking techniques.
+Moreover, they have only tried their method on feedforward networks. Applying it
+to recurrent networks is a possible future direction. Finally, they propose the
+adoption of a precise characterization of networks in terms of tradeoff between
+robustness and accuracy.&lt;/p&gt;
+
+&lt;p&gt;&amp;mdash; Team Bus:&lt;br /&gt;
+Anant Kharkar,
+Atallah Hezbor,
+Bhuvanesh Murali,
+Mainuddin Jonas,
+Weilin Xu&lt;/p&gt;
+
+&lt;h4 id=&#34;references&#34;&gt;References&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1801.10578.pdf&#34;&gt;[1]&lt;/a&gt; T.-W Weng, H. Zhang, P.-Y. Chen, J. Yi, D. Su, Y. Gao, C.-J. Hsieh, L. Daniel &amp;ldquo;Evaluating the robustness of neural networks: An extreme value theory approach&amp;rdquo; &lt;em&gt;ICLR 2018&lt;/em&gt;, January 2018.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1608.04644.pdf&#34;&gt;[2]&lt;/a&gt; N. Carlini, D. Wagner &amp;ldquo;Towards evaluating the robustness of neural networks&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1608.04644&lt;/em&gt;, March 2017.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1312.6199.pdf&#34;&gt;[3]&lt;/a&gt; C. Szegedy, W. Zaremba, I. Sutskever, J. Bruna, D. Erhan, I. Goodfellow, R. Fergus. &amp;ldquo;Intriguing properties of neural networks&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1312.6199&lt;/em&gt;, 2013.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1705.08475.pdf&#34;&gt;[4]&lt;/a&gt; M. Hein, M. Andriushchenko. &amp;ldquo;Formal guarantees on the robustness of a classifier against adversarial manipulation&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1705.08475&lt;/em&gt;, 2017.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1412.6572.pdf&#34;&gt;[5]&lt;/a&gt; I.J. Goodfellow, J. Shlens, C. Szegedy. &amp;ldquo;Explaining and harnessing adversarial examples&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1412.6572&lt;/em&gt;, March 2015.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/abs/1709.10207&#34;&gt;[6]&lt;/a&gt; Nicholas Carlini, Guy Katz, Clark Barrett, David L. Dill &amp;ldquo;Provably Minimally-Distorted Adversarial Examples&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1709.10207&lt;/em&gt;, February 2018.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/abs/1702.01135&#34;&gt;[7]&lt;/a&gt; Guy Katz, Clark Barrett, David Dill, Kyle Julian, Mykel Kochenderfer &amp;ldquo;Reluplex: An efficient SMT solver for verifying deep neural networks.&amp;rdquo; &lt;em&gt;International Conference on Computer Aided Verification&lt;/em&gt;. Springer, Cham, 2017.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Class 5: Adversarial Machine Learning in Non-Image Domains</title>
@@ -1553,82 +1792,6 @@ reimbursement. This is easiest if you just borrow my credit card and
 then all you need to do is send me an image of the receipt (or hand
 me a physical receipt).&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://secml.github.io/topics/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://secml.github.io/topics/</guid>
-      <description>
-
-&lt;p&gt;This page collects some topic ideas and papers for future classes.
-These are just suggestions, not meant to be an exhaustive list or limit the scope of future topics or papers.&lt;/p&gt;
-
-&lt;h3 id=&#34;certified-defenses-formal-methods&#34;&gt;Certified Defenses, Formal Methods&lt;/h3&gt;
-
-&lt;p&gt;Aditi Raghunathan, Jacob Steinhardt, Percy Liang. &lt;em&gt;Certified Defenses against Adversarial Examples&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/abs/1801.09344&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Guy Katz, Clark Barrett, David Dill, Kyle Julian and Mykel Kochenderfer. &lt;em&gt;Reluplex: An Efficient SMT Solver for Verifying Deep Neural Networks&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/pdf/1702.01135.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Nicholas Carlini, Guy Katz, Clark Barrett, and David L. Dill. &lt;em&gt;Ground-Truth Adversarial Examples&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/pdf/1709.10207.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;J. Zico Kolter, Eric Wong. &lt;em&gt;Provable defenses against adversarial examples via the convex outer adversarial polytope&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/abs/1711.00851&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;testing&#34;&gt;Testing&lt;/h3&gt;
-
-&lt;p&gt;Kexin Pei, Yinzhi Cao, Junfeng Yang, Suman Jana. &lt;em&gt;DeepXplore: Automated Whitebox Testing of Deep Learning Systems&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/abs/1705.06640&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;defining-adversarial-examples&#34;&gt;Defining Adversarial Examples&lt;/h3&gt;
-
-&lt;p&gt;Mahmood Sharif, Lujo Bauer, Michael K. Reiter. _On the Suitability of \(L&lt;em&gt;p\)-norms for Creating and Preventing Adversarial Examples&lt;/em&gt;. arxiv, Feb 2018. &lt;a href=&#34;https://arxiv.org/abs/1802.09653&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Gamaleldin F. Elsayed, Shreya Shankar, Brian Cheung, Nicolas Papernot, Alex Kurakin, Ian Goodfellow, Jascha Sohl-Dickstein. &lt;em&gt;Adversarial Examples that Fool both Human and Computer Vision&lt;/em&gt;. arxiv, Feb 2018. &lt;a href=&#34;https://arxiv.org/abs/1802.08195&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;adversarial-training&#34;&gt;Adversarial Training&lt;/h3&gt;
-
-&lt;p&gt;Alex Kurakin, Dan Boneh, Florian Tramèr, Ian Goodfellow, Nicolas Papernot, Patrick McDaniel. &lt;em&gt;Ensemble Adversarial Training: Attacks and Defenses&lt;/em&gt;. ICLR 2018. &lt;a href=&#34;https://research.google.com/pubs/pub46638.html&#34;&gt;Web&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;malware-detection-and-evasion&#34;&gt;Malware Detection and Evasion&lt;/h3&gt;
-
-&lt;p&gt;Robin Sommer and Vern Paxson. &lt;em&gt;Outside the Closed World: On Using Machine Learning For Network Intrusion Detection&lt;/em&gt;. &lt;a href=&#34;https://oaklandsok.github.io/papers/sommer2010.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Igino Corona and Giorgio Giacinto and Fabio Roli. &lt;em&gt;Adversarial Attacks against Intrusion Detection
-Systems: Taxonomy, Solutions and Open Issues&lt;/em&gt;. &lt;a href=&#34;http://pralab.diee.unica.it/sites/default/files/Corona-INS2013.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Kyle Soska and Nicolas Christin. &lt;em&gt;Automatically Detecting Vulnerable Websites Before They Turn Malicious&lt;/em&gt;. &lt;a href=&#34;https://www.andrew.cmu.edu/user/nicolasc/publications/SC-USENIXSec14.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Roberto Jordaney, Kumar Sharad, Santanu K. Dash, Zhi Wang, Davide Papini, Ilia Nouretdinov, and Lorenzo Cavallaro. &lt;em&gt;Transcend: Detecting Concept Drift in Malware Classification Models&lt;/em&gt;. &lt;a href=&#34;https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/jordaney&#34;&gt;Paper Site&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Hung Dang, Yue Huang, and Ee-Chien Chang. &lt;em&gt;Evading Classifiers by Morphing in the Dark&lt;/em&gt;. &lt;a href=&#34;https://acmccs.github.io/papers/p119-dangA.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;fairness&#34;&gt;Fairness&lt;/h3&gt;
-
-&lt;p&gt;Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan. &lt;em&gt;Semantics derived automatically from language corpora contain human-like biases&lt;/em&gt;. &lt;a href=&#34;http://science.sciencemag.org/content/356/6334/183.full&#34;&gt;HTML&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Jieyu Zhao, Tianlu Wang, Mark Yatskar, Vicente Ordonez, Kai-Wei Chang. &lt;em&gt;Men Also Like Shopping:
-Reducing Gender Bias Amplification using Corpus-level Constraints&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/pdf/1707.09457.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://fatconference.org/2018/program.html&#34;&gt;Conference on Fairness, Accountability, and
-Transparency&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;assessing-risks&#34;&gt;Assessing Risks&lt;/h3&gt;
-
-&lt;p&gt;&lt;em&gt;The Malicious Use of Artificial Intelligence: Forecasting, Prevention, and Mitigation&lt;/em&gt;. February 2018
-&lt;a href=&#34;https://www.eff.org/files/2018/02/20/malicious_ai_report_final.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;poisoning&#34;&gt;Poisoning&lt;/h3&gt;
-
-&lt;p&gt;Battista Biggio, Igino Corona, Giorgio Fumera, Giorgio Giacinto, and
-Fabio Roli. &lt;em&gt;Bagging Classifiers for Fighting Poisoning Attacks in
-Adversarial Classification
-Tasks&lt;/em&gt;. &lt;a href=&#34;http://192.167.131.140/sites/default/files/biggio11-mcs.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Scott Alfeld, Xiaojin Zhu, and Paul Barford.  &lt;em&gt;Data Poisoning Attacks
-against Autoregressive
-Models&lt;/em&gt;. &lt;a href=&#34;http://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12049/11758&#34;&gt;PDF&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
