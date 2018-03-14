@@ -1,7 +1,7 @@
 +++
 date = "02 Mar 2018"
 draft = true
-title = "Class 6: Measuring Robustness of ML Models against Adversarial Attacks"
+title = "Class 6: Measuring Robustness of ML Models"
 author = "Team Bus"
 slug = "class6"
 +++
@@ -12,22 +12,27 @@ In what seems to be an endless back-and-forth between new adversarial attacks an
 
 ## Provably Minimally Distorted Adversarial Examples
 
+[TODO: Please add reference to the specific paper on this also, and make the references more complete (full author list, where published).]
+
 > Katz et al. _Reluplex: An Efficient SMT solver for verifying deep neural networks_. International Conference on Computer Aided Verification. May 2017 [[PDF]](https://arxiv.org/pdf/1702.01135.pdf)
 
 There have been many attacking techniques against deep learning models that can effectively generate adversarial examples, such as FGSM, JSMA, DeepFool and the Carlini & Wagner attacks. But most of them couldn't verify the absence of adversarial examples even if they fail to find any result.
 
-Researchers have started to borrow the idea and techniques from the program verification field to verify the robustness of neural networks. In order to verify the correctness of a program, we can encode a program into SAT-modulo-theories (SMT) formulas and use some off-the-shelf solvers (e.g. Microsoft Z3) to verify the correctness. An SMT solver generates sound and complete results, either telling you the program is correct or giving you some specific counter-examples. However, we may not be able to get the results for some large programs in our lifetime, because it is an NP-complete problem.
+Researchers have started to borrow the idea and techniques from the program verification field to verify the robustness of neural networks. In order to verify the correctness of a program, we can encode a program into SAT-modulo-theories (SMT) formulas and use some off-the-shelf solvers (e.g. Microsoft Z3) to verify a correctness property. An SMT solver generates sound and complete results, either telling you the program never violates the property, or giving you some specific counter-examples. However, we may not be able to get the results for some large programs in our lifetime, because it is an NP-complete problem.
 
 Similarly, the current neural network verification techniques haven't been able to deal with deep learning models of arbitrary size. But one of the prototype named Reluplex has produced some promising results on the MNIST dataset.
 
-The Reluplex is an extension of the Simplex algorithm. It introduces a new domain theory solver to take care of the ReLU activation function because the Simplex only deals with linear real arithmetic. You can find more details about Reluplex on the paper by Guy Katz et al. [[7]](https://arxiv.org/abs/1702.01135).
+The Reluplex is an extension of the Simplex algorithm. It introduces a new domain theory solver to take care of the ReLU activation function because the Simplex only deals with linear real arithmetic. You can find more details about Reluplex in: 
 
-The paper we discuss here uses Reluplex to verify the local adversarial robustness of two MNIST classification models. We say a model is delta-locally-robust at input x if for every x' such that \\( ||x-x'||p \le \delta \\), the model predicts the same label to x and x'. The local robustness is certified for individual inputs, which is substantially different from the global robustness that certifies the whole input space. The paper performs binary search on delta to find the minimal distortion at a certain precision, and each delta corresponds to one execution instance of Reluplex. The paper only considers the L_infinity norm and the L_1 norm because it is easier to encode these constraints with Reluplex. For example, the L_1 norm could be encoded as
+> Guy Katz, Clark Barrett, David Dill, Kyle Julian, Mykel Kochenderfer. _Reluplex: An Efficient SMT Solver for Verifying Deep Neural Networks_. [Arxiv](https://arxiv.org/abs/1702.01135). 2017.
+
+The paper we discuss here uses Reluplex to verify the _local adversarial robustness_ of two MNIST classification models. We say a model is delta-locally-robust at input \\(x\\) if for every \\(x'\\) such that \\( ||x-x'||p \le \delta \\), the model predicts the same label for \\(x\\) and \\(x'\\). Local robustness is certified for individual inputs, which is substantially different from the _global robustness_ that certifies the whole input space. The paper performs binary search on delta to find the minimal distortion at a certain precision, and each delta corresponds to one execution instance of Reluplex. The paper only considers the \\(L_{infinity}\\) norm and the \\(L_1\\) norm because it is easier to encode these constraints with Reluplex. For example, the \\(L_1\\) norm could be encoded as
 \\( |x| = max(x, -x)=ReLu(2x)-x \\).
 
 The evaluation is conducted on a fully-connected, 3-layer network that has 20k weights and fewer than 100 hidden neurons. The testing accuracy of the model is 97%. The model is smaller than most of the state-of-the-art models and has inferior accuracy, but should be good enough for the model verification prototype. The authors arbitrarily selected 10 source images with known labels from the MNIST test set, which produced 90 targeted attack instances in total.
 
-Even though the Reluplex method is faster than most of the existing general SMT solvers, it is not fast enough for verifying the MNIST classification models. We have witnessed that for every configuration with different target models and different \\(L_p\\) norm constraints, Reluplex always timed out for some of the 90 instances. The experiments with the L_1 constraint were generally slower than those with the L_infinity constraint, because it introduced more ReLU components. However, we still found some interesting results from the successful verification instances.
+Even though the Reluplex method is faster than most of the existing general SMT solvers, it is not fast enough for verifying the MNIST classification models. For every configuration with different target models and different \\(L_p\\) norm constraints, Reluplex always timed out for some of the 90 instances. The experiments with the \\(L_1\\) constraint were generally slower than those with the 
+L_infinity constraint, because it introduced more ReLU components. However, we still found some interesting results from the successful verification instances.
 
 The paper compared the minimally-distorted adversarial examples found by Reluplex with those generated by the CW attack and concluded that iterative optimization-based attacks are effective because the CW attack produced adversarial examples within 12% of optimal on the specific models. 
 
@@ -36,7 +41,7 @@ The paper also evaluated a particular defense technique proposed by Madry et al.
 ---
 ## Evaluating the Robustness of Neural Networks 
 
-> Weng et al. _Evaluating the Robustness of Neural Networks: An Extreme Value Theory Approach_. ICLR 2018. January 2018 [[PDF]](https://arxiv.org/pdf/1801.10578.pdf)
+> Tsui-Wei Weng, Huan Zhang, Pin-Yu Chen, Jinfeng Yi, Dong Su, Yupeng Gao, Cho-Jui Hsieh, Luca Daniel. _Evaluating the Robustness of Neural Networks: An Extreme Value Theory Approach_. ICLR 2018. January 2018 [[PDF]](https://arxiv.org/pdf/1801.10578.pdf)
 
 
 Little work has been done towards developing a comprehensive measure of robustness for neural networks, primarily due to them growing mathematically complex as the number of layers increases. The authors contribute a lower bound on the minimal perturbation needed to generate an adversarial sample. They accomplish this by using the extreme value theorem to estimate the local Lipschitz constant for a given sample.
@@ -74,7 +79,8 @@ They estimate the Weibull distribution parameter and conduct a goodness-of-fit t
 
 They then apply two recent state-of-the-art attacks to their models, the Carlini and Wagner attack [[2]](https://arxiv.org/pdf/1608.04644.pdf), covered in a previous blog post, and I-FGSM [[3]](https://arxiv.org/pdf/1412.6572.pdf)
 
-To evaluate the CLEVER score's effectiveness, the authors compare it with the average \\( \ell_2 \\) and \\( \ell \infty \\) distortions for each adversarial example generated by each type of attack. Since the score is an estimate of the lower bound of the minimal distortion needed, if it is an accurate estimate, then no attack should succeed with a distortion less than the lower bound. Their results show that this holds under both distortion metrics. 
+To evaluate the CLEVER score's effectiveness, the authors compare it with the average \\( L_2 \\) and
+L_infinity distortions for each adversarial example generated by each type of attack. Since the score is an estimate of the lower bound of the minimal distortion needed, if it is an accurate estimate, then no attack should succeed with a distortion less than the lower bound. Their results show that this holds under both distortion metrics. 
 
 These results also show that the Carlini Wagner attack produces adversarial examples with distortion much closer to minimal than I-FGSM, which demonstrates the CLEVER score's ability to evaluate the strength of attacks themselves. The score also serves as a metric for the effectiveness of of defenses against adversarial attacks since the score was shown to increase for defensively distilled networks. The authors generally contribute a means of providing theoretical guarantees about neural networks that is no limited by the size of the network.
 
@@ -130,7 +136,7 @@ this condition:
 <br>
 </p>
 
-Here, J(x) is the Jacobian matrix of \\(h_L\\) at \\(x\\), and \\(M\\) is the
+Here, \\(J(x)\\) is the Jacobian matrix of \\(h_L\\) at \\(x\\), and \\(M\\) is the
 bound of the second order derivative of \\(h_L\\).
 
 #### Convolutional layers
