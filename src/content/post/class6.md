@@ -12,9 +12,9 @@ In what seems to be an endless back-and-forth between new adversarial attacks an
 
 ## Provably Minimally Distorted Adversarial Examples
 
-[TODO: Please add reference to the specific paper on this also, and make the references more complete (full author list, where published).]
+> Nicholas Carlini, Guy Katz, Clark Barrett, David L. Dill. _Provably Minimally-Distorted Adversarial Examples_. [arXiv preprint arXiv:1709.10207](https://arxiv.org/abs/1709.10207). September 2017.
 
-> Katz et al. _Reluplex: An Efficient SMT solver for verifying deep neural networks_. International Conference on Computer Aided Verification. May 2017 [[PDF]](https://arxiv.org/pdf/1702.01135.pdf)
+> Guy Katz, Clark Barrett, David Dill, Kyle Julian, Mykel Kochenderfer. _Reluplex: An efficient SMT solver for verifying deep neural networks_. International Conference on Computer Aided Verification. 2017. [[PDF]](https://arxiv.org/pdf/1702.01135.pdf)
 
 There have been many attacking techniques against deep learning models that can effectively generate adversarial examples, such as FGSM, JSMA, DeepFool and the Carlini & Wagner attacks. But most of them couldn't verify the absence of adversarial examples even if they fail to find any result.
 
