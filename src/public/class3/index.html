@@ -103,6 +103,8 @@
 
 <a href="https://secml.github.io/teams">Teams</a>
 
+<a href="https://secml.github.io/topics">Topics</a>
+
 <a href="https://secml.github.io/post" title="Show list of posts">Posts</a>
 
 
@@ -198,7 +200,7 @@
 <h3 id="softmax-function-under-distillation">Softmax Function under distillation</h3>
 
 <p>Softmax function is the Last layer of network. It’s used to normalize the outputs of the second to last layer. Under distillation situation, it has a parameter temperature (\(T\)).
-To perform distillation in softmax layer, a large network whose output layer is softmax is first trained on the original dataset. The softmax layer is a layer that considers a vector \(Z(X)\) of outputs produced by the last hidden layer of a DNN. Then we normalizes them into a probability vector \(F(X)\), the output of DNN assigning a probability to each class of dataset for input \(X\). \(T\) means temperature and shared across the softmax layer.  (See the paper for the equations for $F(X)$.)</p>
+To perform distillation in softmax layer, a large network whose output layer is softmax is first trained on the original dataset. The softmax layer is a layer that considers a vector \(Z(X)\) of outputs produced by the last hidden layer of a DNN. Then we normalizes them into a probability vector \(F(X)\), the output of DNN assigning a probability to each class of dataset for input \(X\). \(T\) means temperature and shared across the softmax layer.  (See the paper for the equations for \(F(X)\).)</p>
 
 <p><img src="/images/class3/softmax.png" alt="" /></p>
 
@@ -254,7 +256,7 @@ Distillation is not actually robust to adversarial examples.</p>
 
 <p>where \(f(x+\delta) \leq 0\) iff the classification result of \((x+\delta)\) is in class \(t\) (i.e. \(C(x+\delta) = t)\). \(c\) is a coefficient controling the relative importance of misclassification and norm minimization. Intuitive understanding of the optimization problem above is, we want a smaller perturbation (unobservable by human) by minimizing the norm \(||\delta||\) and causing misclassification by minimizing the function \(f(x+\delta)\). The constraint of \(x+\delta \in [0,1]^{n}\) is because this attack is conducted in image domain and has to generate valid images whose pixel value is in \([0,1]\) range. In order to further avoid the constraint, the authors apply \(tanh\) function to change the variables. Specifically, \(\delta_i = \frac{1}{2}(tanh(w_i)+1)-x_i \) and we directly optimize the unconstrained variable \(w_i \) instead of \(\delta_i\). <a href="https://arxiv.org/pdf/1412.6980.pdf">ADAM</a> is deployed to solve the above unconstrained optimization problem. A special note is the author implemented different \(p\)-norms \((p = 0, 2, \infty)\) under the optimization framework described above.</p>
 
-<p>The evaluation part is compared to other existing white-box attack methods. Specifically, <a href="https://arxiv.org/pdf/1412.6572.pdf">Fast Gradient Sign (FGS)</a>, <a href="https://arxiv.org/pdf/1607.02533.pdf">Iterative Fast Gradient Sign (IFGS)</a> methods are suitable for \(L_\infty \)-norm, <a href="https://arxiv.org/pdf/1511.04599.pdf">Deepfool</a> method is suitable for \(L<em>2\)-norm attack, <a href="https://arxiv.org/pdf/1511.07528.pdf">JSMA</a> method is suitable for \(L</em>{0}\)-norm attack. The target model for the listed attacks are <a href="https://arxiv.org/pdf/1511.04508.pdf">distillation based network</a> (defensitive strategy proposed for defending against FGS and IFGS methods) and normally trained neural networks. The final evaluation results demonstrate that the attack proposed in this work is far stronger than existing attack method in that it achieves highest attack success rate (this method achieves \(100\%\) success rate while other methods don&rsquo;t) and lowest perturbation magnitude. Some sample images generated from this attack are shown below. This attack is also now broadly accepted as a standard baseline for evaluating newly proposed defense mechanisms.</p>
+<p>The evaluation part is compared to other existing white-box attack methods. Specifically, <a href="https://arxiv.org/pdf/1412.6572.pdf">Fast Gradient Sign (FGS)</a>, <a href="https://arxiv.org/pdf/1607.02533.pdf">Iterative Fast Gradient Sign (IFGS)</a> methods are suitable for \(L_\infty \)-norm, <a href="https://arxiv.org/pdf/1511.04599.pdf">Deepfool</a> method is suitable for \(L_2\)-norm attack, <a href="https://arxiv.org/pdf/1511.07528.pdf">JSMA</a> method is suitable for \(L_0\)-norm attack. The target model for the listed attacks are <a href="https://arxiv.org/pdf/1511.04508.pdf">distillation based network</a> (defensitive strategy proposed for defending against FGS and IFGS methods) and normally trained neural networks. The final evaluation results demonstrate that the attack proposed in this work is far stronger than existing attack method in that it achieves highest attack success rate (this method achieves \(100\%\) success rate while other methods don&rsquo;t) and lowest perturbation magnitude. Some sample images generated from this attack are shown below. This attack is also now broadly accepted as a standard baseline for evaluating newly proposed defense mechanisms.</p>
 
 <p><img src="/images/class3/class3_img1.png" alt="" />
 <div class="caption">
@@ -365,6 +367,10 @@ Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya</p>
     </a>
     
 
+    
+    <a class="next" href="https://secml.github.io/topic-suggestions/" title="Topic Suggestions">
+      Next
+    </a>
     
 
   
