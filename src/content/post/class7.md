@@ -216,7 +216,7 @@ Marginal QII can measure the influence of a single feature \\(i\\), like unary Q
 and the amount of influence can vary wildly depending on the choice of \\(S\\).
 To account for this, the paper defines the _aggregate influence_ of \\(i\\), which measures the expected influence of \\(i\\) for random choices of \\(S\\).
 
-## Conclusion
+### Conclusion
 
 The above variants of QII can be used to provide transparency reports, offering insight into how an ML model makes decisions about an individual.
 Malicious actors may seek to abuse such a system, carefully crafting their input vector to glean someone else's private information.
@@ -227,6 +227,36 @@ This is not true in domains such as image or speech recognition, yet transparenc
 The authors assert that designing transparency mechanisms in these domains is an important future goal.
 Nevertheless, these QII measures are remarkably effective on real datasets, both for understanding individual outcomes and for finding biases in ML models.
 
+## Semantics derived automatically from language corpora contain human-like biases
+
+> Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan. _Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan_. Science Magazine, 2017. [[PDF]](http://science.sciencemag.org/content/sci/356/6334/183.full.pdf)
+
+The focus of this paper is how machine learning can learn from the biases and stereotypes in humans. The main contributions of the authors are:
+
+Using word embeddings to extract associations in text
+Replicate human bias to reveal prejudice behavior in humans
+Show that cultural stereotypes propagate to widely used AI today
+
+### Uncovering Biases in ML
+
+The authors began by replicating inoffensive biases using their original Word-Embedding Association Test (WEAT) method. Word embedding is a representation of words in vector space. WEAT is a test applied to words in AI which represents words as a 300 dimensional vector. The words are then paired by distances between the vectors. Using WEAT, they demonstrated that flowers have pleasant associations and insects have unpleasant associations. Or instruments are more pleasant than weapons. The word embeddings know the properties of flowers or weapons even though they have no experience with them!
+
+After showing that WEAT works, they use this technique to show that machine learning absorbs stereotype biases. In a study by Bertrand and Mullainathan, 5,000 identical resumes were sent out to 1,300 job ads and varied only the names. The European American names were 50% more likely to be offered an opportunity to be interviewed. Based on this study, the authors used WEAT to test the pleasantness associations with the names from Bertrand’s work and found European American names were more pleasant than African American names.
+
+They then turned to studying gender biases. Female names were associated with family as oppose to male names which were associated with career. They also showed woman/girl associated more with arts than math compared to men. These observations were then correlated with data in the labor force. This is show in the figure below:
+
+![](/images/class7/gender_bias.PNG)
+
+The authors then applied another method of their creation called Word-Embedding Factual
+Association Test (WEFAT) to show that these embeddings correlate strongly with the occupations women have in the real world. They then used the GloVe method to find similarity between a pair of vectors. Similarity between vectors is related to the probability that the words co-occur with other words similar to each other. GloVe finds this by doing dimensionality reduction to amplify signal in co-occurring probabilities. 
+
+Afterwards, they did a crawl of the internet and got 840 billion words, and each word had a 300 dimension vector derived from counts of other words that occur with it in a 10 word window. WEFAT allowed them to further examine how embeddings capture empirical information. Using this, they were able to predict properties from the given vector.
+
+### Conclusion
+
+So what does their work mean? Their results show there’s a way to reveal unknown implicit associations. They demonstrate that word embeddings encode not only stereotyped bias, but also other knowledge like that flowers are pleasant. These results also explain origins of prejudice in humans. It shows how group identity transmits through language before an institution explains why individuals make prejudiced decisions. There are implications for AI and ML because technology could be perpetuating cultural stereotypes. What if ML responsible for reviewing resumes absorbed cultural stereotypes? It’s important to keep this in mind and be cautious in the future.
+
+
 —-- Team Gibbon: 
 Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya
 
@@ -236,3 +266,5 @@ Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya
 [[1]](http://proceedings.mlr.press/v81/speicher18a/speicher18a.pdf) Till Speicher, Muhammad Ali, Giridhari Venkatadri, Filipe Nunes Ribeiro, George Arvanitakis, Fabr&iacute;cio Benevenuto, Krishna P. Gummadi, Patrick Loiseau, Alan Mislove. _Potential for Discrimination in Online Targeted Advertising_. Proceedings of the 1st Conference on Fairness, Accountability and Transparency, PMLR 81:5-19, 2018.
 
 [[2]](https://www.andrew.cmu.edu/user/danupam/datta-sen-zick-oakland16.pdf) Anupam Datta, Shayak Sen, Yair Zick. _Algorithmic Transparency via Quantitative Input Influence: Theory and Experiments with Learning Systems_. 2016 IEEE Symposium on Security and Privacy (SP), 2016.
+
+[[3]](http://science.sciencemag.org/content/sci/356/6334/183.full.pdf) Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan. _Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan_. Science Magazine, 2017.
