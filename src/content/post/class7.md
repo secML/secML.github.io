@@ -229,13 +229,13 @@ Nevertheless, these QII measures are remarkably effective on real datasets, both
 
 ## Semantics derived automatically from language corpora contain human-like biases
 
-> Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan. _Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan_. Science Magazine, 2017. [[PDF]](http://science.sciencemag.org/content/sci/356/6334/183.full.pdf)
+> Caliskan, A., Bryson, J., & Narayanan, A. (2017). _Semantics derived automatically from language corpora contain human-like biases_. Science, 356(6334), 183-186. doi:10.1126/science.aal4230 [[PDF]](http://science.sciencemag.org/content/sci/356/6334/183.full.pdf)
 
 The focus of this paper is how machine learning can learn from the biases and stereotypes in humans. The main contributions of the authors are:
 
-Using word embeddings to extract associations in text
-Replicate human bias to reveal prejudice behavior in humans
-Show that cultural stereotypes propagate to widely used AI today
+1. Using word embeddings to extract associations in text
+2. Replicate human bias to reveal prejudice behavior in humans
+3. Show that cultural stereotypes propagate to widely used AI today
 
 ### Uncovering Biases in ML
 
