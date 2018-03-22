@@ -70,13 +70,8 @@ The results of different properties on this experiment are showed in the followi
 ![](/images/class7/DataRes.png)
 ### Conclusion
 While the Ad Preferences Page does bring some transparency to the different attributes users can be targeted with,
-the provided explanations are incomplete and often vague. Facebook does not provide information about data-brokerprovided attributes in its data explanations or in its ad explanations
+the provided explanations are incomplete and often vague. Facebook does not provide information about data-brokerprovided attributes in its data explanations or in its ad explanations.
 
-
-
-
-
-##
 
 ## Potential for Discrimination in Online Targeted Advertising
 
@@ -150,6 +145,88 @@ The authors similarly demonstrated that free-form attributes could used in a dis
 
 Look-alike audience targeting allows advertisers to generate a new target audience that looks similar to an existing set of users (the fans of one of their Facebook pages or an uploaded PII data set). The authors show that this feature can be used to scale a biased audience to a much larger population. Experimental results suggest that Facebook attempts to determine the attributes that distinguish the base target audience from the general population and propagates these biases to the look-alike audience. The authors show that this bias propagation can amplify both intentionally created and unintentionally overlooked biases in source audiences.
 
+## Algorithmic Transparency via Quantitative Input Influence
+
+> Anupam Datta, Shayak Sen, Yair Zick. _Algorithmic Transparency via Quantitative Input Influence: Theory and Experiments with Learning Systems_. 2016 IEEE Symposium on Security and Privacy (SP), 2016. [[PDF]](https://www.andrew.cmu.edu/user/danupam/datta-sen-zick-oakland16.pdf)
+
+Machine learning systems are increasingly being used to make important societal decisions, in sectors including healthcare, education, and insurance.
+For instance, an ML model may help a bank decide if a client is eligible for a loan, and both parties may to know critical details about how the model works.
+A rejected client will likely want to know why they were rejected: would they have been accepted if their income was higher?
+The answer would be especially important if their reported income was lower than their actual income;
+more generally, the client can ensure that their input data contained no errors.
+
+Conversely, the model's user may want to ensure that the model does not discriminate based on sensitive inputs, such as the legally-restricted features of race and gender.
+Simply ignoring those features may not be sufficient to prevent discrimination; e.g., ZIP code can be used as a proxy for race.
+This paper proposes a method to solve these problems by making the model's behavior more transparent: a quantitative measure of the effect of a particular feature (or set of features) on the model's decision for an individual.
+The paper offers several approaches suited for various circumstances, but they all fall under the umbrella of "quantitative input inflence", or QII.
+
+### Unary QII
+
+The simplest quantitative measure presented is unary QII, which measures the influence of one attribute on a quantity of interest \\(Q_\mathcal{A}\\) for some subset of the sample space \\(X\\).
+Formally, unary QII is determined as
+
+![](/images/class7/unaryQII.png)
+
+where the first term is the actual expected value of \\(Q_\mathcal{A}\\) for this subset, and the second term is the expected value if the feature \\(i\\) were randomized.
+
+For example, consider the rejected bank client from above.
+If they restrict \\(X\\) to only contain their feature vector, and they set \\(Q_\mathcal{A}\\) to output the model's probability of rejection,
+then unary QII tells how much any individual feature impacted his loan application.
+If the unary QII for a feature is large, changing the value of that feature would likely increase their odds of being accepted;
+conversely, changing the value of a feature with low unary QII would make little difference.
+
+The paper presents a concrete example: Mr. X has been classified as a low-income individual, and he would like to know why.
+Since only 2.1% of people with income above $10k are classified as low-income, Mr. X suspects racial bias.
+In actuality, the transparency report shows that neither his race nor country of origin were significant;
+rather, his marital status and education were far more influential in his classification.
+
+![](/images/class7/mrxprofile.png)
+
+![](/images/class7/mrxreport.png)
+
+The sample space \\(X\\) can also be broadened to include an entire class of people.
+For instance, suppose \\(X\\) is restricted to include people of just one gender, and \\(Q_\mathcal{A}\\) is set to output the model's probability of acceptance.
+Here, unary QII would reveal the influence of a feature \\(i\\) on men and on women.
+A disparity between the two measures may then indicate that the model is biased:
+specifically, the feature \\(i\\) can be identified as a proxy variable, used by the model to distinguish between men and women (even if gender is omitted as an input feature).
+
+![](/images/class7/unarygraph.png)
+
+However, unary QII is often insufficent to explain a model's behavior on an individual or class of individuals.
+This histogram shows the paper's results for their "adult" dataset:
+for each individual, the feature that created the highest unary QII was found, and the unary QII value was plotted in the histogram.
+Most individuals could not be explained by any particular feature, and most features had little influence by themselves.
+
+### Set and Marginal QII
+
+Thankfully, unary QII can easily be generalized to incorporate multiple features at once.
+Set QII is defined as
+
+![](/images/class7/setQII.png)
+
+where \\(S\\) is a set of features (as opposed to a single feature, like \\(i\\) in unary QII).
+The paper also defines marginal QII
+
+![](/images/class7/marginalQII.png)
+
+which measures the influence of a feature \\(i\\) after controlling for the features in \\(S\\).
+These two quantitative measures have different use cases, but both are more general (and thus more useful) than unary QII.
+
+Marginal QII can measure the influence of a single feature \\(i\\), like unary QII, but only for a specific choice of \\(S\\),
+and the amount of influence can vary wildly depending on the choice of \\(S\\).
+To account for this, the paper defines the _aggregate influence_ of \\(i\\), which measures the expected influence of \\(i\\) for random choices of \\(S\\).
+
+## Conclusion
+
+The above variants of QII can be used to provide transparency reports, offering insight into how an ML model makes decisions about an individual.
+Malicious actors may seek to abuse such a system, carefully crafting their input vector to glean someone else's private information.
+However, these QII measures are shown too have low sensitivity, so differential privacy can be added with small amounts of noise.
+
+These QII measures are useful only if the input features have well-defined semantics.
+This is not true in domains such as image or speech recognition, yet transparency is still desirable there.
+The authors assert that designing transparency mechanisms in these domains is an important future goal.
+Nevertheless, these QII measures are remarkably effective on real datasets, both for understanding individual outcomes and for finding biases in ML models.
+
 —-- Team Gibbon: 
 Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya
 
@@ -157,3 +234,5 @@ Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya
 #### References
 
 [[1]](http://proceedings.mlr.press/v81/speicher18a/speicher18a.pdf) Till Speicher, Muhammad Ali, Giridhari Venkatadri, Filipe Nunes Ribeiro, George Arvanitakis, Fabr&iacute;cio Benevenuto, Krishna P. Gummadi, Patrick Loiseau, Alan Mislove. _Potential for Discrimination in Online Targeted Advertising_. Proceedings of the 1st Conference on Fairness, Accountability and Transparency, PMLR 81:5-19, 2018.
+
+[[2]](https://www.andrew.cmu.edu/user/danupam/datta-sen-zick-oakland16.pdf) Anupam Datta, Shayak Sen, Yair Zick. _Algorithmic Transparency via Quantitative Input Influence: Theory and Experiments with Learning Systems_. 2016 IEEE Symposium on Security and Privacy (SP), 2016.
