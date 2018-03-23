@@ -7,7 +7,7 @@ slug = "class7"
 +++
 
 ## Motivation
-...
+Machine learning algorithms are playing more and more important roles in many critical decision making tasks. However, studies reveal that machine learning models are subject to biases, some of which stem from natural biases in human world. Understanding potential bias, identifying and fixing existing bias can help people design more objective and reliable decision making systems based on machine learning models. 
 ##
 ## Investigating Ad Transparency Mechanisms in Social Media: A Case Study of Facebook’s Explanations
 > Andreou, Athanasios, et al. "Investigating ad transparency mechanisms in social media: A case study of Facebook’s explanations." NDSS, 2018.[[PDF]](http://wp.internetsociety.org/ndss/wp-content/uploads/sites/25/2018/02/ndss2018_10-1_Andreou_paper.pdf)
@@ -256,6 +256,98 @@ Afterwards, they did a crawl of the internet and got 840 billion words, and each
 
 So what does their work mean? Their results show there’s a way to reveal unknown implicit associations. They demonstrate that word embeddings encode not only stereotyped bias, but also other knowledge like that flowers are pleasant. These results also explain origins of prejudice in humans. It shows how group identity transmits through language before an institution explains why individuals make prejudiced decisions. There are implications for AI and ML because technology could be perpetuating cultural stereotypes. What if ML responsible for reviewing resumes absorbed cultural stereotypes? It’s important to keep this in mind and be cautious in the future.
 
+## Men Also Like Shopping:Reducing Gender Bias Amplification using Corpus-level Constraints
+
+> Jieyu Zhao, Tianlu Wang, Mark Yatskar, Vicente Ordonez, Kai-Wei Chang. _Men Also Like Shopping:Reducing Gender Bias Amplification using Corpus-level Constraints_. [arXiv preprint arXiv:1709.10207](https://arxiv.org/pdf/1707.09457.pdf). July 2017.
+
+Language is increasingly being used to identify some rich visual recognition tasks. And structured prediction models are widely applied to these tasks to take advantage of correlations between co-ocurring labels and visual inputs. However, in advertently, there can be social biases encoded in the model training procedure, which may magnify some stereotypes and poses challenge in the fairness of (machine learning) model decision making. 
+
+Researchers found that datasets for these tasks contain significant gender bias and models trained on these biased dataset further amplifies these existing biases. An example provided in the paper is, the activity "cooking" is over 33% more likely to refer females than males in the training set, and a model trained on this dataset can further amplify the disparity of gender ratio to 68% at test time. And to tackle the problem, the author proposed to adopt corpus-level constraints for calibrating existing structured prediction models. Specifically, the author limit the gender bias of the model deviate by only a small amount from what is in the original training data. 
+
+### Problem Formulation
+The problem is then defined as maximizing the test time inference likelihood while also satisfying the corpus-level constraint. A bias score for an output \\(o\\) with respect to demographic variable \\(g\\)is defined as:
+$$b(o,g) = \frac{c(o,g)}{\sum_{g^{'}\in G}c(o,g^{'})}$$ 
+where \\(c(o,g)\\) captures the number of occurrences of \\(o\\) and \\(g\\) in a corpus. And a bias might be exhibited if \\(b(o,g)>1/||G||\\). A mean bias amplification of a model compared to the bias on training data set (i.e., \\(b^{\*}(o,g)\\)) is defined as:
+
+<p align="center">
+<img src="/images/class7/mean_bias_amp.png" width="350" >
+<br>
+</p>
+
+
+with these terms defined, the author proposes the calibration algorithm: \\(\textbf{R}educing~\textbf{B}ias~\textbf{A}mplification\\) (RBA). Intuitive understanding the of calibration algorithm is to inject constraints to ensure the model predictions follow the gender distribution observed from the training data with allowbable small deviations.
+
+#### Structured Output Prediction
+Given a test insatnce, the inference problem at test time is defined as:
+$$\underset{y\in Y}{\operatorname{argmax}}f_{\theta}(y,i)$$ 
+
+
+with \\(f_{\theta} (y,i)\\) is a scoring function based on model \\(\theta\\) learned from training data. The inference problem hence can be interpreted as finding the structured oupt \\(y\\) such that the scoring function is maximized. The corpus level constraint is expressed as:
+
+<p align="center">
+<img src="/images/class7/corpus_constraint.png" width="450" >
+<br>
+</p>
+
+With the given constraint, the problem is formulated as:
+<p align="center">
+<img src="/images/class7/final_form.png" width="300" >
+<br>
+</p>
+
+ where \\(i\\) refers to insatnce \\(i\\) in test dataset. The corpos level constraint is represented by \\(A\sum_{i}y^{i}-b \leq 0\\), where the matrix \\(A\in R^{l \times K}\\) is the coefficients of one constraint, and \\(b \in R^{l}\\). Note that, above formulation can be solved individually for each instance \\(i\\).
+
+#### Lagrangian Relaxation
+The final optimization problem is a mixed integer programming problem, and solving with off-the-shell solver is inefficient for large-scale dataset. Hence, the author proposed to solve the problem with [Lagrangian relaxation technique](https://www.jair.org/media/3680/live-3680-6584-jair.pdf). With a lagrangian multiplier introduced, we have the Lagrangian as
+<p align="center">
+<img src="/images/class7/lagrangian_form.png" width="350" >
+<br>
+</p>
+
+where \\(\lambda_{j} \geq 0, \forall \in \{1,...,l\}\\). The solution to the problem is then obtained by iteratively optimizing the problem with respect to \\(y^{i}\\) and \\(\lambda\\). Specifically, we need two steps in each optimization iteration:\\
+1) At iteration \\(t\\), first get the output solution of each instance \\(i\\)
+<p align="center">
+<img src="/images/class7/lagrangian_opt_1.png" width="300" >
+<br>
+</p>
+\\
+2) next update the Lagrangian multipliers
+<p align="center">
+<img src="/images/class7/lagrangian_opt_2.png" width="300" >
+<br>
+</p>
+
+### Experimental Setup
+This problem is evvaluated on two vision recognition tasks: visual semantic role labeling (vSRL), and multi-label classification (MLC). The authors focus on the gender bias problem, where \\(G = \\{man, woman\\}\\) and focus on the agent and any occurrence in text associated with the images in MLC. 
+
+#### Dataset and Model
+The experiment of vSRL is conducted on [imSitu](https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Yatskar_Situation_Recognition_Visual_CVPR_2016_paper.pdf) where activity classes are drawn from verbs and roles in [FrameNet](http://delivery.acm.org/10.1145/990000/980860/p86-baker.pdf?ip=128.143.69.35&id=980860&acc=OPEN&key=B33240AC40EC9E30%2E95F2ACB8D94EAE2C%2E4D4702B0C3E38B35%2E6D218144511F3437&__acm__=1521592411_637f2c8599c29ab1aa3d8bf2818f6140) and noun categories are drawn from [WordNet](https://academic.oup.com/ijl/article-abstract/3/4/235/923280). The model is  built on the baseline [CRF](https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Yatskar_Situation_Recognition_Visual_CVPR_2016_paper.pdf) released with the data, which has been shown effective compared to a non-structured prediction baseline [2]. The experiment of MLC is conducted on [MS-COCO](https://link.springer.com/chapter/10.1007/978-3-319-10602-1_48). The model is a similar model as CRF that is used for vSRL.   
+
+#### Result analysis
+For both the vSRL and MLC tasks, their training data is biased as illustrated in Figure 2. Y-axis denotes the percentage of male agents and x-axis represents gender bias in training data. It is clear that many verbs are biased in the training set and when a model is trained on these biased training datasets, the gender bias is further amplified. Figure 2(a) denotes demonstrates the gender bias in vSRL task and figure 2(b) shows the gender bias in MLC task. Some seemingly neutral words like "microwaving" and "washing" is heavily biased towards female and other words like "driving" is beavily biased towards male. 
+
+<p align="center">
+<img src="/images/class7/bias_fig.png" width="500" >
+<br>
+</p>
+
+![](/images/class7/bias_fig.png.png)
+<div class="caption">
+Source: [_Men Also Like Shopping: Reducing Gender Bias Amplification using Corpus-level Constraints_]((https://arxiv.org/pdf/1608.04644.pdf)) [1]
+</div>
+
+Calibration results are then summarized in the table below, which utilizes RBA method. The experimental results show that, with this calibrated method, we are able to significantly reduce the gender bias.      
+<p align="center">
+<img src="/images/class7/calib_result.png" width="600" >
+<br>
+</p>
+
+![](/images/class7/bias_fig.png.png)
+<div class="caption">
+Source: [_Men Also Like Shopping: Reducing Gender Bias Amplification using Corpus-level Constraints_]((https://arxiv.org/pdf/1707.09457.pdf)) [1]
+</div>
+
+---
 
 —-- Team Gibbon: 
 Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya
@@ -268,3 +360,13 @@ Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya
 [[2]](https://www.andrew.cmu.edu/user/danupam/datta-sen-zick-oakland16.pdf) Anupam Datta, Shayak Sen, Yair Zick. _Algorithmic Transparency via Quantitative Input Influence: Theory and Experiments with Learning Systems_. 2016 IEEE Symposium on Security and Privacy (SP), 2016.
 
 [[3]](http://science.sciencemag.org/content/sci/356/6334/183.full.pdf) Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan. _Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan_. Science Magazine, 2017.
+
+[[4]](https://www.jair.org/media/3680/live-3680-6584-jair.pdf) Rush, Alexander M., and Michael Collins. "A tutorial on dual decomposition and Lagrangian relaxation for inference in natural language processing."_Journal of Artificial Intelligence Research_ (2012).
+
+[[5]](https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Yatskar_Situation_Recognition_Visual_CVPR_2016_paper.pdf) Yatskar, Mark, Luke Zettlemoyer, and Ali Farhadi. "Situation recognition: Visual semantic role labeling for image understanding." Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016.
+
+[[6]](http://delivery.acm.org/10.1145/990000/980860/p86-baker.pdf?ip=128.143.69.35&id=980860&acc=OPEN&key=B33240AC40EC9E30%2E95F2ACB8D94EAE2C%2E4D4702B0C3E38B35%2E6D218144511F3437&__acm__=1521592411_637f2c8599c29ab1aa3d8bf2818f6140) Baker, Collin F., Charles J. Fillmore, and John B. Lowe. "The berkeley framenet project." Proceedings of the 17th international conference on Computational linguistics-Volume 1. Association for Computational Linguistics, 1998.
+
+[[7]](https://academic.oup.com/ijl/article-abstract/3/4/235/923280) Miller, George A., et al. "Introduction to WordNet: An on-line lexical database." International journal of lexicography 3.4 (1990): 235-244.
+
+[[8]](https://link.springer.com/chapter/10.1007/978-3-319-10602-1_48) Lin, Tsung-Yi, et al. "Microsoft coco: Common objects in context." European conference on computer vision. Springer, Cham, 2014.
