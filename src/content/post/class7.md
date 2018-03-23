@@ -8,11 +8,11 @@ slug = "class7"
 
 ## Motivation
 Machine learning algorithms are playing more and more important roles in many critical decision making tasks. However, studies reveal that machine learning models are subject to biases, some of which stem from natural biases in human world. Understanding potential bias, identifying and fixing existing bias can help people design more objective and reliable decision making systems based on machine learning models. 
-##
-## Investigating Ad Transparency Mechanisms in Social Media: A Case Study of Facebook’s Explanations
-> Andreou, Athanasios, et al. "Investigating ad transparency mechanisms in social media: A case study of Facebook’s explanations." NDSS, 2018.[[PDF]](http://wp.internetsociety.org/ndss/wp-content/uploads/sites/25/2018/02/ndss2018_10-1_Andreou_paper.pdf)
 
-### What is ad transparency mechanisms in social media？ 
+## Investigating Ad Transparency Mechanisms in Social Media: A Case Study of Facebook’s Explanations
+> Andreou, Athanasios, et al. "Investigating ad transparency mechanisms in social media: A case study of Facebook’s explanations." NDSS, 2018. [[PDF]](http://wp.internetsociety.org/ndss/wp-content/uploads/sites/25/2018/02/ndss2018_10-1_Andreou_paper.pdf)
+
+### What are ad transparency mechanisms in social media？ 
 
 Transparency mechanisms are solutions for many privacy complaints from users and policy makers. Users have little understanding of what data the advertising platforms have about them and why they are shown particular ads. The transparency mechanisms in Facebook are "Why am I seeing this?" botton that provides  users with an explanation of why they were shown a particular ad (ad explanations), and an Ad Preferences Page that provides users with a list of attributes Facebook has inferred about them and how (data explanations). In Twitter, there are similar transparency mechanisms. You can also see "Why am I seeing this?" botton that provides  users with an explanation of why they were shown a particular ad (ad explanations) in Twitter.
 
@@ -22,17 +22,17 @@ This paper mainly did an investigation and analysis of ad explanations, or why u
 
 ### The Ad platform in Facebook
 
-There are three main processes in facebook ad platform: a) the data inference process; b) the audience selection process; c) the user-ad matching process.
+There are three main processes in the Facebook ad platform: a) the data inference process; b) the audience selection process; c) the user-ad matching process.
 
 (a) The data inference process is the process that allows the advertising platform to learn the users’ attributes. It has three parts: (1) the raw user data (the inputs), containing the information the
-advertising platform collects about a user either online or offline; (2) the data inference algorithm (the mapping function between inputs and outputs), covering the algorithm the advertising platform uses to translate input user data to targeting attributes;(3) the resulting targeting attributes (the outputs) of each user that advertisers can specify to select different groups of users.
+advertising platform collects about a user either online or offline; (2) the data inference algorithm (the mapping function between inputs and outputs), covering the algorithm the advertising platform uses to translate input user data to targeting attributes; (3) the resulting targeting attributes (the outputs) of each user that advertisers can specify to select different groups of users.
 
 ![](/images/class7/a.png)
 
 (b) The audience selection process is the interface that allows advertisers to express who should receive their ads. Advertisers create audiences by specifying the set of targeting attributes the audience needs to satisfy. Later, to launch an ad campaign, advertisers also need to specify a bid price and an optimization criterion.
 ![](/images/class7/b.png)
 
-(c) The user-ad matching process takes place whenever someone is eligible to see an ad. It examines all the ad campaigns placed by different advertisers in a particular time interval, their bids, and runs an auction to determine which ads are selected.
+&#40;c) The user-ad matching process takes place whenever someone is eligible to see an ad. It examines all the ad campaigns placed by different advertisers in a particular time interval, their bids, and runs an auction to determine which ads are selected.
 
 ![](/images/class7/c.png)
 
@@ -42,14 +42,15 @@ advertising platform collects about a user either online or offline; (2) the dat
 ![](/images/class7/WhySeeingThis.png)
 
 As you can see in the picture, There're attritubutes and potentional attritubutes here. 
-This paper used 5 different properties to evaluate the performance of Ad explanations:</br>
-1. Correctness: Every attribute listed was used by the advertiser</br>
-2. Personalization: The attributes listed are unique to the individual</br>
-3. Completeness: If all relevant attributes are included in the explanation</br>
-4. Consistency: Users with the same attributes see the same explanations</br>
-5. Determinism: A user would see the same explanation for ads based on the same target attributes</br>
+This paper used 5 different properties to evaluate the performance of Ad explanations:
 
-The experiment this paper did to evaluate the ad explanations is using Chrome browser extension to record ads and explanations. The experiment had 35 users' data across 5 months. This experiment also did to evaluate the data explanation. This paper made simple statistics for the explanation(See the following figure). And then, it shows the results of different properties on this experiment.
+1. Correctness: Every attribute listed was used by the advertiser
+2. Personalization: The attributes listed are unique to the individual
+3. Completeness: If all relevant attributes are included in the explanation
+4. Consistency: Users with the same attributes see the same explanations
+5. Determinism: A user would see the same explanation for ads based on the same target attributes
+
+The experiment this paper did to evaluate the ad explanations is using Chrome browser extension to record ads and explanations. The experiment had 35 users' data across 5 months. This experiment also did to evaluate the data explanation. This paper made simple statistics for the explanation (see the following figure). And then, it shows the results of different properties on this experiment.
 
 ![](/images/class7/stat.png)
 
@@ -70,7 +71,7 @@ The results of different properties on this experiment are showed in the followi
 ![](/images/class7/DataRes.png)
 ### Conclusion
 While the Ad Preferences Page does bring some transparency to the different attributes users can be targeted with,
-the provided explanations are incomplete and often vague. Facebook does not provide information about data-brokerprovided attributes in its data explanations or in its ad explanations.
+the provided explanations are incomplete and often vague. Facebook does not provide information about data broker-provided attributes in its data explanations or in its ad explanations.
 
 
 ## Potential for Discrimination in Online Targeted Advertising
@@ -260,7 +261,7 @@ So what does their work mean? Their results show there’s a way to reveal unkno
 
 > Jieyu Zhao, Tianlu Wang, Mark Yatskar, Vicente Ordonez, Kai-Wei Chang. _Men Also Like Shopping:Reducing Gender Bias Amplification using Corpus-level Constraints_. [arXiv preprint arXiv:1709.10207](https://arxiv.org/pdf/1707.09457.pdf). July 2017.
 
-Language is increasingly being used to identify some rich visual recognition tasks. And structured prediction models are widely applied to these tasks to take advantage of correlations between co-ocurring labels and visual inputs. However, in advertently, there can be social biases encoded in the model training procedure, which may magnify some stereotypes and poses challenge in the fairness of (machine learning) model decision making. 
+Language is increasingly being used to identify some rich visual recognition tasks. And structured prediction models are widely applied to these tasks to take advantage of correlations between co-ocurring labels and visual inputs. However, inadvertently, there can be social biases encoded in the model training procedure, which may magnify some stereotypes and poses challenge in the fairness of (machine learning) model decision making. 
 
 Researchers found that datasets for these tasks contain significant gender bias and models trained on these biased dataset further amplifies these existing biases. An example provided in the paper is, the activity "cooking" is over 33% more likely to refer females than males in the training set, and a model trained on this dataset can further amplify the disparity of gender ratio to 68% at test time. And to tackle the problem, the author proposed to adopt corpus-level constraints for calibrating existing structured prediction models. Specifically, the author limit the gender bias of the model deviate by only a small amount from what is in the original training data. 
 
@@ -331,7 +332,7 @@ For both the vSRL and MLC tasks, their training data is biased as illustrated in
 <br>
 </p>
 
-![](/images/class7/bias_fig.png.png)
+![](/images/class7/bias_fig.png)
 <div class="caption">
 Source: [_Men Also Like Shopping: Reducing Gender Bias Amplification using Corpus-level Constraints_]((https://arxiv.org/pdf/1608.04644.pdf)) [1]
 </div>
@@ -342,7 +343,7 @@ Calibration results are then summarized in the table below, which utilizes RBA m
 <br>
 </p>
 
-![](/images/class7/bias_fig.png.png)
+![](/images/class7/bias_fig.png)
 <div class="caption">
 Source: [_Men Also Like Shopping: Reducing Gender Bias Amplification using Corpus-level Constraints_]((https://arxiv.org/pdf/1707.09457.pdf)) [1]
 </div>
@@ -355,13 +356,13 @@ Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya
 
 #### References
 
-[[1]](http://proceedings.mlr.press/v81/speicher18a/speicher18a.pdf) Till Speicher, Muhammad Ali, Giridhari Venkatadri, Filipe Nunes Ribeiro, George Arvanitakis, Fabr&iacute;cio Benevenuto, Krishna P. Gummadi, Patrick Loiseau, Alan Mislove. _Potential for Discrimination in Online Targeted Advertising_. Proceedings of the 1st Conference on Fairness, Accountability and Transparency, PMLR 81:5-19, 2018.
+[[1]](http://proceedings.mlr.press/v81/speicher18a/speicher18a.pdf) Till Speicher, Muhammad Ali, Giridhari Venkatadri, Filipe Nunes Ribeiro, George Arvanitakis, Fabr&iacute;cio Benevenuto, Krishna P. Gummadi, Patrick Loiseau, Alan Mislove. "Potential for Discrimination in Online Targeted Advertising." Proceedings of the 1st Conference on Fairness, Accountability and Transparency, PMLR 81:5-19, 2018.
 
-[[2]](https://www.andrew.cmu.edu/user/danupam/datta-sen-zick-oakland16.pdf) Anupam Datta, Shayak Sen, Yair Zick. _Algorithmic Transparency via Quantitative Input Influence: Theory and Experiments with Learning Systems_. 2016 IEEE Symposium on Security and Privacy (SP), 2016.
+[[2]](https://www.andrew.cmu.edu/user/danupam/datta-sen-zick-oakland16.pdf) Anupam Datta, Shayak Sen, Yair Zick. "Algorithmic Transparency via Quantitative Input Influence: Theory and Experiments with Learning Systems." 2016 IEEE Symposium on Security and Privacy (SP), 2016.
 
-[[3]](http://science.sciencemag.org/content/sci/356/6334/183.full.pdf) Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan. _Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan_. Science Magazine, 2017.
+[[3]](http://science.sciencemag.org/content/sci/356/6334/183.full.pdf) Aylin Caliskan, Joanna J. Bryson, Arvind Narayanan. "Semantics derived automatically from language corpora contain human-like biases." Science Magazine, 2017.
 
-[[4]](https://www.jair.org/media/3680/live-3680-6584-jair.pdf) Rush, Alexander M., and Michael Collins. "A tutorial on dual decomposition and Lagrangian relaxation for inference in natural language processing."_Journal of Artificial Intelligence Research_ (2012).
+[[4]](https://www.jair.org/media/3680/live-3680-6584-jair.pdf) Rush, Alexander M., and Michael Collins. "A tutorial on dual decomposition and Lagrangian relaxation for inference in natural language processing." Journal of Artificial Intelligence Research (2012).
 
 [[5]](https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Yatskar_Situation_Recognition_Visual_CVPR_2016_paper.pdf) Yatskar, Mark, Luke Zettlemoyer, and Ali Farhadi. "Situation recognition: Visual semantic role labeling for image understanding." Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition. 2016.
 
@@ -370,3 +371,5 @@ Austin Chen, Jin Ding, Ethan Lowman, Aditi Narvekar, Suya
 [[7]](https://academic.oup.com/ijl/article-abstract/3/4/235/923280) Miller, George A., et al. "Introduction to WordNet: An on-line lexical database." International journal of lexicography 3.4 (1990): 235-244.
 
 [[8]](https://link.springer.com/chapter/10.1007/978-3-319-10602-1_48) Lin, Tsung-Yi, et al. "Microsoft coco: Common objects in context." European conference on computer vision. Springer, Cham, 2014.
+
+[[9]](http://wp.internetsociety.org/ndss/wp-content/uploads/sites/25/2018/02/ndss2018_10-1_Andreou_paper.pdf) Andreou, Athanasios, et al. "Investigating ad transparency mechanisms in social media: A case study of Facebook’s explanations." NDSS, 2018.
