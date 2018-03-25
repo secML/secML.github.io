@@ -1,24 +1,24 @@
 +++
 date = "20 Mar 2018"
 draft = false
-title = "Class 7: Biases in ML & Discriminatory Advertising"
+title = "Class 7: Biases in ML, Discriminatory Advertising"
 author = "Team Gibbon"
 slug = "class7"
 +++
 
 ## Motivation
-Machine learning algorithms are playing more and more important roles in many critical decision making tasks. However, studies reveal that machine learning models are subject to biases, some of which stem from natural biases in human world. Understanding potential bias, identifying and fixing existing bias can help people design more objective and reliable decision making systems based on machine learning models. 
+Machine learning algorithms are playing increasingly important roles in many critical decision making tasks. However, studies reveal that machine learning models are subject to biases, some of which stem from historical biases in human world that are captured in training data. Understanding potential bias, identifying and fixing existing bias can help people design more objective and reliable decision making systems based on machine learning models. 
 
-## Investigating Ad Transparency Mechanisms in Social Media: A Case Study of Facebook’s Explanations
-> Andreou, Athanasios, et al. "Investigating ad transparency mechanisms in social media: A case study of Facebook’s explanations." NDSS, 2018. [[PDF]](http://wp.internetsociety.org/ndss/wp-content/uploads/sites/25/2018/02/ndss2018_10-1_Andreou_paper.pdf)
+## Ad Transparency
+> Athanasios Andreou, Giridhari Venkatadri, Oana Goga, Krishna P. Gummadi, Patrick Loiseau, Alan Mislove. _Investigating Ad Transparency Mechanisms in Social Media: A Case Study of Facebook’s Explanations_. NDSS, 2018. [[PDF]](http://wp.internetsociety.org/ndss/wp-content/uploads/sites/25/2018/02/ndss2018_10-1_Andreou_paper.pdf) (All images below are taken from this paper.)
 
 ### What are ad transparency mechanisms in social media？ 
 
-Transparency mechanisms are solutions for many privacy complaints from users and policy makers. Users have little understanding of what data the advertising platforms have about them and why they are shown particular ads. The transparency mechanisms in Facebook are "Why am I seeing this?" botton that provides  users with an explanation of why they were shown a particular ad (ad explanations), and an Ad Preferences Page that provides users with a list of attributes Facebook has inferred about them and how (data explanations). In Twitter, there are similar transparency mechanisms. You can also see "Why am I seeing this?" botton that provides  users with an explanation of why they were shown a particular ad (ad explanations) in Twitter.
+Transparency mechanisms are solutions for many privacy complaints from users and regulators. Users have little understanding of what data the advertising platforms have about them and why they are shown particular ads. The transparency mechanisms provided by Facebook are (1) the "Why am I seeing this?" button that provides users with an explanation of why they were shown a particular ad (_ad explanations_), and (2) an Ad Preferences Page that provides users with a list of attributes Facebook has inferred about them and how (_data explanations_). Twitter offers similar transparency mechanisms, including a "Why am I seeing this?" botton that provides  users with an explanation of why they were shown a particular ad (ad explanations) in Twitter.
 
 ### What did this paper do?
 
-This paper mainly did an investigation and analysis of ad explanations, or why users see a certain ad and an investigation of data explanations, or how data is inferred about a user, which is strongly related to the ad transparency mechanisms in Facebook. This paper first introduced how ad platform in facebook works and then evaluate the two transparency mechanisms we introduced before with some properties.
+This paper reports on an investigation and analysis of ad explanations (why users see a certain ad), and an investigation of data explanations (how data is inferred about a user), which is strongly related to the ad transparency mechanisms in Facebook. This paper first introduced how ad platform in Facebook works and then evaluate the two transparency mechanisms we introduced before with some properties.
 
 ### The Ad platform in Facebook
 
@@ -27,22 +27,25 @@ There are three main processes in the Facebook ad platform: a) the data inferenc
 (a) The data inference process is the process that allows the advertising platform to learn the users’ attributes. It has three parts: (1) the raw user data (the inputs), containing the information the
 advertising platform collects about a user either online or offline; (2) the data inference algorithm (the mapping function between inputs and outputs), covering the algorithm the advertising platform uses to translate input user data to targeting attributes; (3) the resulting targeting attributes (the outputs) of each user that advertisers can specify to select different groups of users.
 
-![](/images/class7/a.png)
+<center><a href="/images/class7/a.png"><img src="/images/class7/a.png" width=80%></a></center>
 
 (b) The audience selection process is the interface that allows advertisers to express who should receive their ads. Advertisers create audiences by specifying the set of targeting attributes the audience needs to satisfy. Later, to launch an ad campaign, advertisers also need to specify a bid price and an optimization criterion.
-![](/images/class7/b.png)
+
+<center><a href="/images/class7/b.png"><img src="/images/class7/b.png" width=80%></a></center>
 
 &#40;c) The user-ad matching process takes place whenever someone is eligible to see an ad. It examines all the ad campaigns placed by different advertisers in a particular time interval, their bids, and runs an auction to determine which ads are selected.
 
-![](/images/class7/c.png)
-
+<center><a href="/images/class7/c.png"><img src="/images/class7/c.png" width=80%></a></center>
 
 ### Ad Explanations and the experiments on this transparency mechanism
 
-![](/images/class7/WhySeeingThis.png)
+<center><a href="/images/class7/WhySeeingThis.png"><img src="/images/class7/WhySeeingThis.png" width=80%></a></center>
 
-As you can see in the picture, There're attritubutes and potentional attritubutes here. 
-This paper used 5 different properties to evaluate the performance of Ad explanations:
+As you can see in the picture, there are both attritubutes and
+potentional attritubutes here.  
+
+This paper used 5 different properties to evaluate the performance of
+Ad explanations:
 
 1. Correctness: Every attribute listed was used by the advertiser
 2. Personalization: The attributes listed are unique to the individual
@@ -50,37 +53,40 @@ This paper used 5 different properties to evaluate the performance of Ad explana
 4. Consistency: Users with the same attributes see the same explanations
 5. Determinism: A user would see the same explanation for ads based on the same target attributes
 
-The experiment this paper did to evaluate the ad explanations is using Chrome browser extension to record ads and explanations. The experiment had 35 users' data across 5 months. This experiment also did to evaluate the data explanation. This paper made simple statistics for the explanation (see the following figure). And then, it shows the results of different properties on this experiment.
+The paper evaluated the ad explanations by using Chrome browser extension to record ads and explanations. The experiment had 35 users' data across 5 months. This experiment also evaluated the data explanation. This paper made simple statistics for the explanation (see the following figure). And then, it shows the results of different properties on this experiment.
 
-![](/images/class7/stat.png)
+<center><a href="/images/class7/stat.png"><img src="/images/class7/stat.png" width=95%"></a></center>
 
-### Data Explanations and the experiments on this transparency mechanism
+### Data Explanations Experiments
 
 The data explanations is applied in "Your interests" part as shown in the following picture. 
 
-![](/images/class7/like.png)
+<center><a href="/images/class7/like.png"><img src="/images/class7/like.png" width=80%"></a></center>
 
 The properties here are not the same as those used in the Ad explanation part. There are 3 new properties.
 1. Specificity: A data explanation is precise if it shows the precise activities that were used to infer an attribute about a user.
 2. Snapshot completeness: A data explanation is snapshot complete if the explanation shows all the inferred attributes about the user that Facebook makes available.
 3. Temporal completeness: a temporally complete explanation is one where the platform shows all inferred attributes over a specified period of time.
 
-The results of different properties on this experiment are showed in the following picture.
+The results of different properties on this experiment are showed below:
 
+<center><a href="/images/class7/DataRes.png"><img src="/images/class7/DataRes.png" width="80%"></a></center>
 
-![](/images/class7/DataRes.png)
 ### Conclusion
+
 While the Ad Preferences Page does bring some transparency to the different attributes users can be targeted with,
 the provided explanations are incomplete and often vague. Facebook does not provide information about data broker-provided attributes in its data explanations or in its ad explanations.
 
 
-## Potential for Discrimination in Online Targeted Advertising
+## Discrimination in Online Targeted Advertising
 
 > Till Speicher, Muhammad Ali, Giridhari Venkatadri, Filipe Nunes Ribeiro, George Arvanitakis, Fabr&iacute;cio Benevenuto, Krishna P. Gummadi, Patrick Loiseau, Alan Mislove. _Potential for Discrimination in Online Targeted Advertising_. Proceedings of the 1st Conference on Fairness, Accountability and Transparency, PMLR 81:5-19, 2018. [[PDF]](http://proceedings.mlr.press/v81/speicher18a/speicher18a.pdf)
 
 Recently, online targeted advertising platforms like Facebook have received intense criticism for allowing advertisers to discriminate against users belonging to protected groups. 
 
-Facebook, in particular, has been handed a civil rights lawsuit for allowing advertisers to target ads using an attribute called "ethnic affinity." Facebook has clarified that "ethnic affinity" does not represent ethnicity, but rather represents a user’s affinity for content related to different ethnic communities. Facebook has agreed to rename the attribute to "multicultural affinity" and to disallow using this attribute to target ads related to housing, employment, and financial services. However, Facebook offers many different ways to describe a set of targeted users, so it’s not adequate to disallow targeting on certain attributes. In this paper, the authors develop a framework for quantifying ad discrimination and show the potential for discriminatory advertising using the three different targeting methods on Facebooks advertising platform: personally identifiable information (PII)-based targeting, attribute-based targeting, and look-alike audience targeting.
+Facebook, in particular, is facing a civil rights lawsuit for allowing advertisers to target ads using an attribute called "ethnic affinity." Facebook has clarified that "ethnic affinity" does not represent ethnicity, but rather represents a user’s affinity for content related to different ethnic communities. Facebook has agreed to rename the attribute to "multicultural affinity" and to disallow using this attribute to target ads related to housing, employment, and financial services. 
+
+However, Facebook offers many different ways to describe a set of targeted users, so it’s not adequate to disallow targeting on certain attributes. In this paper, the authors develop a framework for quantifying ad discrimination and show the potential for discriminatory advertising using the three different targeting methods on Facebooks advertising platform: personally identifiable information (PII)-based targeting, attribute-based targeting, and look-alike audience targeting.
 
 ### Quantifying Ad Discrimination
 
@@ -94,16 +100,21 @@ The authors identify three potential approaches to quantifying discrimination.
 
 The authors formalize outcome-based discrimination as follows:
 
+   <blockquote>
 Let \\(\mathbf{D} = (u\_i)\_{i=1,\ldots,n}\\) be a database of user records \\(u_i\\).<br />
 Let \\(u_i \in \mathbb{B}^m\\) be a vector of \\(m\\) boolean attributes.<br />
 Let \\(s \in \{1, \ldots, m\}\\) be the sensitive attribute we are considering.<br />
 Let \\(u_s\\) be the value of sensitive attribute \\(s\\) for user \\(u\\).<br />
 Let \\(\mathbf{S} = \{u \in \mathbf{D} | u_s = 1\}\\) be the set of all users having sensitive attribute \\(s\\).
+   </blockquote>
 
 The authors define a metric for how discriminatory an advertiser’s targeting is, inspired by the disparate impact measure used for recruiting candidates from a pool.
 
+   <blockquote>
 Let \\(\mathbf{TA}\\) (target audience) be the set of users selected by the targeting process.<br />
 Let \\(\mathbf{RA}\\) (relevant audience) be the set of all users in the database \\(\mathbf{D}\\) who would find the ad useful and interesting.<br />
+   </blockquote>
+
 Define the representation ratio measure to capture how much more likely a user is to be targeted when having the sensitive attribute than if the user did not have the attribute:
 
 $$\text{rep\_ratio}_s(\mathbf{TA}, \mathbf{RA}) = \dfrac{|\mathbf{TA} \cap \mathbf{RA}_s|/|\mathbf{RA}_s|}{|\mathbf{TA} \cap \mathbf{RA}\_\{\neg s\}|/|\mathbf{RA}\_\{\neg s\}|}$$
@@ -126,11 +137,11 @@ where \\(\mathbf{RA}'\\) is one of \\(\mathbf{RA}\_s\\) or \\(\mathbf{RA}\_{\neg
 
 PII-based targeting on the Facebook advertising platform allows advertisers to select a target audience using unique identifiers, like phone numbers, email addresses, and combinations of name with other attributes (e.g. birthday or zip code). The authors show that public data sources, such as voter records and criminal history records, contain sufficient PII to construct a discriminatory target audience for a sensitive attribute without explicitly targeting that attribute.
 
-The authors constructed datasets to show that they could implicitly target gender, race, and age using North Carolina voter records. Each of these attributes is listed in voting records, and the remaining fields together uniquely identify the voter (i.e. last name, first name, city, state, zip code, phone number, and country). The authors uploaded datasets targeting values of each attribute and recorded Facebook’s estimated audience size.
+The authors constructed datasets to show that they could implicitly target gender, race, and age using North Carolina voter records. Each of these attributes is listed in voting records, and the remaining fields together uniquely identify the voter (i.e., last name, first name, city, state, zip code, phone number, and country). The authors uploaded datasets targeting values of each attribute and recorded Facebook’s estimated audience size.
 
-![](/images/class7/table1.jpg)
+<center><a href="/images/class7/table1.jpg"><img src="/images/class7/table1.jpg" width=95%></img></a></center>
 
-The Voter Records column shows the distribution of attribute values in the voter records data set. For a given attribute, the Facebook Users column shows how many of the 10k people in the dataset constructed for that attribute are actually targetable on Facebook (as reported by the Facebook advertising platform). The final column shows the portion of the targetable users who actually match the targeted attribute, found by restricting the target audience using Facebook’s records of the sensitive attribute. High targetable percentages values show that the voter records overlap significantly with the voter records data set. High validation percentages show that the auxiliary PII was highly accurate at describing particular users with the targeted attribute. Note that there are some low validation percentages, which the authors attribute to Facebook’s inaccurate or incomplete records of some data (for example, they do not know race, only "multicultural affinity"). 
+The Voter Records column shows the distribution of attribute values in the voter records data set. For a given attribute, the Facebook Users column shows how many of the 10,000 people in the dataset constructed for that attribute are actually targetable on Facebook (as reported by the Facebook advertising platform). The final column shows the portion of the targetable users who actually match the targeted attribute, found by restricting the target audience using Facebook’s records of the sensitive attribute. High targetable percentages values show that the voter records overlap significantly with the voter records data set. High validation percentages show that the auxiliary PII was highly accurate at describing particular users with the targeted attribute. Note that there are some low validation percentages, which the authors attribute to Facebook’s inaccurate or incomplete records of some data (for example, they do not know race, only "multicultural affinity"). 
 
 ### Attribute-Based Targeting
 
@@ -148,7 +159,7 @@ Look-alike audience targeting allows advertisers to generate a new target audien
 
 ## Algorithmic Transparency via Quantitative Input Influence
 
-> Anupam Datta, Shayak Sen, Yair Zick. _Algorithmic Transparency via Quantitative Input Influence: Theory and Experiments with Learning Systems_. 2016 IEEE Symposium on Security and Privacy (SP), 2016. [[PDF]](https://www.andrew.cmu.edu/user/danupam/datta-sen-zick-oakland16.pdf)
+> Anupam Datta, Shayak Sen, Yair Zick. _Algorithmic Transparency via Quantitative Input Influence: Theory and Experiments with Learning Systems_. 2016 IEEE Symposium on Security and Privacy ("Oakland"). [[PDF]](https://www.andrew.cmu.edu/user/danupam/datta-sen-zick-oakland16.pdf)
 
 Machine learning systems are increasingly being used to make important societal decisions, in sectors including healthcare, education, and insurance.
 For instance, an ML model may help a bank decide if a client is eligible for a loan, and both parties may to know critical details about how the model works.
@@ -166,7 +177,7 @@ The paper offers several approaches suited for various circumstances, but they a
 The simplest quantitative measure presented is unary QII, which measures the influence of one attribute on a quantity of interest \\(Q_\mathcal{A}\\) for some subset of the sample space \\(X\\).
 Formally, unary QII is determined as
 
-![](/images/class7/unaryQII.png)
+<center><a href="/images/class7/unaryQII.png"><img src="/images/class7/unaryQII.png" width=40%></img></a></center>
 
 where the first term is the actual expected value of \\(Q_\mathcal{A}\\) for this subset, and the second term is the expected value if the feature \\(i\\) were randomized.
 
@@ -181,9 +192,10 @@ Since only 2.1% of people with income above $10k are classified as low-income, M
 In actuality, the transparency report shows that neither his race nor country of origin were significant;
 rather, his marital status and education were far more influential in his classification.
 
-![](/images/class7/mrxprofile.png)
-
-![](/images/class7/mrxreport.png)
+<center>
+<a href="/images/class7/mrxprofile.png"><img src="/images/class7/mrxprofile.png" width="40%"></a><Br>
+<A href="/images/class7/mrxreport.png"><img src="/images/class7/mrxreport.png" width=50%></a>
+</center>
 
 The sample space \\(X\\) can also be broadened to include an entire class of people.
 For instance, suppose \\(X\\) is restricted to include people of just one gender, and \\(Q_\mathcal{A}\\) is set to output the model's probability of acceptance.
@@ -191,7 +203,7 @@ Here, unary QII would reveal the influence of a feature \\(i\\) on men and on wo
 A disparity between the two measures may then indicate that the model is biased:
 specifically, the feature \\(i\\) can be identified as a proxy variable, used by the model to distinguish between men and women (even if gender is omitted as an input feature).
 
-![](/images/class7/unarygraph.png)
+<center><a href="/images/class7/unarygraph.png"><img src="/images/class7/unarygraph.png" width=50%></img></a></center>
 
 However, unary QII is often insufficent to explain a model's behavior on an individual or class of individuals.
 This histogram shows the paper's results for their "adult" dataset:
@@ -202,13 +214,11 @@ Most individuals could not be explained by any particular feature, and most feat
 
 Thankfully, unary QII can easily be generalized to incorporate multiple features at once.
 Set QII is defined as
-
-![](/images/class7/setQII.png)
+<center><a href="/images/class7/setQII.png"><img src="/images/class7/setQII.png" width=35%></img></a></center>
 
 where \\(S\\) is a set of features (as opposed to a single feature, like \\(i\\) in unary QII).
 The paper also defines marginal QII
-
-![](/images/class7/marginalQII.png)
+<center><a href="/images/class7/marginalQII.png"><img src="/images/class7/marginalQII.png" width=55%></img></a></center>
 
 which measures the influence of a feature \\(i\\) after controlling for the features in \\(S\\).
 These two quantitative measures have different use cases, but both are more general (and thus more useful) than unary QII.
@@ -228,9 +238,9 @@ This is not true in domains such as image or speech recognition, yet transparenc
 The authors assert that designing transparency mechanisms in these domains is an important future goal.
 Nevertheless, these QII measures are remarkably effective on real datasets, both for understanding individual outcomes and for finding biases in ML models.
 
-## Semantics derived automatically from language corpora contain human-like biases
+## Language Corpus Bias
 
-> Caliskan, A., Bryson, J., & Narayanan, A. (2017). _Semantics derived automatically from language corpora contain human-like biases_. Science, 356(6334), 183-186. doi:10.1126/science.aal4230 [[PDF]](http://science.sciencemag.org/content/sci/356/6334/183.full.pdf)
+> Caliskan, A., Bryson, J., & Narayanan, A. (2017). _Semantics derived automatically from language corpora contain human-like biases_. Science, 356(6334), 183-186. doi:10.1126/science.aal4230 [[PDF]](http://science.sciencemag.org/content/sci/356/6334/183.full.pdf) [[Author's Full Version PDF](http://opus.bath.ac.uk/55288/4/CaliskanEtAl_authors_full.pdf)]
 
 The focus of this paper is how machine learning can learn from the biases and stereotypes in humans. The main contributions of the authors are:
 
@@ -246,7 +256,7 @@ After showing that WEAT works, they use this technique to show that machine lear
 
 They then turned to studying gender biases. Female names were associated with family as oppose to male names which were associated with career. They also showed woman/girl associated more with arts than math compared to men. These observations were then correlated with data in the labor force. This is show in the figure below:
 
-![](/images/class7/gender_bias.PNG)
+<center><a href="/images/class7/gender_bias.PNG"><img src="/images/class7/gender_bias.PNG" width=50%></img></a></center>
 
 The authors then applied another method of their creation called Word-Embedding Factual
 Association Test (WEFAT) to show that these embeddings correlate strongly with the occupations women have in the real world. They then used the GloVe method to find similarity between a pair of vectors. Similarity between vectors is related to the probability that the words co-occur with other words similar to each other. GloVe finds this by doing dimensionality reduction to amplify signal in co-occurring probabilities. 
@@ -257,9 +267,9 @@ Afterwards, they did a crawl of the internet and got 840 billion words, and each
 
 So what does their work mean? Their results show there’s a way to reveal unknown implicit associations. They demonstrate that word embeddings encode not only stereotyped bias, but also other knowledge like that flowers are pleasant. These results also explain origins of prejudice in humans. It shows how group identity transmits through language before an institution explains why individuals make prejudiced decisions. There are implications for AI and ML because technology could be perpetuating cultural stereotypes. What if ML responsible for reviewing resumes absorbed cultural stereotypes? It’s important to keep this in mind and be cautious in the future.
 
-## Men Also Like Shopping:Reducing Gender Bias Amplification using Corpus-level Constraints
+## Men Also Like Shopping: Reducing Bias Amplification
 
-> Jieyu Zhao, Tianlu Wang, Mark Yatskar, Vicente Ordonez, Kai-Wei Chang. _Men Also Like Shopping:Reducing Gender Bias Amplification using Corpus-level Constraints_. [arXiv preprint arXiv:1709.10207](https://arxiv.org/pdf/1707.09457.pdf). July 2017.
+> Jieyu Zhao, Tianlu Wang, Mark Yatskar, Vicente Ordonez, Kai-Wei Chang. _Men Also Like Shopping:Reducing Gender Bias Amplification using Corpus-level Constraints_. 2017 Conference on Empirical Methods in Natural Language Processing. [arXiv preprint arXiv:1709.10207](https://arxiv.org/pdf/1707.09457.pdf). July 2017.
 
 Language is increasingly being used to identify some rich visual recognition tasks. And structured prediction models are widely applied to these tasks to take advantage of correlations between co-ocurring labels and visual inputs. However, inadvertently, there can be social biases encoded in the model training procedure, which may magnify some stereotypes and poses challenge in the fairness of (machine learning) model decision making. 
 
@@ -296,7 +306,9 @@ With the given constraint, the problem is formulated as:
 <br>
 </p>
 
- where \\(i\\) refers to insatnce \\(i\\) in test dataset. The corpos level constraint is represented by \\(A\sum_{i}y^{i}-b \leq 0\\), where the matrix \\(A\in R^{l \times K}\\) is the coefficients of one constraint, and \\(b \in R^{l}\\). Note that, above formulation can be solved individually for each instance \\(i\\).
+ where \\(i\\) refers to insatnce \\(i\\) in test dataset. 
+
+The corpus level constraint is represented by \\(A\sum_{i}y^{i}-b \leq 0\\), where the matrix \\(A\in R^{l \times K}\\) is the coefficients of one constraint, and \\(b \in R^{l}\\). Note that, above formulation can be solved individually for each instance \\(i\\).
 
 #### Lagrangian Relaxation
 The final optimization problem is a mixed integer programming problem, and solving with off-the-shell solver is inefficient for large-scale dataset. Hence, the author proposed to solve the problem with [Lagrangian relaxation technique](https://www.jair.org/media/3680/live-3680-6584-jair.pdf). With a lagrangian multiplier introduced, we have the Lagrangian as
@@ -339,7 +351,7 @@ Source: [_Men Also Like Shopping: Reducing Gender Bias Amplification using Corpu
 
 Calibration results are then summarized in the table below, which utilizes RBA method. The experimental results show that, with this calibrated method, we are able to significantly reduce the gender bias.      
 <p align="center">
-<img src="/images/class7/calib_result.png" width="600" >
+<img src="/images/class7/calib_result.png" width="30%">
 <br>
 </p>
 
