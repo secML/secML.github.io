@@ -15,6 +15,16 @@ J. Zico Kolter, Eric Wong. _Provable defenses against adversarial examples via t
 
 Kexin Pei, Yinzhi Cao, Junfeng Yang, Suman Jana. _DeepXplore: Automated Whitebox Testing of Deep Learning Systems_. [PDF](https://arxiv.org/abs/1705.06640)
 
+### Defining Adversarial Examples
+
+Mahmood Sharif, Lujo Bauer, Michael K. Reiter. _On the Suitability of \\(L_p\\)-norms for Creating and Preventing Adversarial Examples_. arxiv, Feb 2018. [PDF](https://arxiv.org/abs/1802.09653)
+
+Gamaleldin F. Elsayed, Shreya Shankar, Brian Cheung, Nicolas Papernot, Alex Kurakin, Ian Goodfellow, Jascha Sohl-Dickstein. _Adversarial Examples that Fool both Human and Computer Vision_. arxiv, Feb 2018. [PDF](https://arxiv.org/abs/1802.08195)
+
+### Adversarial Training
+
+Alex Kurakin, Dan Boneh, Florian Tramèr, Ian Goodfellow, Nicolas Papernot, Patrick McDaniel. _Ensemble Adversarial Training: Attacks and Defenses_. ICLR 2018. [Web](https://research.google.com/pubs/pub46638.html)
+
 ### Malware Detection and Evasion
 
 Robin Sommer and Vern Paxson. _Outside the Closed World: On Using Machine Learning For Network Intrusion Detection_. [PDF](https://oaklandsok.github.io/papers/sommer2010.pdf)
@@ -37,6 +47,11 @@ Reducing Gender Bias Amplification using Corpus-level Constraints_. [PDF](https:
 
 [Conference on Fairness, Accountability, and 
 Transparency](https://fatconference.org/2018/program.html)
+
+### Assessing Risks
+
+_The Malicious Use of Artificial Intelligence: Forecasting, Prevention, and Mitigation_. February 2018
+[PDF](https://www.eff.org/files/2018/02/20/malicious_ai_report_final.pdf)
 
 ### Poisoning
 
