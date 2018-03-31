@@ -1,6 +1,6 @@
 +++
 date = "23 Mar 2018"
-draft = false
+draft = true
 title = "Class 8: Testing of Deep Networks"
 author = "Team Panda"
 slug = "class8"
