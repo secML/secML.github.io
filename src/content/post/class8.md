@@ -1,6 +1,6 @@
 +++
 date = "23 Mar 2018"
-draft = true
+draft = false
 title = "Class 8: Testing of Deep Networks"
 author = "Team Panda"
 slug = "class8"
@@ -254,14 +254,14 @@ label (rows) and the DkNN’s prediction (columns).
 
 We discussed similarities between the DkNN approach and Local
 Intrinsic Dimensionality [<a
-href="https://openreview.net/forum?id=B1gJ1L2aW">ICLR 2018<a/>]. There
+href="https://openreview.net/forum?id=B1gJ1L2aW">ICLR 2018</a>]. There
 are important differences between the approaches, but given the
 results reported in the _Obfuscated Gradients Give a False Sense of
 Security: Circumventing Defenses to Adversarial Examples_ (discussed
 in <a href="https://secml.github.io/class3/">Class 3</a>) reported on
 LID, it is worth investigating how robust DkNN is to the same
-attacks. Note that neither of these defenses are really obfuscating
-gradients, so the attack strategy reported in that paper is to just use high confidence adversarial examples.
+attacks. (Note that neither of these defenses are really obfuscating
+gradients, so the attack strategy reported in that paper is to just use high confidence adversarial examples.)
 
 
 

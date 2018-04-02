@@ -6,8 +6,381 @@
     <description>Recent content on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 20 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 23 Mar 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://secml.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Class 8: Testing of Deep Networks</title>
+      <link>https://secml.github.io/class8/</link>
+      <pubDate>Fri, 23 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/class8/</guid>
+      <description>
+
+&lt;h2 id=&#34;deepxplore-automated-whitebox-testing-of-deep-learning-systems&#34;&gt;DeepXplore: Automated Whitebox Testing of Deep Learning Systems&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Kexin Pei, Yinzhi Cao, Junfeng Yang, Suman Jana. 2017. &lt;em&gt;DeepXplore: Automated Whitebox Testing of Deep Learning Systems&lt;/em&gt;. In Proceedings of ACM Symposium on Operating Systems Principles (SOSP ’17). ACM, New York, NY, USA, 18 pages. &lt;a href=&#34;https://arxiv.org/pdf/1705.06640.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As deep learning is increasingly applied to security-critical domains, having high confidence in the accuracy of a model&amp;rsquo;s predictions is vital.  Just as in traditional software development, confidence in the correctness of a model&amp;rsquo;s behavior stems from rigorous testing across a wide variety of possible scenarios.  However, unlike in traditional software development, the logic of deep learning systems is learned through the training process, which opens the door to many possible causes of unexpected behavior, like biases in the training data, overfitting, underfitting, etc.  As this logic does not exist as an actual line of code, deep learning models are extremely difficult to test, and those who do are are faced with two key challenges:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;How can all (or at least most) of the model&amp;rsquo;s logic be triggered so as to discover incorrect behavior?&lt;/li&gt;
+&lt;li&gt;How can such incorrect behavior be identified without manual inspection?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;To address these challenges, the authors of this paper first introduce &lt;em&gt;neuron coverage&lt;/em&gt; as a measure of how much of a model&amp;rsquo;s logic is activated by the test cases. To avoid manually inspecting output behavior for correctness, other DL systems designed for the same purpose are compared across the same set of test inputs, following the logic that if the models disagree than at least one model&amp;rsquo;s output must be incorrect.  These two solutions are then reformulated into a joint optimization problem, which is implemented in the whitebox DL-testing framework DeepXplore.&lt;/p&gt;
+
+&lt;h3 id=&#34;limitations-of-current-testing&#34;&gt;Limitations of Current Testing&lt;/h3&gt;
+
+&lt;p&gt;The motivation for the DeepXplore framework is the inability of current methods to thoroughly test deep neural networks.  Most existing techniques to identify incorrect behavior require human effort to manually label samples with the correct output, which quickly becomes prohibitively expensive for large datasets.  Additionally, the input space of these models is so large that test inputs cover only a small fraction of cases, leaving many corner cases untested.  Recent work has shown that these untested cases near model decision boundaries leave DNNs vulnerable to adversarial evasion attacks, in which small perturbations to the input cause a misclassification.  And even when these adversarial examples are used to retrain the model and improve accuracy, they still do not have enough model coverage to prevent future evasion attacks.&lt;/p&gt;
+
+&lt;h3 id=&#34;neuron-coverage&#34;&gt;Neuron Coverage&lt;/h3&gt;
+
+&lt;p&gt;To measure the area of the input space covered by tests, the authors define what they call &amp;ldquo;neuron coverage,&amp;rdquo; a metric analogous to code coverage in traditional software testing.  As seen in the figure below, neuron coverage measures the percentage of nodes a given test input activates in the DNN, analogous to the percentage of the source code executed on code coverage metrics.  This is believed to be a better measure of the robustness test inputs because the logic of a DNN is learned, not programmed, and exists primarily in the layers of nodes that compose the model, not the source code.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/neuron_coverage.png&#34; width=&#34;500&#34;&gt;
+&lt;div class=&#34;caption&#34;&gt; &lt;a href=&#34;(https://arxiv.org/pdf/1705.06640.pdf)&#34;&gt;&lt;em&gt;Source&lt;/em&gt;&lt;/a&gt; &lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;cross-referencing-oracles&#34;&gt;Cross-referencing Oracles&lt;/h3&gt;
+
+&lt;p&gt;To eliminate the need for expensive human effort to check output correctness, multiple DL models are tested on the same inputs and their behavior compared.  If different DNNs designed for the same application produce different outputs on the same input, at least one of them should be incorrect, therefore identifying potential model inaccuracies.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/oracle.png&#34; width=&#34;500&#34;&gt;
+&lt;div class=&#34;caption&#34;&gt; &lt;a href=&#34;(https://arxiv.org/pdf/1705.06640.pdf)&#34;&gt;&lt;em&gt;Source&lt;/em&gt;&lt;/a&gt; &lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;method&#34;&gt;Method&lt;/h3&gt;
+
+&lt;p&gt;The primary objective for the test generation process is to maximize the neuron coverage and differential behaviors observed across models.  This is formulated as a joint optimization problem with domain-specific constraints (i.e., to ensure that a test case discovered is still a valid input), which is then solved using a gradient ascent algorithm.&lt;/p&gt;
+
+&lt;h3 id=&#34;experimental-set-up&#34;&gt;Experimental Set-up&lt;/h3&gt;
+
+&lt;p&gt;The DeepXplore framework was used to test three DNNs for each of five well-known public datasets that span multiple domains: MNIST, ImageNet, Driving, Contagio/Virustotal, and Drebin.  Because these datasets include images, video frames, PDF malware, and Android malware, different domain-specific constraints were incorporated into DeepXplore for each dataset (e.g. pixel values for images need to remain between 0 and 255, PDF malware should still be a valid PDF file, etc.).  The details of the chosen DNNs and datasets can be seen in the table below.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/datasets.png&#34; width=&#34;700&#34;&gt;
+&lt;div class=&#34;caption&#34;&gt; &lt;a href=&#34;(https://arxiv.org/pdf/1705.06640.pdf)&#34;&gt;&lt;em&gt;Source&lt;/em&gt;&lt;/a&gt; &lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;For each dataset, 2,000 random samples were selected as seed inputs, which were then manipulated to search for erroneous behaviors in the test DNNs.  For example, in the image datasets, the lighting conditions were modified to find inputs on which the DNNs disagreed. This is shown in the photos below from the Driving dataset for self-driving cars.
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/driving.png&#34; width=&#34;400&#34;&gt;
+&lt;div class=&#34;caption&#34;&gt; &lt;a href=&#34;(https://arxiv.org/pdf/1705.06640.pdf)&#34;&gt;&lt;em&gt;Source&lt;/em&gt;&lt;/a&gt; &lt;/div&gt;
+&lt;/p&gt;
+The top row has the original images with arrows indicating that all three DNNs agreed on the decision and the bottom row has the images with modified lighting conditions with arrows showing that at least one of the models made a difference decision than the other two.&lt;/p&gt;
+
+&lt;h2 id=&#34;deep-k-nearest-neighbors-towards-confident-interpretable-and-robust-deep-learning&#34;&gt;Deep k-Nearest Neighbors: Towards Confident, Interpretable and Robust Deep Learning&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Nicolas Papernot, Patrick McDaniel. 2018. &lt;em&gt;Deep k-Nearest Neighbors: Towards Confident, Interpretable and Robust Deep Learning&lt;/em&gt;. &lt;a href=&#34;https://arxiv.org/pdf/1803.04765.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;k-nearest-neighbors&#34;&gt;k-Nearest Neighbors&lt;/h2&gt;
+
+&lt;p&gt;Deep learning is ubiquitous. Deep neural networks achieve a good performance on challenging tasks like machine translation, diagnosing medical conditions, malware detection, and classification of images. In this research work, the authors mentioned about three
+well-identified criticisms directly relevant to the security. They are the lack of reliable confidence in machine learning, model interpretability and robustness. Authors introduced the Deep k-Nearest Neighbors (DkNN) classification algorithm in this research work. It enforces the conformity of the predictions made by a DNN model on the test data with respect to the model’s training data. For each layer in the neural network, the DkNN performs a nearest neighbor search to find training points for which the layer’s output is closest to the layer’s output on the test input. Then they analyze the assigned label of these neighboring points to make it sure that the intermediate layer&amp;rsquo;s computations remain conformal with the final output model’s prediction.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/Dknn.png&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Intuition behind the Deep k-Nearest Neighbors (DkNN)
+&lt;/p&gt; 
+
+&lt;p&gt;Consider a deep neural network (in the left of the figure), representations output by each layer (in the middle of the figure) and the nearest neighbors found at each layer in the training data (in the right of the figure). Drawings of pandas and school buses indicate training points. We can observe that confidence is high when there is homogeneity among the nearest neighbors labels. Interpretability of the outcome of each layer is provided by the nearest neighbors. Robustness stems from detecting nonconformal predictions from nearest neighbor labels found for out-of-distribution inputs across different layers.&lt;/p&gt;
+
+&lt;h3 id=&#34;algorithm&#34;&gt;Algorithm&lt;/h3&gt;
+
+&lt;p&gt;The psudo-code for their k-Nearest Neighbors (DkNN) that the authors introduced in ensuring that the intermediate layer&amp;rsquo;s computations remain conformal with the respect to the final model&amp;rsquo;s prediction is given below-&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/algorithm_dknn.png&#34; width=&#34;400&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Code snippet of Deep k-Nearest Neighbor   
+&lt;/p&gt; 
+
+&lt;h2 id=&#34;basis-for-evaluation&#34;&gt;Basis for Evaluation&lt;/h2&gt;
+
+&lt;p&gt;Basis for evaluating robustness, interpretability, Confidence are discussed below-
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/basis_evalution.png&#34; width=&#34;500&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Basis for Evaluation
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;evaluation-of-confidence-credibility&#34;&gt;Evaluation of Confidence/ Credibility&lt;/h2&gt;
+
+&lt;p&gt;In their experiments, they measured high confidence on inputs. From the experiment they observed that credibility varies across both in- and out-of-distribution samples. They tailored their evaluation to demonstrate that the credibility is well calibrated. They performed their experiments on both benign and adversarial examples.&lt;/p&gt;
+
+&lt;h2 id=&#34;classification-accuracy&#34;&gt;Classification Accuracy&lt;/h2&gt;
+
+&lt;p&gt;In their experiment, they used three datasets. First, hand written recognition task of MNIST dataset, SVHN dataset and the third one is GTSRB dataset. In the following figure, we can observe the comparison of the accuracy between DNN and DkNN model on three different dataset.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/classification_accuracy.png&#34; width=&#34;400&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Classification accuracy of the DNN and DkNN: the DkNN has a limited impact on or improves performance.    
+&lt;/p&gt; 
+
+&lt;h2 id=&#34;credibility-on-in-distribution-samples&#34;&gt;Credibility on in-distribution samples&lt;/h2&gt;
+
+&lt;p&gt;Reliability diagrams are plotted for the three different datasets (MNIST, SVHN and GTSRB) below:
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/evaluation_confidence_dknn.png&#34; width=&#34;500&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Reliability diagrams of DNN softmax confidence
+(left) and DkNN credibility (right) on test data—bars (left
+axis) indicate the mean accuracy of predictions binned by
+credibility; the red line (right axis) illustrates data density
+across bins. The softmax outputs high confidence on most of
+the data while DkNN credibility spreads across the value range.&lt;br /&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;On the left, they visualized the estimation of confidence output by the DNN softmax and it is calculated by the probability \(arg ~max_{j} ~f_j(x)\). On the right, they plotted the credibility of DkNN predictions. From the graph, it may appear that the softmax is better calibrated than the corresponding DkNN. Because its reliability diagrams are closer to the linear relation between accuracy and DNN confidence. But if the distribution of DkNN credibility values are considered then it surfaces that the softmax is almost always very confident on test data with a confidence above 0.8. DkNN uses the range of possible credibility values for datasets like SVHN (test set contains a larger number of inputs that are difficult to classify).&lt;/p&gt;
+
+&lt;!-- ## Mislabeled Inputs
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/mislabeled.png&#34; width=&#34;600&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Mislabeled inputs from the MNIST (top) and SVHN
+(bottom) test sets: we found these points by searching for
+inputs that are classified with strong credibility by the DkNN
+in a class that is different than the label found in the dataset.    
+&lt;/p&gt;  --&gt;
+
+&lt;h2 id=&#34;credibility-on-out-of-distribution-samples&#34;&gt;Credibility on out-of-distribution samples&lt;/h2&gt;
+
+&lt;p&gt;Images from NotMNIST is identical to MNIST but the classes are non-overlapping. For MNIST, the first set of out-of-distribution samples contains images from the NotMNIST dataset. For SVHN, the out-of-distribution samples contains images from the CIFAR-10 dataset. Again, they have the same format but there is no overlap between SVHN and CIFAR-10. For both the MNIST and SVHN datasets, they rotated all the test inputs by an angle of 45 degree to generate a second set of out-of-distribution samples.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/dknn-on-test-data.png&#34; width=&#34;600&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; DkNN credibility vs. softmax confidence on outof-distribution
+test data: the lower credibility of DkNN
+predictions (solid lines) compared to the softmax confidence
+(dotted lines) is desirable here because test inputs are not part
+of the distribution on which the model was trained—they are
+from another dataset or created by rotating inputs.    
+&lt;/p&gt; 
+
+&lt;p&gt;In the above figure, the credibility of the DkNN on the out-of-distribution samples is compared with the DNN softmax on MNIST (left) and SVHN (right). The DkNN algorithm has an average credibility of 6% and 9% to inputs from the NotMNIST and rotated MNIST test sets respectively, compared to 33% and 31% for the softmax probabilities. We find the same observation for SVHN model. Here, the DkNN assigns an average credibility of 15% and 18% to CIFAR-10 and rotated SVHN inputs, compared to 52% and 33% for the softmax probabilities.&lt;/p&gt;
+
+&lt;h2 id=&#34;evaluation-of-the-interpretability&#34;&gt;Evaluation  of the interpretability&lt;/h2&gt;
+
+&lt;p&gt;Here, they have considered the model being bias to the skin color of a person. In a recent study, Stock and Cisse demonstrate how an image of former US president Barack Obama throwing an American football in a stadium ResNet model. They reproduce their experiment and apply the DkNN algorithm to this model. They plotted the 10 nearest neighbors from the training data. These neighbors are computed by the last hidden layer of ResNet model.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/evaluation-interpretability.png&#34; width=&#34;600&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Debugging ResNet model biases—This illustrates how
+the DkNN algorithm helps to understand a bias identified by
+Stock and Cisse [105] in the ResNet model for ImageNet. The
+image at the bottom of each column is the test input presented
+to the DkNN. Each test input is cropped slightly differently to
+include (left) or exclude (right) the football. Images shown at
+the top are nearest neighbors in the predicted class according
+to the representation output by the last hidden layer. This
+comparison suggests that the “basketball” prediction may have
+been a consequence of the ball being in the picture. Also
+note how the white apparel color and general arm positions of
+players often match the test image of Barack Obama.    
+&lt;/p&gt; 
+
+&lt;p&gt;On the left side of the above figure, the test image that is processed by the DNN is the same as that of the one used by Stock and Cisse. It contains 7 black and 3 white basketball players. They are similar to the color and also located in the air. They assumed that the ball play an important role in prediction. So, they ran another experiment with the same image but now cropping the image to remove the ball. Now the model predictated it as he is playing racket. Neighbor in this training class are white players. Image share certain charateristics, such as the background is green and most of the people are wearing white dresses and holding there hands in the air. In this example, besides the skin color, the position and appearance of the ball also contributed to the model&amp;rsquo;s prediction.&lt;/p&gt;
+
+&lt;h2 id=&#34;evaluation-of-robustness&#34;&gt;Evaluation of Robustness&lt;/h2&gt;
+
+&lt;p&gt;DkNN is a step towards correctly handling malicious inputs like adversarial inputs because:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;outputs more reliable confidence estimates on adversarial examples than the softmax.&lt;/li&gt;
+&lt;li&gt;provides insights as to why adversarial examples affect undefended DNNs.&lt;/li&gt;
+&lt;li&gt;robust to adaptive attacks they considered&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;accuracy-on-adversarial-examples&#34;&gt;Accuracy on Adversarial Examples&lt;/h2&gt;
+
+&lt;p&gt;They crafted adversarial examples using three algorithms: Fast Gradient Sign Method (FGSM), Basic Iterative Method (BIM), and Carlini-Wagner 2 attack (CW).&lt;/p&gt;
+
+&lt;p&gt;All there test results are shown in the following table. They have also included the accuracy of both undefended DNN and DkNN. By observing the table, they made a conclusion that even though the attacks were successful in evading the undefended DNN, but when the model is integrated with DkNN, then some accuracy on adversarial examples is recovered.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/evaluation-robustness.png&#34; width=&#34;500&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Adversarial example classification accuracy for
+the DNN and DkNN: attack parameters are chosen according
+to prior work. All input features were clipped to remain in their
+range. Note that most wrong predictions made by the DkNN
+are assigned low credibility (see Figure 6 and the Appendix).    
+&lt;/p&gt; 
+
+&lt;p&gt;They have plotted the reliability diagrams comparing the DkNN credibility on GTSRB adversarial examples with the softmax probabilities output by the DNN. For DkNN, credibility is low across all attacks. Here, the number of points in each bin is reflected by the red line. DkNN outputs a credibility below 0.5 for most of the inputs. This indicates a sharp departure from softmax probabilities, which classified most adversarial examples in the wrong class with a high confidence of above 0.9 for the FGSM and BIM attacks. They also made an observation that the BIM attack is more successful at introducing perturbations than that of the FGSM or the CW attacks.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/evaluation_confidence_dknn_adversarial.png&#34; width=&#34;600&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt;  Reliability Diagrams on Adversarial Examples—
+The DkNN’s credibility is better calibrated (i.e., it assigns low
+confidence to adversarial examples) than probabilities output by
+the softmax of an undefended DNN. All diagrams are plotted
+with GTSRB test data. Similar graphs for the MNIST and
+SVHN datasets are in the Appendix.    
+&lt;/p&gt; 
+
+&lt;h2 id=&#34;explanation-of-dnn-mispredictions&#34;&gt;Explanation of DNN Mispredictions&lt;/h2&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/misprediction_dknn.png&#34; width=&#34;600&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Number of Candidate Labels among k = 75 Nearest
+Neighboring Representations—Shown for GTSRB with clean
+and adversarial data across the layers of the DNN underlying
+the DkNN. Points are centered according to the number of
+labels found in the neighbors; while the area of points is
+proportional to the number of neighbors whose label matches
+the DNN prediction. Representations output by lower layers
+of the DNN are less ambiguous for clean data than adversarial
+examples (nearest neighbors are more homogeneously labeled).    
+&lt;/p&gt; 
+
+&lt;p&gt;In the above figure, for both clean and adversarial examples, we can observe that the number of candidate labels decreases as we move up the neural network from its input layer all the way to its output layer. Number of candidate labels (in this case k = 75 nearest neighboring training representations) that match the final prediction made by the DNN is smaller for some attacks. For CW attack, the true label of adversarial examples that it produces is often recovered by the DkNN. Again, the lack of conformity between neighboring training representations at different layers of the model characterizes the weak support for the model’s prediction.&lt;/p&gt;
+
+&lt;!-- ## Robustness of DKNN to Adaptive Attacks
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/robustness_dknn_adaptive.png&#34; width=&#34;600&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt;  Feature Adversarial Examples against our DkNN
+algorithm—Shown for SVHN (see Appendix for MNIST).
+Adversarial examples are organized according to their original
+label (rows) and the DkNN’s prediction (columns).   
+&lt;/p&gt;  --&gt;
+
+&lt;!-- ## Conclusion --&gt;
+
+&lt;h3 id=&#34;comparison-to-lid&#34;&gt;Comparison to LID&lt;/h3&gt;
+
+&lt;p&gt;We discussed similarities between the DkNN approach and Local
+Intrinsic Dimensionality [&lt;a
+href=&#34;https://openreview.net/forum?id=B1gJ1L2aW&#34;&gt;ICLR 2018&lt;/a&gt;]. There
+are important differences between the approaches, but given the
+results reported in the &lt;em&gt;Obfuscated Gradients Give a False Sense of
+Security: Circumventing Defenses to Adversarial Examples&lt;/em&gt; (discussed
+in &lt;a href=&#34;https://secml.github.io/class3/&#34;&gt;Class 3&lt;/a&gt;) reported on
+LID, it is worth investigating how robust DkNN is to the same
+attacks. (Note that neither of these defenses are really obfuscating
+gradients, so the attack strategy reported in that paper is to just use high confidence adversarial examples.)&lt;/p&gt;
+
+&lt;h2 id=&#34;the-secret-sharer-measuring-unintended-neural-network-memorization-extracting-secrets&#34;&gt;The Secret Sharer: Measuring Unintended Neural Network Memorization &amp;amp; Extracting Secrets&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Nicholas Carlini, Chang Liu, Jernej Kos, Ulfar Erlingsson, Dawn Song. 2018. The Secret Sharer: Measuring Unintended Neural Network Memorization &amp;amp; Extracting Secrets.  arXiv:1802.08232. &lt;a href=&#34;https://arxiv.org/pdf/1802.08232.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This paper focuses an adversary targeting &amp;ldquo;secret&amp;rdquo; user information stored in a deep neural network. Sensitive or &amp;ldquo;secret&amp;rdquo; user information can be included in the datasets used to train deep machine learning models. For example, if a model is trained on a dataset of emails, some of which have credit card numbers, there is a high probability that the credit card number can be extracted from the model, according to this paper.&lt;/p&gt;
+
+&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Rapid adoption of machine learning techniques has resulted in models trained on sensitive user information or &amp;ldquo;secrets&amp;rdquo;. The &amp;ldquo;secrets&amp;rdquo; may include “person messages, location histories, or medical information.” The potential for machine learning models to memorize or store secret information could reveal sensitive user information to an adversary. Even black-box models were found to be susceptible to leaking secret user information. As more deep learning models are implemented, we need to be mindful of the models ability to store information, and to shield models from revealing secrets.&lt;/p&gt;
+
+&lt;h2 id=&#34;contributions&#34;&gt;Contributions&lt;/h2&gt;
+
+&lt;p&gt;The exposure metric defined in this paper measures the ability of a model to memorize a secret. The higher the exposure of a model, the more likely a model is memorizing secret user information. The paper uses this metric to compare the ability of different models to memorize with different hyper-parameters. An important observation was that secrets were found to be memorized early in training rather than in the period of over-fitting. The author found that this property was consistent between different models and hyper parameters. Models included in paper focus on deep learning generative text models. Convolution neural network were also tested, but perform worse generally on text-based data. Extraction of secret information from the model was tested with varying hyper-parameters and conditions.&lt;/p&gt;
+
+&lt;h2 id=&#34;perplexity-and-exposure&#34;&gt;Perplexity and Exposure&lt;/h2&gt;
+
+&lt;p&gt;Perplexity is a measurement of how well a probability distribution predicts a sample. A model will have completely memorized the randomness of the training set if the log-perplexity of a secret is the absolute smallest.&lt;/p&gt;
+
+&lt;p&gt;Log-perplexity suggests memorization but does not yield general information about the extent of memorization in the model. Thus the authors define rank:&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/secsha_risk.png&#34; width=&#34;400&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt;  Definition of rank. Requires computing log-perplexity of all possible secrets.
+&lt;/p&gt; 
+
+&lt;p&gt;To compute the rank, you must iterate over all possible secrets. To avoid this heavy computation the authors define multiple numerical methods to compute a value related to the rank of a secret, exposure.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/secsha_exposure.png&#34; width=&#34;400&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt;  Definition of exposure. More simply, the negative log-rank of a secret, s[r].
+&lt;/p&gt; 
+
+&lt;h2 id=&#34;secret-extraction-methods&#34;&gt;Secret Extraction Methods&lt;/h2&gt;
+
+&lt;p&gt;The authors identify four methods for extracting secrets from a black-box model.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Brute Force&lt;/li&gt;
+&lt;li&gt;Generative Sampling&lt;/li&gt;
+&lt;li&gt;Beam Search&lt;/li&gt;
+&lt;li&gt;Shortest Path Search&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Brute force was determined to be too computationally expensive, as the randomness space is too large. Generative sampling and beam search both fail to give the most optimal solution. The author&amp;rsquo;s used shortest path search to guarantee the lowest log-perplexity solution. Their approach was based on Dijkstra&amp;rsquo;s graph algorithm, and is explained in the paper. The figure below demonstrates the process of maximizing the log-perplexity for the purpose of finding the secret.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/secsha_dsk.png&#34; width=&#34;500&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt;  Shortest path search algorithm. Blue path points to location of largest perplexity, the location of the secret.
+&lt;/p&gt; 
+
+&lt;h2 id=&#34;characterizing-memorization-of-secrets&#34;&gt;Characterizing Memorization of Secrets&lt;/h2&gt;
+
+&lt;p&gt;In order to better understand model memorization the authors tested different numbers of iterations, various model architectures, multiple training strategies, changes in secret formats and context, and memorization across multiple simultaneous secrets.&lt;/p&gt;
+
+&lt;h4 id=&#34;iterations&#34;&gt;Iterations&lt;/h4&gt;
+
+&lt;p&gt;As showing in the figure below, the authors collected data relating to the exposure of the model throughout training. The exposure of the secret can clearly be seen rising until the test error starts to rise. This increase in exposure expresses the model&amp;rsquo;s memorization of the training set early in the training process.
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/secsha_epoch.png&#34; width=&#34;500&#34;&gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt;  Estimated exposure of secret and loss during training.
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;model-architectures&#34;&gt;Model architectures&lt;/h4&gt;
+
+&lt;p&gt;The authors observed, through their exposure metric, that memorization was a shared property among recurrent and convolutional neural networks. Data relating to the different model architectures and exposure is shown in the figure below.
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/secsha_modelComparison.png&#34; width=&#34;500&#34;&gt;
+&lt;br&gt; &lt;b&gt;Table:&lt;/b&gt;  Model Exposure Comparison
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;training-strategies&#34;&gt;Training strategies&lt;/h4&gt;
+
+&lt;p&gt;As seen in the figure below, smaller batch sizes resulted in lower levels of memorization. Although having a smaller batch size slows down distributed processing of models, it is clear that their results suggest that a smaller batch size can reduce memorization.
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/secsha_batchsize.png&#34; width=&#34;400&#34;&gt;
+&lt;br&gt; &lt;b&gt;Table:&lt;/b&gt;  Estimated exposure of various model and batch sizes.
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;secret-formats-and-context&#34;&gt;Secret formats and context&lt;/h4&gt;
+
+&lt;p&gt;The table below interestingly suggests that the context of secrets significantly impacts whether an adversary can detect memorization. As there become more characters or information associated with the secret, the adversary has an easier time extracting randomness.
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/secsha_secret.png&#34; width=&#34;400&#34;&gt;
+&lt;br&gt; &lt;b&gt;Table:&lt;/b&gt;  Estimated exposure with different contexts.
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;memorization-across-multiple-simultaneous-secrets&#34;&gt;Memorization across multiple simultaneous secrets&lt;/h4&gt;
+
+&lt;p&gt;The table below shows the effect of inserting multiple secrets into the dataset. As the number of insertions increase, the model becomes more likely to memorize the secrets that were inserted.
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class8/secsha_multiplephrases.png&#34; width=&#34;500&#34;&gt;
+&lt;br&gt; &lt;b&gt;Table:&lt;/b&gt; Percentage of phrases that can be extracted from the model
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;evaluating-word-level-models&#34;&gt;Evaluating word level models&lt;/h2&gt;
+
+&lt;p&gt;An interesting observation was that the capacity of a large word-level model produced better results than the smaller character-level model. By applying the exposure metrics to a word-level model, the authors found that representation of numbers mattered heavily in the memorization of information. When the authors replaced replaced &amp;ldquo;1&amp;rdquo; with &amp;ldquo;one,&amp;rdquo; they saw the exposure dropped by more than half from 25 to 12 for the large word-level model. Because the word-level model was more than 80 times the size of the character-level model, the authors found it surprising that &amp;ldquo;[the large model] has sufficient capacity to memorize the training data completely, but it actually memorizes less.&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;This paper examines the extent to which memorization has occurred in different types of algorithms and how sensitive user information can be revealed through this memorization. The metrics used in the paper can be easily transferred to existing models that have a well-defined notion of perplexity. They also demonstrate that these metrics can also be used to extract secret user information from black-box models.&lt;/p&gt;
+
+&lt;p&gt;&amp;mdash; Team Panda: Christopher Geier, Faysal Hossain Shezan, Helen Simecek, Lawrence Hook, Nishant Jha&lt;/p&gt;
+
+&lt;h3 id=&#34;sources&#34;&gt;Sources&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Kexin Pei, Yinzhi Cao, Junfeng Yang, Suman Jana. 2017. DeepXplore: Automated Whitebox Testing of Deep Learning Systems. In Proceedings of ACM Symposium on Operating Systems Principles (SOSP ’17). ACM, New York, NY, USA, 18 pages. https: //doi.org/10.1145/3132747.3132785 &lt;a href=&#34;https://arxiv.org/pdf/1705.06640.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Nicholas Carlini, Chang Liu, Jernej Kos, Ulfar Erlingsson, Dawn Song. 2018. The Secret Sharer: Measuring Unintended Neural Network Memorization &amp;amp; Extracting Secrets.  arXiv:1802.08232. Retrieved from &lt;a href=&#34;https://arxiv.org/pdf/1802.08232.pdf&#34;&gt;https://arxiv.org/pdf/1802.08232.pdf&lt;/a&gt; &lt;a href=&#34;https://arxiv.org/pdf/1802.08232.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Nicolas Papernot, Patrick McDaniel. 2018. Deep k-Nearest Neighbors: Towards Confident, Interpretable and Robust Deep Learning. Retrieved from &lt;a href=&#34;https://arxiv.org/pdf/1803.04765.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
     
     <item>
       <title>Class 7: Biases in ML, Discriminatory Advertising</title>
@@ -1969,117 +2342,6 @@ Evans&lt;/a&gt;.&lt;/p&gt;
 &lt;tr&gt;&lt;td&gt;&lt;a href=&#34;https://secml.github.io/class13&#34;&gt;Class 13&lt;/a&gt; (26 Apr)&lt;/td&gt;&lt;td style=&#34;text-align:center&#34;  colspan=5 bgcolor=&#34;#FF3&#34; style=&#34;text-align:center&#34;&gt;Mini-Conference&lt;/td&gt;&lt;/tr&gt;
 
 &lt;/table&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://secml.github.io/syllabus/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://secml.github.io/syllabus/</guid>
-      <description>
-
-&lt;h2 id=&#34;syllabus&#34;&gt;Syllabus&lt;/h2&gt;
-
-&lt;h3 id=&#34;cs6501-security-and-privacy-of-machine-learning&#34;&gt;&lt;strong&gt;cs6501: Security and Privacy of Machine Learning&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;University of Virginia, Spring 2018&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Meetings:&lt;/strong&gt; Fridays, 9:30AM - noon, Rice Hall 032&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Course Objective.&lt;/strong&gt; This seminar will focus on understanding the
-  risks adversaries pose to machine learning systems, and how to
-  design more robust machine learning systems to mitigate those risks.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Expected Background:&lt;/strong&gt; Previous background in machine learning and
-security is beneficial, but not required so long as you are willing
-and able to learn some foundational materials on your own. Most
-students in the seminar should have either strong background in
-machine learning, or strong background in security and privacy, but it
-is not expected that most students have extensive background in both
-areas. The seminar is open to ambitious undergraduate students (with
-instructor permission), and to graduate students interested in
-research in adversarial machine learning, privacy-preserving machine
-learning, fairness and transparency in machine learning, and other
-related topics.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Coordinator:&lt;/strong&gt; &lt;a href=&#34;http://www.cs.virginia.edu/evans&#34;&gt;David Evans&lt;/a&gt;
-  (evans@virginia.edu). My
-  &lt;a href=&#34;http://www.cs.virginia.edu/evans/office&#34;&gt;office&lt;/a&gt; is Rice 507.&lt;/p&gt;
-
-&lt;h2 id=&#34;course-expectations&#34;&gt;Course Expectations&lt;/h2&gt;
-
-&lt;p&gt;Students in the seminar are expected to:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Lead discussions on interesting topics during the class meetings.
-For each week, there will be a team of students charged with
-preparing a topic and leading the discussion, and another team
-charged with writing a blog post about the class. Students
-responsible for posting the blog summary will be different from the
-ones charged with leading the topic discussion, but should work
-closely with the leaders on the posted write-up.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Particpate actively in class meetings.  This means being prepared to
-contribute by doing the assigned preparation (which will typically
-involve reading a few research papers, but may involve other things
-also) and thinking about the materials deeply to be able to
-contribute well to discussions.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Contribute fully to a team that develops a course-long project which
-could either be a research project or a systematization of knowledge
-project. We will discuss this more in an early class, and form teams
-based on interests.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;communications&#34;&gt;Communications&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Course Website:&lt;/strong&gt;
-  &lt;a href=&#34;https://secml.github.io/&#34;&gt;&lt;em&gt;https://secml.github.io/&lt;/em&gt;&lt;/a&gt;.  All
-  course materials will be posted on the course website, and students
-  will be expected to provide materials to add to this site.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Slack:&lt;/strong&gt;
-  &lt;a href=&#34;https://secprivml.slack.com&#34;&gt;&lt;em&gt;https://secprivml.slack.com&lt;/em&gt;&lt;/a&gt;.  We
-  will use a slack group for class communications.  You can join using
-  any &lt;code&gt;@virginia.edu&lt;/code&gt; email address.  You can also create slack
-  channels for your team communications.&lt;/p&gt;
-
-&lt;h2 id=&#34;honor-and-responsibility&#34;&gt;Honor and Responsibility&lt;/h2&gt;
-
-&lt;p&gt;We believe strongly in the value of a &lt;em&gt;community of trust&lt;/em&gt;, and expect
-all of the students in this class to contribute to strenghtening and
-enhancing that community.  The course will be better for everyone if
-everyone can assume everyone else is trustworthy. The course staff
-starts with the assumption that all students at the university deserve
-to be trusted.&lt;/p&gt;
-
-&lt;p&gt;In this course, we will be learning about and exploring some
-vulnerabilities that could be used to compromise deployed systems.
-&lt;strong&gt;You are trusted to behave responsibility and ethically.&lt;/strong&gt; You may
-not attack any system without permission of its owners, and may not
-use anything you learn in this class for evil.  If you have any doubts
-about whether or not something you want to do is ethical and legal,
-you should check with the course instructor before proceeding.&lt;/p&gt;
-
-&lt;h2 id=&#34;area-requirements&#34;&gt;Area Requirements&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Note for CS Graduate Students.&lt;/strong&gt; This course is mislisted in SIS
-(indeed, it is a &amp;ldquo;bug&amp;rdquo; in the setup of SIS that cannot be overcome
-that requires all grad courses to be assigned areas) as counting for
-the &amp;ldquo;Software Systems&amp;rdquo; and &amp;ldquo;Theory&amp;rdquo; area requirements.  As per the
-actual rules in the Graduate Handbook, a cs6501 seminar course does
-not a priori count for any particular areas.  It may be possible to
-count it for any area, but it would be up to you to make the case to
-your committee that it should count for a given area. In most cases,
-this will depend a lot on what you individually do in the class - for
-example, you could select presentation topics and a topic for you
-project that would make a strong case for counting it for the &amp;ldquo;Theory&amp;rdquo;
-area, but someone else who does a systems-focused project would be
-able to count it for a different area. I can help provide guidance on
-this, but it is ultimately up to your committee to decide if a course
-counts for a particular area requirement.&lt;/p&gt;
 </description>
     </item>
     
