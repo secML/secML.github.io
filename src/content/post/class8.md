@@ -8,22 +8,22 @@ slug = "class8"
 
 ## DeepXplore: Automated Whitebox Testing of Deep Learning Systems
 
-> Kexin Pei, Yinzhi Cao, Junfeng Yang, Suman Jana. 2017. DeepXplore: Automated Whitebox Testing of Deep Learning Systems. In Proceedings of ACM Symposium on Operating Systems Principles (SOSP ’17). ACM, New York, NY, USA, 18 pages. https: //doi.org/10.1145/3132747.3132785 [[PDF]](https://arxiv.org/pdf/1705.06640.pdf)
+> Kexin Pei, Yinzhi Cao, Junfeng Yang, Suman Jana. 2017. _DeepXplore: Automated Whitebox Testing of Deep Learning Systems_. In Proceedings of ACM Symposium on Operating Systems Principles (SOSP ’17). ACM, New York, NY, USA, 18 pages. [[PDF]](https://arxiv.org/pdf/1705.06640.pdf)
 
-As deep learning is increasingly applied to security-critical domains, having a high confidence in the accuracy of a model's predictions is vital.  Just as in traditional software development, confidence in the correctness of a model's behavior stems from rigorous testing across a wide variety of possible scenarios.  However, unlike in traditional software development, the logic of deep learning systems is learned through the training process, which opens the door to many possible causes of unexpected behavior, like biases in the training data, overfitting, underfitting, etc.  As this logic does not exist as an actual line of code, deep learning models are extremely difficult to test, and those who do are are faced with two key challenges: 
+As deep learning is increasingly applied to security-critical domains, having high confidence in the accuracy of a model's predictions is vital.  Just as in traditional software development, confidence in the correctness of a model's behavior stems from rigorous testing across a wide variety of possible scenarios.  However, unlike in traditional software development, the logic of deep learning systems is learned through the training process, which opens the door to many possible causes of unexpected behavior, like biases in the training data, overfitting, underfitting, etc.  As this logic does not exist as an actual line of code, deep learning models are extremely difficult to test, and those who do are are faced with two key challenges: 
 
 1. How can all (or at least most) of the model's logic be triggered so as to discover incorrect behavior?
 2. How can such incorrect behavior be identified without manual inspection?
 
-To address these challenges, the authors of this paper first introduce neuron coverage as a measure of how much of a model's logic is activated by the test cases. To avoid manually inspecting output behavior for correctness, other DL systems designed for the same purpose are compared across the same set of test inputs, following the logic that if the models disagree than at least one model's output must be incorrect.  These two solutions are then reformulated into a joint optimization problem, which is implemented in the whitebox DL-testing framework DeepXplore.  
+To address these challenges, the authors of this paper first introduce _neuron coverage_ as a measure of how much of a model's logic is activated by the test cases. To avoid manually inspecting output behavior for correctness, other DL systems designed for the same purpose are compared across the same set of test inputs, following the logic that if the models disagree than at least one model's output must be incorrect.  These two solutions are then reformulated into a joint optimization problem, which is implemented in the whitebox DL-testing framework DeepXplore.  
 
 ### Limitations of Current Testing
 
-The motivation for the DeepXplore framework is the inability of current methods to thoroughly test deep neural networks.  Most existing techniques to identify incorrect behavior require human effort to manually label samples with the correct output, which quickly becomes prohibitively expensive for large datasets.  Additionally, the input space of these models is so large that test inputs cover only a small fraction of cases, leaving many corner cases untested.  Recent work has shown how shown that these untested cases near model decision boundaries leave DNNs vulnerable to adversarial evasion attacks, in which small perturbations to the input cause a misclassification.  And even when these adversarial examples are used to retrain the model and improve accuracy, they still do not have enough model coverage to prevent future evasion attacks. 
+The motivation for the DeepXplore framework is the inability of current methods to thoroughly test deep neural networks.  Most existing techniques to identify incorrect behavior require human effort to manually label samples with the correct output, which quickly becomes prohibitively expensive for large datasets.  Additionally, the input space of these models is so large that test inputs cover only a small fraction of cases, leaving many corner cases untested.  Recent work has shown that these untested cases near model decision boundaries leave DNNs vulnerable to adversarial evasion attacks, in which small perturbations to the input cause a misclassification.  And even when these adversarial examples are used to retrain the model and improve accuracy, they still do not have enough model coverage to prevent future evasion attacks. 
 
 ### Neuron Coverage
 
-To measure the area of the input space covered by tests, the authors define what they call "neuron coverage," a metric analogous to code coverage in traditional software testing.  As seen in the figure below, neuron coverage measures the percentage of nodes a given test input activates in the DNN, as opposed to the percentage of the source code executed.  This is believed to be a better measure of the robustness test inputs because the logic of a DNN is learned, not programmed, and exists primarily in the layers of nodes that compose the model, not the source code. 
+To measure the area of the input space covered by tests, the authors define what they call "neuron coverage," a metric analogous to code coverage in traditional software testing.  As seen in the figure below, neuron coverage measures the percentage of nodes a given test input activates in the DNN, analogous to the percentage of the source code executed on code coverage metrics.  This is believed to be a better measure of the robustness test inputs because the logic of a DNN is learned, not programmed, and exists primarily in the layers of nodes that compose the model, not the source code. 
 
 <p align="center">
 <img src="/images/class8/neuron_coverage.png" width="500">
@@ -42,7 +42,7 @@ To eliminate the need for expensive human effort to check output correctness, mu
 
 ### Method
 
-The primary objective for the test generation process is to maximize the neuron coverage and differential behaviors observed across models.  This is formulated as a joint optimization problem with domain-specific constraints (i.e. to ensure that a test case discovered is still a valid input), which is then solved using a gradient ascent algorithm.  
+The primary objective for the test generation process is to maximize the neuron coverage and differential behaviors observed across models.  This is formulated as a joint optimization problem with domain-specific constraints (i.e., to ensure that a test case discovered is still a valid input), which is then solved using a gradient ascent algorithm.  
 
 
 ### Experimental Set-up
@@ -54,20 +54,19 @@ The DeepXplore framework was used to test three DNNs for each of five well-known
 <div class="caption"> <a href="(https://arxiv.org/pdf/1705.06640.pdf)"><em>Source</em></a> </div>
 </p>
 
-For each dataset, 2,000 random samples were selected as seed inputs, which were then manipulated to search for erroneous behaviors in the test DNNs.  For example, in the image datasets, the lighting conditions were modified to find inputs on which the DNNs disagreed. This is shown in the photos below from the Driving dataset for self-driving cars. The top row has the original images with arrows indicating that all three DNNs agreed on the decision and the bottom row has the images with modified lighting conditions with arrows showing that at least one of the models made a difference decision than the other two.
-
+For each dataset, 2,000 random samples were selected as seed inputs, which were then manipulated to search for erroneous behaviors in the test DNNs.  For example, in the image datasets, the lighting conditions were modified to find inputs on which the DNNs disagreed. This is shown in the photos below from the Driving dataset for self-driving cars. 
 <p align="center">
 <img src="/images/class8/driving.png" width="400">
 <div class="caption"> <a href="(https://arxiv.org/pdf/1705.06640.pdf)"><em>Source</em></a> </div>
 </p>
+The top row has the original images with arrows indicating that all three DNNs agreed on the decision and the bottom row has the images with modified lighting conditions with arrows showing that at least one of the models made a difference decision than the other two.
 
 
 ## Deep k-Nearest Neighbors: Towards Confident, Interpretable and Robust Deep Learning
 
-> Nicolas Papernot, Patrick McDaniel. 2018. Deep k-Nearest Neighbors: Towards Confident, Interpretable and Robust Deep Learning. Retrieved from [[PDF]](https://arxiv.org/pdf/1803.04765.pdf)
+> Nicolas Papernot, Patrick McDaniel. 2018. _Deep k-Nearest Neighbors: Towards Confident, Interpretable and Robust Deep Learning_. [[PDF]](https://arxiv.org/pdf/1803.04765.pdf)
 
-## k-Nearest Neighbor
-
+## k-Nearest Neighbors
 
 Deep learning is ubiquitous. Deep neural networks achieve a good performance on challenging tasks like machine translation, diagnosing medical conditions, malware detection, and classification of images. In this research work, the authors mentioned about three 
 well-identified criticisms directly relevant to the security. They are the lack of reliable confidence in machine learning, model interpretability and robustness. Authors introduced the Deep k-Nearest Neighbors (DkNN) classification algorithm in this research work. It enforces the conformity of the predictions made by a DNN model on the test data with respect to the model’s training data. For each layer in the neural network, the DkNN performs a nearest neighbor search to find training points for which the layer’s output is closest to the layer’s output on the test input. Then they analyze the assigned label of these neighboring points to make it sure that the intermediate layer's computations remain conformal with the final output model’s prediction. 
@@ -86,7 +85,7 @@ Consider a deep neural network (in the left of the figure), representations outp
 The psudo-code for their k-Nearest Neighbors (DkNN) that the authors introduced in ensuring that the intermediate layer's computations remain conformal with the respect to the final model's prediction is given below-
 
 <p align="center">
-<img src="/images/class8/algorithm_dknn.png" width="600">
+<img src="/images/class8/algorithm_dknn.png" width="400">
 <br> <b>Figure:</b> Code snippet of Deep k-Nearest Neighbor   
 </p> 
 
@@ -95,7 +94,7 @@ The psudo-code for their k-Nearest Neighbors (DkNN) that the authors introduced 
 
 Basis for evaluating robustness, interpretability, Confidence are discussed below-
 <p align="center">
-<img src="/images/class8/basis_evalution.png" width="750">
+<img src="/images/class8/basis_evalution.png" width="500">
 <br> <b>Figure:</b> Basis for Evaluation
 </p> 
 
@@ -110,15 +109,15 @@ In their experiments, they measured high confidence on inputs. From the experime
 In their experiment, they used three datasets. First, hand written recognition task of MNIST dataset, SVHN dataset and the third one is GTSRB dataset. In the following figure, we can observe the comparison of the accuracy between DNN and DkNN model on three different dataset.
 
 <p align="center">
-<img src="/images/class8/classification_accuracy.png" width="600">
+<img src="/images/class8/classification_accuracy.png" width="400">
 <br> <b>Figure:</b> Classification accuracy of the DNN and DkNN: the DkNN has a limited impact on or improves performance.    
 </p> 
 
 ## Credibility on in-distribution samples
 
-Reliability diagrams are plotted for the three different dataset, i.e. MNIST, SVHN and GTSRB dataset in the following Figure. 
+Reliability diagrams are plotted for the three different datasets (MNIST, SVHN and GTSRB) below:
 <p align="center">
-<img src="/images/class8/evaluation_confidence_dknn.png" width="600">
+<img src="/images/class8/evaluation_confidence_dknn.png" width="500">
 <br> <b>Figure:</b> Reliability diagrams of DNN softmax confidence
 (left) and DkNN credibility (right) on test data—bars (left
 axis) indicate the mean accuracy of predictions binned by
@@ -184,26 +183,23 @@ On the left side of the above figure, the test image that is processed by the DN
 
 ## Evaluation of Robustness
 
-DKNN is a step towards correctly handling malicious inputs like adversarial inputs because: \\
-- outputs more reliable confidence estimates on adversarial examples than the softmax.\\
-- provides insights as to why adversarial examples affect undefended DNNs.\\
-- robust to adaptive attacks they considered\\
+DkNN is a step towards correctly handling malicious inputs like adversarial inputs because: 
 
+- outputs more reliable confidence estimates on adversarial examples than the softmax.
+- provides insights as to why adversarial examples affect undefended DNNs.
+- robust to adaptive attacks they considered
 
 
 ## Accuracy on Adversarial Examples
 
 
-They crafted adversarial examples using three algorithms. They are \\
- - Fast Gradient Sign Method (FGSM), \\
- - Basic Iterative Method (BIM), \\
- - Carlini-Wagner 2 attack (CW)
+They crafted adversarial examples using three algorithms: Fast Gradient Sign Method (FGSM), Basic Iterative Method (BIM), and Carlini-Wagner 2 attack (CW).
 
- All there test results are shown in the following table. They have also included the accuracy of both undefended DNN and DkNN. By observing the table, they made a conclusion that even though the attacks were successful in evading the undefended DNN, but when the model is integrated with DkNN, then some accuracy on adversarial examples is recovered. 
+All there test results are shown in the following table. They have also included the accuracy of both undefended DNN and DkNN. By observing the table, they made a conclusion that even though the attacks were successful in evading the undefended DNN, but when the model is integrated with DkNN, then some accuracy on adversarial examples is recovered. 
 
 
 <p align="center">
-<img src="/images/class8/evaluation-robustness.png" width="600">
+<img src="/images/class8/evaluation-robustness.png" width="500">
 <br> <b>Figure:</b> Adversarial example classification accuracy for
 the DNN and DkNN: attack parameters are chosen according
 to prior work. All input features were clipped to remain in their
@@ -254,12 +250,25 @@ label (rows) and the DkNN’s prediction (columns).
 <!-- ## Conclusion -->
 
 
+### Comparison to LID
+
+We discussed similarities between the DkNN approach and Local
+Intrinsic Dimensionality [<a
+href="https://openreview.net/forum?id=B1gJ1L2aW">ICLR 2018<a/>]. There
+are important differences between the approaches, but given the
+results reported in the _Obfuscated Gradients Give a False Sense of
+Security: Circumventing Defenses to Adversarial Examples_ (discussed
+in <a href="https://secml.github.io/class3/">Class 3</a>) reported on
+LID, it is worth investigating how robust DkNN is to the same
+attacks. Note that neither of these defenses are really obfuscating
+gradients, so the attack strategy reported in that paper is to just use high confidence adversarial examples.
+
 
 
 ## The Secret Sharer: Measuring Unintended Neural Network Memorization & Extracting Secrets
 
 
-> Nicholas Carlini, Chang Liu, Jernej Kos, Ulfar Erlingsson, Dawn Song. 2018. The Secret Sharer: Measuring Unintended Neural Network Memorization & Extracting Secrets.  arXiv:1802.08232. Retrieved from https://arxiv.org/pdf/1802.08232.pdf [[PDF]](https://arxiv.org/pdf/1802.08232.pdf)
+> Nicholas Carlini, Chang Liu, Jernej Kos, Ulfar Erlingsson, Dawn Song. 2018. The Secret Sharer: Measuring Unintended Neural Network Memorization & Extracting Secrets.  arXiv:1802.08232. [[PDF]](https://arxiv.org/pdf/1802.08232.pdf)
 
 This paper focuses an adversary targeting "secret" user information stored in a deep neural network. Sensitive or "secret" user information can be included in the datasets used to train deep machine learning models. For example, if a model is trained on a dataset of emails, some of which have credit card numbers, there is a high probability that the credit card number can be extracted from the model, according to this paper.
 
@@ -308,7 +317,7 @@ Brute force was determined to be too computationally expensive, as the randomnes
 
 In order to better understand model memorization the authors tested different numbers of iterations, various model architectures, multiple training strategies, changes in secret formats and context, and memorization across multiple simultaneous secrets.
 
-- Iterations
+#### Iterations
 
 As showing in the figure below, the authors collected data relating to the exposure of the model throughout training. The exposure of the secret can clearly be seen rising until the test error starts to rise. This increase in exposure expresses the model's memorization of the training set early in the training process. 
 <p align="center">
@@ -317,7 +326,7 @@ As showing in the figure below, the authors collected data relating to the expos
 </p> 
 
 
-- Model architectures
+#### Model architectures
 
 The authors observed, through their exposure metric, that memorization was a shared property among recurrent and convolutional neural networks. Data relating to the different model architectures and exposure is shown in the figure below. 
 <p align="center">
@@ -326,7 +335,7 @@ The authors observed, through their exposure metric, that memorization was a sha
 </p> 
 
 
-- Training strategies
+#### Training strategies
 
 As seen in the figure below, smaller batch sizes resulted in lower levels of memorization. Although having a smaller batch size slows down distributed processing of models, it is clear that their results suggest that a smaller batch size can reduce memorization. 
 <p align="center">
@@ -335,7 +344,7 @@ As seen in the figure below, smaller batch sizes resulted in lower levels of mem
 </p> 
 
 
-- Secret formats and context
+#### Secret formats and context
 
 The table below interestingly suggests that the context of secrets significantly impacts whether an adversary can detect memorization. As there become more characters or information associated with the secret, the adversary has an easier time extracting randomness. 
 <p align="center">
@@ -344,7 +353,7 @@ The table below interestingly suggests that the context of secrets significantly
 </p> 
 
 
-- Memorization across multiple simultaneous secrets
+#### Memorization across multiple simultaneous secrets
 
 The table below shows the effect of inserting multiple secrets into the dataset. As the number of insertions increase, the model becomes more likely to memorize the secrets that were inserted.
 <p align="center">
