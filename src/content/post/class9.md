@@ -9,13 +9,13 @@ slug = "class9"
 
 ### Introduction
 
-## Malware History - Machine Learning Origins
+### Malware History - Machine Learning Origins
 
 ### PDF Malware Classifiers
 
-## Hidost: A Static Machine-Learning-Based Detector of Malicious Files
+### Hidost: A Static Machine-Learning-Based Detector of Malicious Files
 
-## Machine Learning on Malware is Hard
+### Machine Learning on Malware is Hard
 
 ### State of the Art
 
