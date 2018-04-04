@@ -15,35 +15,45 @@ Since the first appearances of early malware, advances in both combating and cre
 
 At its most basic, a virus is simply a program that is designed to [alter the way a computer operates and spread from one computer to another](https://us.norton.com/internetsecurity-malware-what-is-a-computer-virus.html). However, to be truly effective, a virus must also conceal itself so as to replicate and infect another computer. Thus, the most primitive approach to covering the operation of the virus code, first appearing in 1988, uses encryption to change the virus body binary codes with encryption algorithms in order to make it more difficult to analyze and detect.
 
-Encrypted viruses are typically made up of two parts: the encrypted body of the virus itself, and a small (unencrypted) segment of decryption code. When the infected program runs, the decryption loop executes, which first decrypts the encrypted virus code, and then moves the program control to the body of the virus code.
+Encrypted viruses are typically made up of two parts: the encrypted body of the virus itself, and a small (unencrypted) segment of decryption code. When the infected program runs, the decryption loop executes, which first decrypts the encrypted virus code, and then moves the program control to the body of the virus code:
 
 ![](/images/class9/structureofencryptedvirus.png "Structure of an encrypted virus")
    <div class="caption">
 Source: [_Camouflage in Malware: From Encryption to Metamorphism_]((http://paper.ijcsns.org/07_book/201208/20120813.pdf)) [2]
    </div>
 
+Encryption has utility for a virus writer in several ways; most importantly, it disguises suspicious code in order to avoid detection by static code analysis, which automatically analyzes code and generates a warning were the code simply in unencrypted plaintext. Additionally, encryption of a virus also prevents tampering - since new viruses could accidentally produced with minor changes in the original virus code, encryption ensures that an expert is required to dismantle the virus, or else run the risk of producing further harm by messing with it. Finally, an encrypted virus cannot be detected by simple string matching prior to decryption, because only the decryptor loop is identical in all variants of the virus. Thus, in an anti-virus inspection, which attempts to match the signature for an encrypted virus, the signature string is constrained and must be selected precisely.
+
 #### -Morphic Viruses
 
-Oligomorphic, polymorphic, metamorphic
-Static analysis fails
+The constant decryptor loops turned out to be the downfall of static encrypted viruses, however; since the decryptor loop code segment remained constant in new infected files, anti-virus software had no trouble obtaining a signature string with which to seek matches in code during an inspection. To overcome this vulnerability, virus writers employed techniques to mutate the decryptor body, giving rise to a new type of concealment viruses: oligomorphic viruses.
+
+Rather than passing on the same exact decryptor loop code for each instance of the virus, oligomorphic viruses are willing to substitute the decryptor code in new offspring of the virus when reproducing themselves. This idea is most easily implemented by providing a set of different decryptor loops rather than one, which make the detection process more difficult for signature-based scanning engines.
+
+Signature-scanning is in fact, the most common approach in anti-virus tools, which uses small strings, "signatures" (the results of manual analysis of viral codes) to identify viruses and malware. The signature is meant to discover viruses in the cases of a match, thus, it is vital to ensure that any given virus signature only signifuies a specific virus, rather than other viruses or benign programs, in order to avoid flagging non-virus code.
+
+To cheat signature scanning, polymorphic viruses actually change some instructions in the next generation - "when the virus decides to infect a new victim, it modifies some pieces of its body to look dissimilar" [1].  
+
+<!-- DRAFT outline:
+Metamorphic viruses
 Emulation, build profiles
 Mimicry attacks
 	Intrusion Detection Systems:
 		signature-based (bytes, sequence of system calls)
 		anomaly detection (database of normal behaviour)
 	Mimicry
-		malicious under the guise of the model
+		malicious under the guise of the model -->
 
 ## Machine Learning in Malware
 
 > Konrad Rieck, Thorsten Holz, Carsten Willems, Patrick Düssel, Pavel Laskov. _Learning and Classification of Malware Behavior_. 15th USENIX Security Symposium. 23 April 2008. [[PDF](https://pdfs.semanticscholar.org/e701/d190583135b841252886742bf15736015f3c.pdf)]
 
-Attacks do not share static code
+<!-- Attacks do not share static code
 	Malware varies code
 	Mimicry varies system calls
 But they do share behaviour
 Learn this behaviour
-
+ -->
 ## PDF Malware Classifiers
 
 ## Hidost: A Static Machine-Learning-Based Detector of Malicious Files
