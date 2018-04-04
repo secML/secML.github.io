@@ -47,6 +47,8 @@ Learn this behaviour
 ## PDF Malware Classifiers
 
 ## Hidost: A Static Machine-Learning-Based Detector of Malicious Files
+> Nedim Šrndić and Pavel Laskov. Hidost: a static machine-learning-based detector of malicious files. [[PDF](https://link.springer.com/content/pdf/10.1186%2Fs13635-016-0045-0.pdf)]
+
 There has been a substantial amount of work on the detection of no-executable malware which includes static, dynamic and combined methods. Although static methods perform in orders of magnitude faster, their applicability has been limited to only specific file formats. Hidost introduces the static machine-learning-based malware detection system to operate multiple file formats like pdf or swf having hierarchical  document structure.
 
 ### Hierarchically structured file formats
