@@ -12,7 +12,7 @@ slug = "class9"
 
 Since the first appearances of early malware, advances in both combating and creating viruses have analogously mirrored the general patterns of the medical battle against evolving biological virus outbreaks: that is, as anti-virus software continually develops innovative techniques for detecting existing viruses, virus writers seek out new methods to cheat those detection systems. To understand the present state of the field and the role of machine learning in combating malware, let's look at a brief history of how both the attacks and defenses have evolved in the malware domain.
 
-#### Encrypted Viruses
+### Encrypted Viruses
 
 At its most basic, a virus is simply a program that is designed to [alter the way a computer operates and spread from one computer to another](https://us.norton.com/internetsecurity-malware-what-is-a-computer-virus.html). However, to be truly effective, a virus must also conceal itself so as to replicate and infect another computer. Thus, the most primitive approach to covering the operation of the virus code, first appearing in 1988, uses encryption to change the virus body binary codes with encryption algorithms in order to make it more difficult to analyze and detect.
 
@@ -67,7 +67,7 @@ Further, to understand and evaluate the importance of specific features for malw
 
 > Charles Smutz and Angelos Stavrou. Malicious PDF Detection using Metadata and Structural Features[[PDF](https://cs.gmu.edu/~astavrou/research/Malicious_PDF_Detection_ACSAC_12.pdf)]
 
-### Portable Document Format (PDF)
+#### Portable Document Format (PDF)
 
 The Portable Document Format (PDF) file structure consists of four parts: header, body, cross-reference table (CRT), and trailer. The following figures show an example PDF file, the raw content of an example PDF file, and the corresponding structural tree of the PDF file, respectively.
 
@@ -88,7 +88,7 @@ The Portable Document Format (PDF) file structure consists of four parts: header
 
 PDF documents have become a prevalent target of either massive or one-on-one attacks due to their wide use and diverse functionality. Popular PDF malware detectors include SL2013, Hidost, PDFRate and its variations. Among them, SL2013 and Hidost are structure-based PDF classifiers while PDFRate is content-based.
 
-### PDFRate
+#### PDFRate
 
 PDFRate, a real learning-based system introduced by George Mason University scholars Smutz and Stavrou, uses metadata and structural features to classify PDF files as benign or malicious based on the Random Forest algorithm. The feature space of PDFRate contains 202 integer, floating point and Boolean features selected from PDF metadata and file contents. Two strategies were employed during the feature selection phase, including avoiding reliance on specific byte sequence and not targeting specific known vulnerabilities. Moreover, the significant interdependence nature of the features makes the adversary’s life difficult when they attempt to control feature values. Datasets Contagio, Operational, and Community have ever been adopted in the training and evaluation of PDFRate. With respect to the classification algorithm, the number of trees is 1000 and each tree carries 43 features.
 
@@ -101,7 +101,7 @@ pos_box_max <br/>
 image_totalpx <br/>
 producer_len <br/>
 
-### Adversarial Analysis
+#### Adversarial Analysis
 
 Using PDFRate, the classification rates achieve well above 99% true positive rates while maintaining 0.2% or less false positive rates for different datasets, classification parameters and experimental conditions.
 
@@ -128,13 +128,13 @@ The table below shows the testing results of the effectiveness of perturbation. 
 
 Since this approach is behavioural-based rather than signature-based, it can both identify and capture the most important behaviours of similar malware, allowing for detection that does not rely on the exact signature-matching, but rather on automated learning of behavioural patterns. This provides evidence to the claim that machine learning could provide innovative avenues into the malware field.
 
-### Hidost: A Static Machine-Learning-Based Detector of Malicious Files
+## Hidost: A Static Machine-Learning-Based Detector of Malicious Files
 
 > Nedim Šrndić and Pavel Laskov. Hidost: a static machine-learning-based detector of malicious files. [[PDF](https://link.springer.com/content/pdf/10.1186%2Fs13635-016-0045-0.pdf)]
 
 There has been a substantial amount of work on the detection of no-executable malware which includes static, dynamic and combined methods. Although static methods perform in orders of magnitude faster, their applicability has been limited to only specific file formats. Hidost introduces the static machine-learning-based malware detection system to operate multiple file formats like pdf or swf having hierarchical  document structure.
 
-### Hierarchically structured file formats
+#### Hierarchically structured file formats
 
 File formats are developed as a mean to store the physical representation of certain information but all of them do not have logical structure. For example, some formats like text files do not have any logical structure but others e.g.; HTML files represents a logical relationships between html elements. The following figure shows the hierarchical structure of the swf file. The pdf file structure has been discussed in the above section.
 
