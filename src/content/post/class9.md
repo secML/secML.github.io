@@ -110,7 +110,7 @@ The table below shows the testing results of the effectiveness of perturbation. 
 There has been a substantial amount of work on the detection of no-executable malware which includes static, dynamic and combined methods. Although static methods perform in orders of magnitude faster, their applicability has been limited to only specific file formats. Hidost introduces the static machine-learning-based malware detection system to operate multiple file formats like pdf or swf having hierarchical  document structure.
 
 ### Hierarchically structured file formats
-File formats are developed as a mean to store the physical representation of certain information but all of them do not have logical structure. For example, some formats like text files do not have any logical structure but others e.g.; HTML files represents a logical relationships between html elements. The following figure shows the hierarchical structure of the swf file respectively. The pdf file structure has been discussed in the above section.
+File formats are developed as a mean to store the physical representation of certain information but all of them do not have logical structure. For example, some formats like text files do not have any logical structure but others e.g.; HTML files represents a logical relationships between html elements. The following figure shows the hierarchical structure of the swf file. The pdf file structure has been discussed in the above section.
 
 <p align="center">
 <img src="/images/swf_structure.png" width="400" >
