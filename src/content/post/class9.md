@@ -5,6 +5,7 @@ title = "Class 9: Adversarial Malware Detection"
 author = "Team Nematode"
 slug = "class9"
 +++
+
 ## Evolution of the Malware Arms Race
 
 > Babak Bashari Rad, Maslin Masrom, and Suhaimi Ibrahim. _Evolution of Computer Virus Concealment and Anti-Virus Techniques: A Short Survey_. University Technology Malaysia. 6 April 2011. [[PDF](https://arxiv.org/ftp/arxiv/papers/1104/1104.1070.pdf)]
@@ -194,7 +195,14 @@ Detection softwares are working to identify dynamic features more specifically i
 
 ## Future of the Field
 
-We've explored the current state of adversarial malware detection including Hidost. From simple to metamorphic viruses, malware has evolved into increasingly sophisticated threats. The field of adversarial malware detection has been evolving as well, as methods are developed that are increasingly effective at detecting malicious code. As the cutting edge of malware detection moves forward, we will see new fronts open up in the contest between malicious files and the algorithms that detect them.
+While progress is being made in the field, there are a number of challenges that need to be met for malware detection and evasion to evolve. Much work has been done in the area of both static analysis and the mutation of static features. However, it's clear that static analysis isn't good enough for today's tasks, and that effective detectors and mutators need to embrace dynamic features.
+
+The more challenging goal of using a learning model to algorithmically mutate dynamic features that preserve the functionality of original code is a more complex problem. While achieving effective dynamic feature mutation isn't currently feasible with today's research, a step in the right direction will certainly involve selecting an appropriate deep learning architecture. Perhaps recurrent neural networks, which fit sequence modeling tasks well, could be useful.
+
+Detectors must evolve as well. Research has shown that some dynamic analysis algorithms are detectable, and that sophisticated threats can delay malicious behavior until they are no longer in a sandboxed environment. Effectively learning from sandboxed data streams and system calls will open up a new front in the arms race between detector and attacker.
+
+Ultimately, from simple to metamorphic viruses, malware has evolved into increasingly sophisticated threats. The field of adversarial malware detection has been evolving as well, as methods are developed that are increasingly effective at detecting malicious code. As the cutting edge of malware detection moves forward, we will see new fronts open up in the contest between malicious files and the algorithms that detect them.
+
 — Team Nematode: \\
 Bargav Jayaraman, Guy "Jack" Verrier, Joshua Holtzman, Max Naylor, Nan Yang, Tanmoy Sen
 
