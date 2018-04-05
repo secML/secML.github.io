@@ -45,6 +45,64 @@ But they do share behaviour
 Learn this behaviour
 
 ## PDF Malware Classifiers
+> Charles Smutz and Angelos Stavrou. Malicious PDF Detection using Metadata and Structural Features[[PDF](https://cs.gmu.edu/~astavrou/research/Malicious_PDF_Detection_ACSAC_12.pdf)]
+
+### Portable Document Format (PDF)
+The Portable Document Format (PDF) file structure consists of four parts: header, body, cross-reference table (CRT), and trailer. The following figures show an example PDF file, the raw content of an example PDF file, and the corresponding structural tree of the PDF file, respectively.
+
+<p align="center">
+<img src="/images/an_example_pdf_file.png" width="400" >
+<br> <b>Figure:</b> An example PDF file
+</p>
+
+<p align="center">
+<img src="/images/raw_content.png" width="400" >
+<br> <b>Figure:</b> Raw content of an example PDF file
+</p>
+
+<p align="center">
+<img src="/images/pdf_tree.png" width="400" >
+<br> <b>Figure:</b> Structural tree of the PDF file
+</p>
+
+PDF documents have become a prevalent target of either massive or one-on-one attacks due to their wide use and diverse functionality. Popular PDF malware detectors include SL2013, Hidost, PDFRate and its variations. Among them, SL2013 and Hidost are structure-based PDF classifiers while PDFRate is content-based.
+
+
+### PDFRate
+PDFRate, a real learning-based system introduced by George Mason University scholars Smutz and Stavrou, uses metadata and structural features to classify PDF files as benign or malicious based on the Random Forest algorithm. The feature space of PDFRate contains 202 integer, floating point and Boolean features selected from PDF metadata and file contents. Two strategies were employed during the feature selection phase, including avoiding reliance on specific byte sequence and not targeting specific known vulnerabilities. Moreover, the significant interdependence nature of the features makes the adversary’s life difficult when they attempt to control feature values. Datasets Contagio, Operational, and Community have ever been adopted in the training and evaluation of PDFRate. With respect to the classification algorithm, the number of trees is 1000 and each tree carries 43 features.
+
+The following are the most important features for classification out of a total of 202 features: <br/>
+count_font <br/>
+count_javascript <br/>
+count_js <br/>
+count_stream_diff <br/>
+pos_box_max <br/>
+image_totalpx <br/>
+producer_len <br/>
+
+### Adversarial Analysis
+Using PDFRate, the classification rates achieve well above 99% true positive rates while maintaining 0.2% or less false positive rates for different datasets, classification parameters and experimental conditions.
+
+In the mimicry attack effectiveness test where the previously extracted features are purposefully modified, the six most important features were selected for evasion testing. As shown in the table below, the conclusion is that the classification error can increase to a great extent.
+
+<p align="center">
+<img src="/images/mimicry_attacks.png" width="400" >
+<br> <b>Figure:</b> Mimicry: Classifier Error Increase
+</p>
+
+When the top features ranked by random forests are removed, the table below demonstrates the increase in classification error but the effect is surprisingly low. The reason is that there are many other important features retained.
+
+<p align="center">
+<img src="/images/removing_features.png" width="400" >
+<br> <b>Figure:</b> Classifier Error with Features Removed
+</p>
+
+The table below shows the testing results of the effectiveness of perturbation. The goal of using perturbation, i.e. increasing the feature variance by modifying the features of a malicious subset in the training set, is to reduce the importance of these features without fully negating them in order to counter evasion.
+
+<p align="center">
+<img src="/images/perturbation.png" width="400" >
+<br> <b>Figure:</b> Classification Error with Training Data Perturbation
+</p>
 
 ## Hidost: A Static Machine-Learning-Based Detector of Malicious Files
 > Nedim Šrndić and Pavel Laskov. Hidost: a static machine-learning-based detector of malicious files. [[PDF](https://link.springer.com/content/pdf/10.1186%2Fs13635-016-0045-0.pdf)]
@@ -52,12 +110,7 @@ Learn this behaviour
 There has been a substantial amount of work on the detection of no-executable malware which includes static, dynamic and combined methods. Although static methods perform in orders of magnitude faster, their applicability has been limited to only specific file formats. Hidost introduces the static machine-learning-based malware detection system to operate multiple file formats like pdf or swf having hierarchical  document structure.
 
 ### Hierarchically structured file formats
-File formats are developed as a mean to store the physical representation of certain information but all of them do not have logical structure. For example, some formats like text files do not have any logical structure but others e.g.; HTML files represents a logical relationships between html elements. Following two figures shows the hierarchical structure of pdf and  swf files respectively.
-
-<p align="center">
-<img src="/images/pdf_structure.png" width="400" >
-<br> <b>Figure:</b> Raw content of an example pdf (left) and its structural tree (right)
-</p>
+File formats are developed as a mean to store the physical representation of certain information but all of them do not have logical structure. For example, some formats like text files do not have any logical structure but others e.g.; HTML files represents a logical relationships between html elements. The following figure shows the hierarchical structure of the swf file respectively. The pdf file structure has been discussed in the above section.
 
 <p align="center">
 <img src="/images/swf_structure.png" width="400" >
