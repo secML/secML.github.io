@@ -10,7 +10,7 @@ slug = "class9"
 
 > Babak Bashari Rad, Maslin Masrom, and Suhaimi Ibrahim. _Evolution of Computer Virus Concealment and Anti-Virus Techniques: A Short Survey_. University Technology Malaysia. 6 April 2011. [[PDF](https://arxiv.org/ftp/arxiv/papers/1104/1104.1070.pdf)]
 
-Since the first appearances of early malware, advances in both combating and creating viruses have analogously mirrored the general patterns of the medical battle against evolving biological virus outbreaks: that is, as anti-virus software continually develops innovative techniques for detecting existing viruses, virus writers seek out new methods to cheat those detection systems. To understand the present state of the field and the role of machine learning in combating malware, let's look at a brief history of how both the attacks and defenses have evolved in the malware domain.
+Since the first appearances of early malware, advances in both combating and creating viruses have analogously mirrored the general patterns of the medical battle against evolving biological virus outbreaks &mdash; as anti-virus software continually develops innovative techniques for detecting existing viruses, virus writers seek out new methods to cheat those detection systems. To understand the present state of the field and the role of machine learning in combating malware, let's look at a brief history of how both the attacks and defenses have evolved in the malware domain.
 
 ### Encrypted Viruses
 
@@ -25,7 +25,7 @@ Source: [_Camouflage in Malware: From Encryption to Metamorphism_]((http://paper
 
 Encryption has utility for a virus writer in several ways; most importantly, it disguises suspicious code in order to avoid detection by static code analysis, which automatically analyzes code and generates a warning were the code simply in unencrypted plaintext. Additionally, encryption of a virus also prevents tampering - since new viruses could accidentally produced with minor changes in the original virus code, encryption ensures that an expert is required to dismantle the virus, or else run the risk of producing further harm by messing with it. Finally, an encrypted virus cannot be detected by simple string matching prior to decryption, because only the decryptor loop is identical in all variants of the virus. Thus, in an anti-virus inspection, which attempts to match the signature for an encrypted virus, the signature string is constrained and must be selected precisely.
 
-#### -Morphic Viruses
+#### Morphic Viruses
 
 The constant decryptor loops turned out to be the downfall of static encrypted viruses, however; since the decryptor loop code segment remained constant in new infected files, anti-virus software had no trouble obtaining a signature string with which to seek matches in code during an inspection. To overcome this vulnerability, virus writers employed techniques to mutate the decryptor body, giving rise to a new type of concealment viruses: oligomorphic viruses.
 
@@ -53,31 +53,31 @@ Source: [_Camouflage in Malware: From Encryption to Metamorphism_]((http://paper
 
 When an unknown malware instance is discovered, there are two important questions to be asked:
 
-1. Does an unknown malware instance belong to a known malware family, or does it constitute a novel malware strain?
+1. Does the new malware instance belong to a known malware family, or does it constitute a novel malware strain?
 
-2. What behavioural features are discriminative for distinguishing instances of a given malware family from others?
+2. What behavioral features are discriminative for distinguishing instances of a given malware family from others?
 
-To approach automating the discovery of the answers to this question, Rieck et al. train a classifier on honeypots and spam-traps to map unknown viruses to malware families, or to a new classification altogether, and to uncover what characterizes families of viruses.
+To approach automating the discovery of the answers to this question, Rieck et al. train a classifier on honeypots and spam-traps to map unknown viruses to malware families, or to a new classification altogether, and to uncover properties that characterize families of viruses.
 
-First, the behaviour of each binary is monitored in sandbox envrionment, and behaviour-based analysis reports summarizing operations. Then, the learning algorithm embeds the generated analysis reports in a high-dimensional vector space and learns a discriminative model for each malware family - that is, creates a model to predict whether this instance belongs to a known family or not, which is then aggregated against other similar models to produce a final decision. This process answers the first question.
+First, the behavior of each binary is monitored in sandbox envrionment, and behavior-based analysis reports summarizing operations. Then, the learning algorithm embeds the generated analysis reports in a high-dimensional vector space and learns a discriminative model for each malware family - that is, creates a model to predict whether this instance belongs to a known family or not, which is then aggregated against other similar models to produce a final decision. This process answers the first question.
 
-Further, to understand and evaluate the importance of specific features for malware behaviour classification, sort the weights of behavioural patterns in the learning model and consider the most prominent patterns to obtain characteristic features of each malware family.
+Further, to understand and evaluate the importance of specific features for malware behavior classification, sort the weights of behavioral patterns in the learning model and consider the most prominent patterns to obtain characteristic features of each malware family.
 
 ## PDF Malware Classifiers
 
-> Charles Smutz and Angelos Stavrou. Malicious PDF Detection using Metadata and Structural Features[[PDF](https://cs.gmu.edu/~astavrou/research/Malicious_PDF_Detection_ACSAC_12.pdf)]
+> Charles Smutz and Angelos Stavrou. Malicious PDF Detection using Metadata and Structural Features. ACSAC 2012. [[PDF](https://cs.gmu.edu/~astavrou/research/Malicious_PDF_Detection_ACSAC_12.pdf)]
 
 #### Portable Document Format (PDF)
 
 The Portable Document Format (PDF) file structure consists of four parts: header, body, cross-reference table (CRT), and trailer. The following figures show an example PDF file, the raw content of an example PDF file, and the corresponding structural tree of the PDF file, respectively.
 
 <p align="center">
-<img src="/images/an_example_pdf_file.png" width="400" >
+<img src="/images/an_example_pdf_file.png" width="300" >
 <br> <b>Figure:</b> An example PDF file
 </p>
 
 <p align="center">
-<img src="/images/raw_content.png" width="400" >
+<img src="/images/raw_content.png" width="200" >
 <br> <b>Figure:</b> Raw content of an example PDF file
 </p>
 
@@ -126,11 +126,11 @@ The table below shows the testing results of the effectiveness of perturbation. 
 <br> <b>Figure:</b> Classification Error with Training Data Perturbation
 </p>
 
-Since this approach is behavioural-based rather than signature-based, it can both identify and capture the most important behaviours of similar malware, allowing for detection that does not rely on the exact signature-matching, but rather on automated learning of behavioural patterns. This provides evidence to the claim that machine learning could provide innovative avenues into the malware field.
+Since this approach is behavioral-based rather than signature-based, it can both identify and capture the most important behaviors of similar malware, allowing for detection that does not rely on the exact signature-matching, but rather on automated learning of behavioral patterns. This provides evidence to the claim that machine learning could provide innovative avenues into the malware field.
 
 ## Hidost: A Static Machine-Learning-Based Detector of Malicious Files
 
-> Nedim Šrndić and Pavel Laskov. Hidost: a static machine-learning-based detector of malicious files. [[PDF](https://link.springer.com/content/pdf/10.1186%2Fs13635-016-0045-0.pdf)]
+> Nedim Šrndić and Pavel Laskov. Hidost: a static machine-learning-based detector of malicious files. EURASIP Journal on Information Security, 2016. [[PDF](https://pdfs.semanticscholar.org/c592/abca4236ad3cb9cea9371d0cf35fd9dbd9b5.pdf)]
 
 There has been a substantial amount of work on the detection of no-executable malware which includes static, dynamic and combined methods. Although static methods perform in orders of magnitude faster, their applicability has been limited to only specific file formats. Hidost introduces the static machine-learning-based malware detection system to operate multiple file formats like pdf or swf having hierarchical  document structure.
 
@@ -179,7 +179,7 @@ The following is a list of structural paths from real-world malicious PDF files:
 The system design of Hidost consists of six stages: structure extraction, structural path consolidation, feature selection, vectorization, learning, and classification as it is illustrated in the following figure.
 
 <p align="center">
-<img src="/images/system_design.png" width="500" >
+<img src="/images/system_design.PNG" width="500" >
 <br> <b>Figure:</b> Hidost system design
 </p>
 
