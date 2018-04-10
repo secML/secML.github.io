@@ -6,8 +6,379 @@
     <description>Recent content in Post-rsses on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 30 Mar 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://secml.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Class 9: Adversarial Malware Detection</title>
+      <link>https://secml.github.io/class9/</link>
+      <pubDate>Fri, 30 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/class9/</guid>
+      <description>
+
+&lt;h2 id=&#34;evolution-of-the-malware-arms-race&#34;&gt;Evolution of the Malware Arms Race&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Babak Bashari Rad, Maslin Masrom, and Suhaimi Ibrahim. &lt;em&gt;Evolution of Computer Virus Concealment and Anti-Virus Techniques: A Short Survey&lt;/em&gt;. University Technology Malaysia. 6 April 2011. [&lt;a href=&#34;https://arxiv.org/ftp/arxiv/papers/1104/1104.1070.pdf&#34;&gt;PDF&lt;/a&gt;]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Since the first appearances of early malware, advances in both combating and creating viruses have analogously mirrored the general patterns of the medical battle against evolving biological virus outbreaks &amp;mdash; as anti-virus software continually develops innovative techniques for detecting existing viruses, virus writers seek out new methods to cheat those detection systems. To understand the present state of the field and the role of machine learning in combating malware, let&amp;rsquo;s look at a brief history of how both the attacks and defenses have evolved in the malware domain.&lt;/p&gt;
+
+&lt;h3 id=&#34;encrypted-viruses&#34;&gt;Encrypted Viruses&lt;/h3&gt;
+
+&lt;p&gt;At its most basic, a virus is simply a program that is designed to &lt;a href=&#34;https://us.norton.com/internetsecurity-malware-what-is-a-computer-virus.html&#34;&gt;alter the way a computer operates and spread from one computer to another&lt;/a&gt;. However, to be truly effective, a virus must also conceal itself so as to replicate and infect another computer. Thus, the most primitive approach to covering the operation of the virus code, first appearing in 1988, uses encryption to change the virus body binary codes with encryption algorithms in order to make it more difficult to analyze and detect.&lt;/p&gt;
+
+&lt;p&gt;Encrypted viruses are typically made up of two parts: the encrypted body of the virus itself, and a small (unencrypted) segment of decryption code. When the infected program runs, the decryption loop executes, which first decrypts the encrypted virus code, and then moves the program control to the body of the virus code:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class9/structureofencryptedvirus.png&#34; alt=&#34;&#34; title=&#34;Structure of an encrypted virus&#34; /&gt;
+   &lt;div class=&#34;caption&#34;&gt;
+Source: &lt;a href=&#34;(http://paper.ijcsns.org/07_book/201208/20120813.pdf)&#34;&gt;&lt;em&gt;Camouflage in Malware: From Encryption to Metamorphism&lt;/em&gt;&lt;/a&gt; [2]
+   &lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;Encryption has utility for a virus writer in several ways; most importantly, it disguises suspicious code in order to avoid detection by static code analysis, which automatically analyzes code and generates a warning were the code simply in unencrypted plaintext. Additionally, encryption of a virus also prevents tampering - since new viruses could accidentally produced with minor changes in the original virus code, encryption ensures that an expert is required to dismantle the virus, or else run the risk of producing further harm by messing with it. Finally, an encrypted virus cannot be detected by simple string matching prior to decryption, because only the decryptor loop is identical in all variants of the virus. Thus, in an anti-virus inspection, which attempts to match the signature for an encrypted virus, the signature string is constrained and must be selected precisely.&lt;/p&gt;
+
+&lt;h4 id=&#34;morphic-viruses&#34;&gt;Morphic Viruses&lt;/h4&gt;
+
+&lt;p&gt;The constant decryptor loops turned out to be the downfall of static encrypted viruses, however; since the decryptor loop code segment remained constant in new infected files, anti-virus software had no trouble obtaining a signature string with which to seek matches in code during an inspection. To overcome this vulnerability, virus writers employed techniques to mutate the decryptor body, giving rise to a new type of concealment viruses: oligomorphic viruses.&lt;/p&gt;
+
+&lt;p&gt;Rather than passing on the same exact decryptor loop code for each instance of the virus, oligomorphic viruses are willing to substitute the decryptor code in new offspring of the virus when reproducing themselves. This idea is most easily implemented by providing a set of different decryptor loops rather than one, which make the detection process more difficult for signature-based scanning engines.&lt;/p&gt;
+
+&lt;p&gt;In fact, the most common approach in anti-virus tools is signature scanning, which uses small strings, &amp;ldquo;signatures&amp;rdquo; (the results of manual analysis of viral codes) to identify viruses and malware. The signature is meant to discover viruses in the cases of a match, thus, it is vital to ensure that any given virus signature only maps to a specific virus, rather than mapping to say, other viruses, or worse, benign programs, in order to avoid flagging non-virus code.&lt;/p&gt;
+
+&lt;p&gt;To cheat signature scanning, polymorphic viruses actually take oligomorphic viruses one step further, exploiting mutation algorithms to create a potentially infinite number of variations of decryptors in the next generation - when the virus replicates to infect a new host, it mutates its own decryptor loop to create a new permutation to pass on to the next generation. Thus, there is no consistent signature pattern from host to host that could be detected by signature scanning.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class9/mutationengine.png&#34; alt=&#34;&#34; title=&#34;Polymorphic virus structure&#34; /&gt;
+   &lt;div class=&#34;caption&#34;&gt;
+Source: &lt;a href=&#34;(http://paper.ijcsns.org/07_book/201208/20120813.pdf)&#34;&gt;&lt;em&gt;Camouflage in Malware: From Encryption to Metamorphism&lt;/em&gt;&lt;/a&gt; [2]
+   &lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;Despite these clever evasion techniques, in all the previous viruses described, once the virus body is decrypted, it is easily detected by signature scanning in its plaintext form. Polymorphic viruses, however, also dubbed &amp;ldquo;body-polymorphics&amp;rdquo;, do not even require encryption to avoid detection - instead, they mutate their entire body, rather than just their decryption loop, using the same decryptor loop-generation techniques used by polymorphic viruses to produce new instances of the virus.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class9/metamorphic.png&#34; alt=&#34;&#34; title=&#34;Metamorphic virus propagation scheme&#34; /&gt;
+   &lt;div class=&#34;caption&#34;&gt;
+Source: &lt;a href=&#34;(http://paper.ijcsns.org/07_book/201208/20120813.pdf)&#34;&gt;&lt;em&gt;Camouflage in Malware: From Encryption to Metamorphism&lt;/em&gt;&lt;/a&gt; [2]
+   &lt;/div&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;machine-learning-in-malware&#34;&gt;Machine Learning in Malware&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Konrad Rieck, Thorsten Holz, Carsten Willems, Patrick Düssel, Pavel Laskov. &lt;em&gt;Learning and Classification of Malware Behavior&lt;/em&gt;. 15th USENIX Security Symposium. 23 April 2008. [&lt;a href=&#34;https://pdfs.semanticscholar.org/e701/d190583135b841252886742bf15736015f3c.pdf&#34;&gt;PDF&lt;/a&gt;]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;When an unknown malware instance is discovered, there are two important questions to be asked:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Does the new malware instance belong to a known malware family, or does it constitute a novel malware strain?&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;What behavioral features are discriminative for distinguishing instances of a given malware family from others?&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;To approach automating the discovery of the answers to this question, Rieck et al. train a classifier on honeypots and spam-traps to map unknown viruses to malware families, or to a new classification altogether, and to uncover properties that characterize families of viruses.&lt;/p&gt;
+
+&lt;p&gt;First, the behavior of each binary is monitored in sandbox envrionment, and behavior-based analysis reports summarizing operations. Then, the learning algorithm embeds the generated analysis reports in a high-dimensional vector space and learns a discriminative model for each malware family - that is, creates a model to predict whether this instance belongs to a known family or not, which is then aggregated against other similar models to produce a final decision. This process answers the first question.&lt;/p&gt;
+
+&lt;p&gt;Further, to understand and evaluate the importance of specific features for malware behavior classification, sort the weights of behavioral patterns in the learning model and consider the most prominent patterns to obtain characteristic features of each malware family.&lt;/p&gt;
+
+&lt;h2 id=&#34;pdf-malware-classifiers&#34;&gt;PDF Malware Classifiers&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Charles Smutz and Angelos Stavrou. Malicious PDF Detection using Metadata and Structural Features. ACSAC 2012. [&lt;a href=&#34;https://cs.gmu.edu/~astavrou/research/Malicious_PDF_Detection_ACSAC_12.pdf&#34;&gt;PDF&lt;/a&gt;]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&#34;portable-document-format-pdf&#34;&gt;Portable Document Format (PDF)&lt;/h4&gt;
+
+&lt;p&gt;The Portable Document Format (PDF) file structure consists of four parts: header, body, cross-reference table (CRT), and trailer. The following figures show an example PDF file, the raw content of an example PDF file, and the corresponding structural tree of the PDF file, respectively.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/an_example_pdf_file.png&#34; width=&#34;300&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; An example PDF file
+&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/raw_content.png&#34; width=&#34;200&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Raw content of an example PDF file
+&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/pdf_tree.png&#34; width=&#34;400&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Structural tree of the PDF file
+&lt;/p&gt;
+
+&lt;p&gt;PDF documents have become a prevalent target of either massive or one-on-one attacks due to their wide use and diverse functionality. Popular PDF malware detectors include SL2013, Hidost, PDFRate and its variations. Among them, SL2013 and Hidost are structure-based PDF classifiers while PDFRate is content-based.&lt;/p&gt;
+
+&lt;h4 id=&#34;pdfrate&#34;&gt;PDFRate&lt;/h4&gt;
+
+&lt;p&gt;PDFRate, a real learning-based system introduced by George Mason University scholars Smutz and Stavrou, uses metadata and structural features to classify PDF files as benign or malicious based on the Random Forest algorithm. The feature space of PDFRate contains 202 integer, floating point and Boolean features selected from PDF metadata and file contents. Two strategies were employed during the feature selection phase, including avoiding reliance on specific byte sequence and not targeting specific known vulnerabilities. Moreover, the significant interdependence nature of the features makes the adversary’s life difficult when they attempt to control feature values. Datasets Contagio, Operational, and Community have ever been adopted in the training and evaluation of PDFRate. With respect to the classification algorithm, the number of trees is 1000 and each tree carries 43 features.&lt;/p&gt;
+
+&lt;p&gt;The following are the most important features for classification out of a total of 202 features: &lt;br/&gt;
+count_font &lt;br/&gt;
+count_javascript &lt;br/&gt;
+count_js &lt;br/&gt;
+count_stream_diff &lt;br/&gt;
+pos_box_max &lt;br/&gt;
+image_totalpx &lt;br/&gt;
+producer_len &lt;br/&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;adversarial-analysis&#34;&gt;Adversarial Analysis&lt;/h4&gt;
+
+&lt;p&gt;Using PDFRate, the classification rates achieve well above 99% true positive rates while maintaining 0.2% or less false positive rates for different datasets, classification parameters and experimental conditions.&lt;/p&gt;
+
+&lt;p&gt;Mimicry attack, in which malicious documents are artificially modified to make some of the features similar to benign ones while retaining the malicious part, is one conceivable evasion technique. The key part the attacker want to make use of in order to spoof the defender is to mimicking the most important features for classification.&lt;/p&gt;
+
+&lt;p&gt;In the mimicry attack effectiveness test where the previously extracted features are purposefully modified, the six most important features were selected for evasion testing. As shown in the table below, the conclusion is that the classification error can increase to a great extent.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/mimicry_attacks.png&#34; width=&#34;400&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Mimicry: Classifier Error Increase
+&lt;/p&gt;
+
+&lt;p&gt;When the top features ranked by random forests are removed, the table below demonstrates the increase in classification error but the effect is surprisingly low. The reason is that there are many other important features retained.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/removing_features.png&#34; width=&#34;400&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Classifier Error with Features Removed
+&lt;/p&gt;
+
+&lt;p&gt;The table below shows the testing results of the effectiveness of perturbation. The goal of using perturbation, i.e. increasing the feature variance by modifying the features of a malicious subset in the training set, is to reduce the importance of these features without fully negating them in order to counter evasion.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/perturbation.png&#34; width=&#34;400&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Classification Error with Training Data Perturbation
+&lt;/p&gt;
+
+&lt;p&gt;Since this approach is behavioral-based rather than signature-based, it can both identify and capture the most important behaviors of similar malware, allowing for detection that does not rely on the exact signature-matching, but rather on automated learning of behavioral patterns. This provides evidence to the claim that machine learning could provide innovative avenues into the malware field.&lt;/p&gt;
+
+&lt;p&gt;The findings of this study that the ensemble classifier is able to offer robust detection to counter mimicry attack even when the top features are exploited by the attacks is exciting. The classifier proves to be robust and resilient against mimicry attacks. Future directions to explore include applying the detection and classification techniques to other document types, studying the suitability of group malicious documents using the features for classification, combining other features, and performance comparative study with other techniques.&lt;/p&gt;
+
+&lt;h2 id=&#34;hidost-a-static-machine-learning-based-detector-of-malicious-files&#34;&gt;Hidost: A Static Machine-Learning-Based Detector of Malicious Files&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Nedim Šrndić and Pavel Laskov. Hidost: a static machine-learning-based detector of malicious files. EURASIP Journal on Information Security, 2016. &lt;a href=&#34;earlier version in NDSS 2013: [[PDF](https://pdfs.semanticscholar.org/aec1/740dadccdca0f1f8abb7407c5cb37279fef1.pdf)]&#34;&gt;&lt;a href=&#34;https://pdfs.semanticscholar.org/c592/abca4236ad3cb9cea9371d0cf35fd9dbd9b5.pdf&#34;&gt;PDF&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;There has been a substantial amount of work on the detection of no-executable malware which includes static, dynamic and combined methods. Although static methods perform in orders of magnitude faster, their applicability has been limited to only specific file formats. Hidost introduces the static machine-learning-based malware detection system to operate multiple file formats like pdf or swf having hierarchical  document structure.&lt;/p&gt;
+
+&lt;h4 id=&#34;hierarchically-structured-file-formats&#34;&gt;Hierarchically structured file formats&lt;/h4&gt;
+
+&lt;p&gt;File formats are developed as a mean to store the physical representation of certain information but all of them do not have logical structure. For example, some formats like text files do not have any logical structure but others e.g.; HTML files represents a logical relationships between html elements. The following figure shows the hierarchical structure of the swf file. The pdf file structure has been discussed in the above section.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/swf_structure.png&#34; width=&#34;400&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Decoded swf file (left) and its logical structure(right)
+&lt;/p&gt;
+
+&lt;h4 id=&#34;distinguishing-benign-from-malicious-files&#34;&gt;Distinguishing benign from malicious files&lt;/h4&gt;
+
+&lt;p&gt;In a pdf structural tree, a path is defined as a sequence of edges starting in the Catalog dictionary and ending with an object of primitive type. For example, as we see in the above figure of pdf structural tree, there s a path from the root path from the root, i.e., leftmost, node
+through the edges named /Pages and /Count to the terminal node with the value 2. This definition of a path in the PDF document structure, which is denoted as PDF structural path, plays a central role in Hidost approach. Paths are printed as a sequence of all edge labels encountered during path traversal starting from the root node and ending in the leaf node. The path from our earlier example
+would be printed as /Pages/Count.&lt;/p&gt;
+
+&lt;p&gt;Following is a list of example structural paths of real world benign files: &lt;br/&gt;
+/Metadata &lt;br/&gt;
+/Type &lt;br/&gt;
+/Pages/Kids &lt;br/&gt;
+/OpenAction/Contents &lt;br/&gt;
+/StructTreeRoot/RoleMap &lt;br/&gt;
+/Pages/Kids/Contents/Length &lt;br/&gt;
+/OpenAction/D/Resources/ProcSet &lt;br/&gt;
+/OpenAction/D &lt;br/&gt;
+/Pages/Count &lt;br/&gt;
+/PageLayout &lt;br/&gt;&lt;/p&gt;
+
+&lt;p&gt;Presence of these structural paths in a file indicates that it is benign. Alternatively, the absence of these paths is indicative to the fact that the file may be malicious. In addition, malicious files are not likely to contain metadata in order to minimize file size, they do not jump to a page in the document when it is opened and are not well-formed so they are missing paths such as /Type and /Pages/Count.
+The following is a list of structural paths from real-world malicious PDF files:&lt;br/&gt;
+/AcroForm/XFA &lt;br/&gt;
+/Names/JavaScript &lt;br/&gt;
+/Names/EmbeddedFiles &lt;br/&gt;
+/Names/JavaScript/Names &lt;br/&gt;
+/Pages/Kids/Type &lt;br/&gt;
+/StructTreeRoot &lt;br/&gt;
+/OpenAction/Type &lt;br/&gt;
+/OpenAction/S &lt;br/&gt;
+/OpenAction/JS &lt;br/&gt;
+/OpenAction &lt;br/&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;system-design&#34;&gt;System Design&lt;/h4&gt;
+
+&lt;p&gt;The system design of Hidost consists of six stages: structure extraction, structural path consolidation, feature selection, vectorization, learning, and classification as it is illustrated in the following figure.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/system_design.PNG&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Hidost system design
+&lt;/p&gt;
+
+&lt;h4 id=&#34;file-structure-extraction&#34;&gt;File structure extraction&lt;/h4&gt;
+
+&lt;p&gt;In this stage, files are transformed into more abstract representation (logical structure) i.e.; into a structural multimap. Multimap is basically a map with associations between every structural path to the set of all leaves that lie on a given path.
+The concept is similar to map but you have multiple leafs as we see in path mediabox in the following figure.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/structure_extraction.png&#34; width=&#34;300&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Complete structural multimap of the PDF file used as an example in previous section
+&lt;/p&gt;
+
+&lt;h4 id=&#34;structural-path-consolidation&#34;&gt;Structural path consolidation&lt;/h4&gt;
+
+&lt;p&gt;There may be cases in which semantically equivalent, but syntactically different structures can avoid detection. In Hidost, heuristic technique to consolidate structural paths to reduce polymorphic paths.  For example, /Pages/Kids/Resources and /Pages/Kids/Kids/Resources
+can be reduced to /Pages/Resources.&lt;/p&gt;
+
+&lt;h4 id=&#34;feature-selection&#34;&gt;Feature Selection&lt;/h4&gt;
+
+&lt;p&gt;Feature Selection is used to limit the rare features once again similar to many Machine Learning techniques.&lt;/p&gt;
+
+&lt;h4 id=&#34;vectorization&#34;&gt;Vectorization&lt;/h4&gt;
+
+&lt;p&gt;In the vectorization stage, structural multimaps are first replaced by structural maps—ordinary map data structures that map a structural path to a corresponding single numeric value. To this end, every set of values corresponding to one structural path in the multimap is reduced to its median.&lt;/p&gt;
+
+&lt;h4 id=&#34;learning-and-classification&#34;&gt;Learning and Classification&lt;/h4&gt;
+
+&lt;p&gt;The authors have used Random Forest implementation at this stage. But, it can be any classifier as per reader&amp;rsquo;s choice.&lt;/p&gt;
+
+&lt;h4 id=&#34;experimental-evaluation&#34;&gt;Experimental evaluation&lt;/h4&gt;
+
+&lt;p&gt;The authors run their experiment on two datasets, one for PDF and one for SWF file formats. Both of the datasets were collected from &lt;a href=&#34;https://www.virustotal.com/&#34;&gt;VirusTotal&lt;/a&gt;. A file is considered as malicious if it is labeled as malicious by at least five engines. Alternatively, a file is labeled benign by all antivirus engines. Following figure shows that HiDost performs better that the antivirus engines in the VirusTotal. It should be mentioned that VirusTotal may not contain the most efficient antivirus developed by the proprietor company.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/experiment.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Experimental evaluation
+&lt;/p&gt;
+
+&lt;h2 id=&#34;machine-learning-on-malware-is-hard&#34;&gt;Machine Learning on Malware is Hard&lt;/h2&gt;
+
+&lt;p&gt;While machine learning algorithms have been successfully applied in various vision and natural language related tasks, they have not been fully successful in malware detection. The reasons are mainly three-fold:&lt;/p&gt;
+
+&lt;h4 id=&#34;high-cost-of-error&#34;&gt;High Cost of Error&lt;/h4&gt;
+
+&lt;p&gt;In the case of malware detection, when measuring the performance of a classifier, both false positive rate and false negative rate are important factors. While the false positive rate means a benign software is classified as a malware, in the false negative case a malware is classified as benign. Both the events are undesirable for malware detection. Since, false positive requires excessive spending of a human analyst&amp;rsquo;s time which could be expensive and time consuming. On the other hand, false negative means a malware is left undetected, which can have serious security consequences. A typical machine learning model trained for the malware detection task tends to have non-zero false positive rates and false negative rates.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class9/roc_curve.png&#34; width=&#34;400&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Example ROC curve of a malware classifier
+&lt;/p&gt;
+
+&lt;p&gt;The above figure shows the example performance of a typical malware classifier (B) which has non-zero false positive rate, whereas an ideal classifier (A) would have zero false positive rate.&lt;/p&gt;
+
+&lt;h4 id=&#34;semantic-gap&#34;&gt;Semantic Gap&lt;/h4&gt;
+
+&lt;p&gt;There is a disconnect between the prediction result of a machine learning model and the action to be taken based on the result. For instance, if a model predicts a malware with 65% confidence, what action should be taken? Should the target software be removed without intimation to the end user? Should the user be alerted for a manual inspection? In such a scenario, it is hard to interpret the results and take a meaningful action.&lt;/p&gt;
+
+&lt;h4 id=&#34;difficulty-with-evaluation&#34;&gt;Difficulty with Evaluation&lt;/h4&gt;
+
+&lt;p&gt;One of the major difficulty in the evaluation of malware detection tool is the availability of datasets. Most of the public datasets like Contagio or Drebin are small or outdated, whereas the malwares keep updating aggressively. It is difficult to create new rich malware datasets due to data privacy concerns and the labelling of malwares in the wild. This poses problem for training and evaluating the machine learning models.&lt;/p&gt;
+
+&lt;p&gt;Another difficulty is the evasiveness of the malwares. Malwares have become dynamic enough to evade the malware classifiers. Given a white-box access to the classifier, malware can perform adversarial training like gradient-based method to evade detection. Even with black-box access, the malware can perform mimicry attack by appending features of benign samples. Figure below shows an example of mimicry attack. The file on the right is a benign file and the file on the left is a malicious file. By appending some features from benign file to malicious file, the classifier can be fooled into accepting the malicious file as benign.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class9/mimicry_attack.png&#34; width=&#34;400&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Mimicry attack with black-box access
+&lt;/p&gt;
+
+&lt;p&gt;However, this may or may not break the malware&amp;rsquo;s functionality and hence it is hard to generate useful samples. One variant is to use &lt;a href=&#34;https://dl.acm.org/citation.cfm?id=2484327&#34;&gt;reverse-mimicry attack&lt;/a&gt; by embedding malicious features into benign file to generate malicious samples as shown in the figure below.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class9/reverse_mimicry_attack.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Reverse mimicry attack
+&lt;/p&gt;
+
+&lt;p&gt;Recent literature has also shown evasion by &lt;a href=&#34;http://people.cs.vt.edu/~gangwang/class/cs6604/papers/ndss16.pdf&#34;&gt;genetic mutation&lt;/a&gt; and &lt;a href=&#34;https://acmccs.github.io/papers/p119-dangA.pdf&#34;&gt;hill climbing method&lt;/a&gt;, where the malware can dynamically adapt to evade detection.&lt;/p&gt;
+
+&lt;p&gt;In genetic mutation attack, adversarial malware samples are generated by repeated operations on the malware sample until it is accepted as a benign sample by the classifier. The operations are addition, deletion or replacement of benign file features to the malicious file. The process only requires a binary output by the classifier whether the input was classified as malicious or not.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class9/genetic_mutation.png&#34; width=&#34;600&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Genetic mutation
+&lt;/p&gt;
+
+&lt;p&gt;In hill climbing method, malicious file is taken as input and all possible recursive variants are tried until the malicious file is accepted as benign by the classifier while the malicious functionality is retained by the file. In figure below, the state &lt;code&gt;e&lt;/code&gt; is the end state where the process has found the required adversarial sample, and the process terminates.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class9/hill_climbing.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Hill climbing method
+&lt;/p&gt;
+
+&lt;p&gt;Both the genetic mutation and hill climbing methods are shown to fool PDF Rate and Hidost malware classifiers.&lt;/p&gt;
+
+&lt;h2 id=&#34;state-of-the-art&#34;&gt;State of the Art&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Liang Tong, Bo Li, Chen Hajaj, Chaowei Xiao, Yevgeniy Vorobeychik, &amp;ldquo;Hardening Classifiers against Evasion: the Good, the Bad, and the Ugly.&amp;rdquo; arXiv:1708.08327. August 2017. [&lt;a href=&#34;https://arxiv.org/abs/1708.08327v2&#34;&gt;PDF&lt;/a&gt;] [4]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Anti-malware defenders today attempt to passively analyze files of a specific type across the web and flag potential malware. These models are often trained offline. The counterparts to these software work much more actively to produce mis-classified malware. These attackers work against black box or often black-world (no response) classifiers.&lt;/p&gt;
+
+&lt;h4 id=&#34;behavior-preservation&#34;&gt;Behavior Preservation&lt;/h4&gt;
+
+&lt;p&gt;Malware behavior preservation is difficult due to the nature of code; most changes risk breaking the code entirely. This means that random mutation processes need to be heavily limited to preserve the behavior of the code. Mutation processes are often either trivial or not done at all. Very few papers allow mutations and verify the process afterward, as it requires dynamic analysis in a sandbox.&lt;/p&gt;
+
+&lt;p&gt;For this reason, malware development turns often to genetic development algorithms for finding evasive samples. The nature of these changes is more likely to preserve the behavior of the malware whilst creating a new sample that may be more evasive.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class9/genetic.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Genetic Mutation Example
+&lt;/p&gt;
+
+&lt;h4 id=&#34;evademl&#34;&gt;EvadeML&lt;/h4&gt;
+
+&lt;p&gt;Malware development in search of evasive samples is often done using genetic algorithms mostly using greedy searches. EvadeML is one such development process to create evasive PDF malwares targeting Hidost and PDFrate. The software has a 100% success rate within 20 generations and works by mutating the raw PDFs.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class9/genetic2.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Genetic Algorithm
+&lt;/p&gt;
+
+&lt;p&gt;The below graph plots the number of evasive specimen in a population of 500 malicious seeds against the generation using the above evolutionary method. As is readily apparent, evasive malicious samples are not only easy to produce using a small number of generations, but are also numerous. This calls into question the value of the classifiers that we are using to identify malicious code.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class9/evade.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Evasiveness over Generations
+&lt;/p&gt;
+
+&lt;p&gt;EvadeML is also working on a project that would ideally limit the featurespace, thus enabling better targetted classifiers. This is done via a process called feature squeezing. This process is primarily important in the filter sections displayed below, as the featurespace is limited to fewer variables to be passed through a model.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class9/featurefilter.png&#34; width=&#34;500&#34; &gt;
+&lt;br&gt; &lt;b&gt;Figure:&lt;/b&gt; Comparative Prediction Methodology for Feature Squeezing
+&lt;/p&gt;
+
+&lt;p&gt;For each filter, a number of new features are selected as some function of the original feature set. This works similarly to the first layer of a neural network, except that there is more human involvement, other functions can be and are used, and that once the filter function has been created, it in unchanged during the model training process. These filters can be built from rounding/cutoff functions, input smoothing, simplifying color bit depth, and other functions that a neural net is generally incapable of creating naturally. The goal of these is to complement defensive methods and work directly to limit the potential of adversarial training.&lt;/p&gt;
+
+&lt;div class=&#34;caption&#34;&gt;
+Source: EvadeML
+   &lt;/div&gt;
+
+&lt;h4 id=&#34;deep-learning&#34;&gt;Deep Learning&lt;/h4&gt;
+
+&lt;p&gt;There&amp;rsquo;s a slight disconnect between security researchers and pure ML researchers, particularly those that are doing research into deep learning. The deep learning architectures that are being researched for malware deterction are multi-layer perception on preselected features and convolutional networks, but there are very few recurrent models.&lt;/p&gt;
+
+&lt;p&gt;Detection softwares are working to identify dynamic features more specifically in malware, as any static features of the code aren&amp;rsquo;t being triggered at runtime. This shift minimizes the attackers&amp;rsquo; ability to mutate their code while maintaining functionality. This does, however, enable &amp;lsquo;time-bomb&amp;rsquo; style malware, where certain malicious features are static until a certain datetime.&lt;/p&gt;
+
+&lt;h2 id=&#34;future-of-the-field&#34;&gt;Future of the Field&lt;/h2&gt;
+
+&lt;p&gt;While progress is being made in the field, there are a number of challenges that need to be met for malware detection and evasion to evolve. Much work has been done in the area of both static analysis and the mutation of static features. However, it&amp;rsquo;s clear that static analysis isn&amp;rsquo;t good enough for today&amp;rsquo;s tasks, and that effective detectors and mutators need to embrace dynamic features.&lt;/p&gt;
+
+&lt;p&gt;The more challenging goal of using a learning model to algorithmically mutate dynamic features that preserve the functionality of original code is a more complex problem. While achieving effective dynamic feature mutation isn&amp;rsquo;t currently feasible with today&amp;rsquo;s research, a step in the right direction will certainly involve selecting an appropriate deep learning architecture. Perhaps recurrent neural networks, which fit sequence modeling tasks well, could be useful.&lt;/p&gt;
+
+&lt;p&gt;Detectors must evolve as well. Research has shown that some dynamic analysis algorithms are detectable, and that sophisticated threats can delay malicious behavior until they are no longer in a sandboxed environment. Effectively learning from sandboxed data streams and system calls will open up a new front in the arms race between detector and attacker.&lt;/p&gt;
+
+&lt;p&gt;Ultimately, from simple to metamorphic viruses, malware has evolved into increasingly sophisticated threats. The field of adversarial malware detection has been evolving as well, as methods are developed that are increasingly effective at detecting malicious code. As the cutting edge of malware detection moves forward, we will see new fronts open up in the contest between malicious files and the algorithms that detect them.&lt;/p&gt;
+
+&lt;p&gt;— Team Nematode: &lt;br /&gt;
+Bargav Jayaraman, Guy &amp;ldquo;Jack&amp;rdquo; Verrier, Joshua Holtzman, Max Naylor, Nan Yang, Tanmoy Sen&lt;/p&gt;
+
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/ftp/arxiv/papers/1104/1104.1070.pdf&#34;&gt;[1]&lt;/a&gt; Babak Bashari Rad, Maslin Masrom, and Suhaimi Ibrahim, &amp;ldquo;Evolution of Computer Virus Concealment and Anti-Virus Techniques: A Short Survey.&amp;rdquo; IJCSI International Journal of Computer Science Issues, Vol. 8, Issue 1. January 2011&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/ftp/arxiv/papers/1104/1104.1070.pdf&#34;&gt;[2]&lt;/a&gt; Babak Bashari Rad, Maslin Masrom, and Suhaimi Ibrahim, &amp;ldquo;Camouflage in Malware: from Encryption to Metamorphism.&amp;rdquo; IJCSNS International Journal of Computer Science and Network Security, VOL.12 No.8. August 2012.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://pdfs.semanticscholar.org/e701/d190583135b841252886742bf15736015f3c.pdf&#34;&gt;[3]&lt;/a&gt; Konrad Rieck, Thorsten Holz, Carsten Willems, Patrick Düssel, Pavel Laskov, &amp;ldquo;Learning and Classification of Malware Behavior.&amp;rdquo; 15th USENIX Security Symposium. 23 April 2008.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/abs/1708.08327v2&#34;&gt;[4]&lt;/a&gt; Liang Tong, Bo Li, Chen Hajaj, Chaowei Xiao, Yevgeniy Vorobeychik, &amp;ldquo;Hardening Classifiers against Evasion: the Good, the Bad, and the Ugly.&amp;rdquo; arXiv:1708.08327. August 2017.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://ieeexplore.ieee.org/document/5504793/&#34;&gt;[5]&lt;/a&gt; R. Sommer and V. Paxson, &amp;ldquo;Outside the Closed World: On Using Machine Learning for Network Intrusion Detection.&amp;rdquo; 2010 IEEE Symposium on Security and Privacy, Oakland, CA, USA, 2010, pp. 305-316. May 2010.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Class 8: Testing of Deep Networks</title>
