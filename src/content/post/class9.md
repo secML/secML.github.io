@@ -105,6 +105,8 @@ producer_len <br/>
 
 Using PDFRate, the classification rates achieve well above 99% true positive rates while maintaining 0.2% or less false positive rates for different datasets, classification parameters and experimental conditions.
 
+Mimicry attack, in which malicious documents are artificially modified to make some of the features similar to benign ones while retaining the malicious part, is one conceivable evasion technique. The key part the attacker want to make use of in order to spoof the defender is to mimicking the most important features for classification.
+
 In the mimicry attack effectiveness test where the previously extracted features are purposefully modified, the six most important features were selected for evasion testing. As shown in the table below, the conclusion is that the classification error can increase to a great extent.
 
 <p align="center">
@@ -127,6 +129,8 @@ The table below shows the testing results of the effectiveness of perturbation. 
 </p>
 
 Since this approach is behavioral-based rather than signature-based, it can both identify and capture the most important behaviors of similar malware, allowing for detection that does not rely on the exact signature-matching, but rather on automated learning of behavioral patterns. This provides evidence to the claim that machine learning could provide innovative avenues into the malware field.
+
+The findings of this study that the ensemble classifier is able to offer robust detection to counter mimicry attack even when the top features are exploited by the attacks is exciting. The classifier proves to be robust and resilient against mimicry attacks. Future directions to explore include applying the detection and classification techniques to other document types, studying the suitability of group malicious documents using the features for classification, combining other features, and performance comparative study with other techniques. 
 
 ## Hidost: A Static Machine-Learning-Based Detector of Malicious Files
 
