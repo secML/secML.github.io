@@ -105,6 +105,8 @@ producer_len <br/>
 
 Using PDFRate, the classification rates achieve well above 99% true positive rates while maintaining 0.2% or less false positive rates for different datasets, classification parameters and experimental conditions.
 
+Mimicry attack, in which malicious documents are artificially modified to make some of the features similar to benign ones while retaining the malicious part, is one conceivable evasion technique. The key part the attacker want to make use of in order to spoof the defender is to mimicking the most important features for classification.
+
 In the mimicry attack effectiveness test where the previously extracted features are purposefully modified, the six most important features were selected for evasion testing. As shown in the table below, the conclusion is that the classification error can increase to a great extent.
 
 <p align="center">
@@ -127,6 +129,8 @@ The table below shows the testing results of the effectiveness of perturbation. 
 </p>
 
 Since this approach is behavioral-based rather than signature-based, it can both identify and capture the most important behaviors of similar malware, allowing for detection that does not rely on the exact signature-matching, but rather on automated learning of behavioral patterns. This provides evidence to the claim that machine learning could provide innovative avenues into the malware field.
+
+The findings of this study that the ensemble classifier is able to offer robust detection to counter mimicry attack even when the top features are exploited by the attacks is exciting. The classifier proves to be robust and resilient against mimicry attacks. Future directions to explore include applying the detection and classification techniques to other document types, studying the suitability of group malicious documents using the features for classification, combining other features, and performance comparative study with other techniques. 
 
 ## Hidost: A Static Machine-Learning-Based Detector of Malicious Files
 
@@ -227,6 +231,13 @@ While machine learning algorithms have been successfully applied in various visi
 
 In the case of malware detection, when measuring the performance of a classifier, both false positive rate and false negative rate are important factors. While the false positive rate means a benign software is classified as a malware, in the false negative case a malware is classified as benign. Both the events are undesirable for malware detection. Since, false positive requires excessive spending of a human analyst's time which could be expensive and time consuming. On the other hand, false negative means a malware is left undetected, which can have serious security consequences. A typical machine learning model trained for the malware detection task tends to have non-zero false positive rates and false negative rates.
 
+<p align="center">
+<img src="/images/class9/roc_curve.png" width="400" >
+<br> <b>Figure:</b> Example ROC curve of a malware classifier
+</p>
+
+The above figure shows the example performance of a typical malware classifier (B) which has non-zero false positive rate, whereas an ideal classifier (A) would have zero false positive rate.
+
 #### Semantic Gap
 
 There is a disconnect between the prediction result of a machine learning model and the action to be taken based on the result. For instance, if a model predicts a malware with 65% confidence, what action should be taken? Should the target software be removed without intimation to the end user? Should the user be alerted for a manual inspection? In such a scenario, it is hard to interpret the results and take a meaningful action.
@@ -235,21 +246,92 @@ There is a disconnect between the prediction result of a machine learning model 
 
 One of the major difficulty in the evaluation of malware detection tool is the availability of datasets. Most of the public datasets like Contagio or Drebin are small or outdated, whereas the malwares keep updating aggressively. It is difficult to create new rich malware datasets due to data privacy concerns and the labelling of malwares in the wild. This poses problem for training and evaluating the machine learning models.
 
-Another difficulty is the evasiveness of the malwares. Malwares have become dynamic enough to evade the malware classifiers. Given a white-box access to the classifier, malware can perform adversarial training like gradient-based method to evade detection. Even with black-box access, the malware can perform mimicry attack by appending features of benign samples. However, this may or may not break the malware's functionality and hence it is hard to generate useful samples. One variant is to use [reverse-mimicry attack](https://dl.acm.org/citation.cfm?id=2484327) by embedding malicious features into benign file to generate malicious samples. Recent literature has also shown evasion by [genetic mutation](http://people.cs.vt.edu/~gangwang/class/cs6604/papers/ndss16.pdf) and [hill climbing method](https://acmccs.github.io/papers/p119-dangA.pdf), where the malware can dynamically adapt to evade detection.
+Another difficulty is the evasiveness of the malwares. Malwares have become dynamic enough to evade the malware classifiers. Given a white-box access to the classifier, malware can perform adversarial training like gradient-based method to evade detection. Even with black-box access, the malware can perform mimicry attack by appending features of benign samples. Figure below shows an example of mimicry attack. The file on the right is a benign file and the file on the left is a malicious file. By appending some features from benign file to malicious file, the classifier can be fooled into accepting the malicious file as benign.
+
+<p align="center">
+<img src="/images/class9/mimicry_attack.png" width="400" >
+<br> <b>Figure:</b> Mimicry attack with black-box access
+</p>
+
+However, this may or may not break the malware's functionality and hence it is hard to generate useful samples. One variant is to use [reverse-mimicry attack](https://dl.acm.org/citation.cfm?id=2484327) by embedding malicious features into benign file to generate malicious samples as shown in the figure below.
+
+<p align="center">
+<img src="/images/class9/reverse_mimicry_attack.png" width="500" >
+<br> <b>Figure:</b> Reverse mimicry attack
+</p>
+
+Recent literature has also shown evasion by [genetic mutation](http://people.cs.vt.edu/~gangwang/class/cs6604/papers/ndss16.pdf) and [hill climbing method](https://acmccs.github.io/papers/p119-dangA.pdf), where the malware can dynamically adapt to evade detection.
+
+In genetic mutation attack, adversarial malware samples are generated by repeated operations on the malware sample until it is accepted as a benign sample by the classifier. The operations are addition, deletion or replacement of benign file features to the malicious file. The process only requires a binary output by the classifier whether the input was classified as malicious or not.
+
+<p align="center">
+<img src="/images/class9/genetic_mutation.png" width="600" >
+<br> <b>Figure:</b> Genetic mutation
+</p>
+
+In hill climbing method, malicious file is taken as input and all possible recursive variants are tried until the malicious file is accepted as benign by the classifier while the malicious functionality is retained by the file. In figure below, the state `e` is the end state where the process has found the required adversarial sample, and the process terminates.
+
+<p align="center">
+<img src="/images/class9/hill_climbing.png" width="500" >
+<br> <b>Figure:</b> Hill climbing method
+</p>
+
+Both the genetic mutation and hill climbing methods are shown to fool PDF Rate and Hidost malware classifiers.
+
 
 ## State of the Art
 
+>Liang Tong, Bo Li, Chen Hajaj, Chaowei Xiao, Yevgeniy Vorobeychik, "Hardening Classifiers against Evasion: the Good, the Bad, and the Ugly." arXiv:1708.08327. August 2017. [[PDF](https://arxiv.org/abs/1708.08327v2)] [4]
+ 
 Anti-malware defenders today attempt to passively analyze files of a specific type across the web and flag potential malware. These models are often trained offline. The counterparts to these software work much more actively to produce mis-classified malware. These attackers work against black box or often black-world (no response) classifiers.
 
-Malware behavior preservation is difficult due to the nature of code; most changes risk breaking the code entirely. This means that random mutation processes need to be heavily limited to preserve the behavior of the code.
 
-Mutation processes are often either trivial or not done at all. Very few papers allow mutations and verify the process afterward, as it requires dynamic analysis in a sandbox.
+#### Behavior Preservation
 
-Malware development in search of evasive samples is done using genetic algorithms mostly using greedy searches. EvadeML is one such development process to create evasive PDF malwares targeting Hidost and PDFrate. The software has a 100% success rate within 20 generations and works by mutating the raw PDFs.
+Malware behavior preservation is difficult due to the nature of code; most changes risk breaking the code entirely. This means that random mutation processes need to be heavily limited to preserve the behavior of the code. Mutation processes are often either trivial or not done at all. Very few papers allow mutations and verify the process afterward, as it requires dynamic analysis in a sandbox.
+
+For this reason, malware development turns often to genetic development algorithms for finding evasive samples. The nature of these changes is more likely to preserve the behavior of the malware whilst creating a new sample that may be more evasive. 
+
+<p align="center">
+<img src="/images/class9/genetic.png" width="500" >
+<br> <b>Figure:</b> Genetic Mutation Example
+</p>
+
+#### EvadeML
+
+Malware development in search of evasive samples is often done using genetic algorithms mostly using greedy searches. EvadeML is one such development process to create evasive PDF malwares targeting Hidost and PDFrate. The software has a 100% success rate within 20 generations and works by mutating the raw PDFs.
+
+<p align="center">
+<img src="/images/class9/genetic2.png" width="500" >
+<br> <b>Figure:</b> Genetic Algorithm
+</p>
+
+The below graph plots the number of evasive specimen in a population of 500 malicious seeds against the generation using the above evolutionary method. As is readily apparent, evasive malicious samples are not only easy to produce using a small number of generations, but are also numerous. This calls into question the value of the classifiers that we are using to identify malicious code. 
+
+<p align="center">
+<img src="/images/class9/evade.png" width="500" >
+<br> <b>Figure:</b> Evasiveness over Generations
+</p>
+
+EvadeML is also working on a project that would ideally limit the featurespace, thus enabling better targetted classifiers. This is done via a process called feature squeezing. This process is primarily important in the filter sections displayed below, as the featurespace is limited to fewer variables to be passed through a model.
+
+<p align="center">
+<img src="/images/class9/featurefilter.png" width="500" >
+<br> <b>Figure:</b> Comparative Prediction Methodology for Feature Squeezing
+</p>
+
+For each filter, a number of new features are selected as some function of the original feature set. This works similarly to the first layer of a neural network, except that there is more human involvement, other functions can be and are used, and that once the filter function has been created, it in unchanged during the model training process. These filters can be built from rounding/cutoff functions, input smoothing, simplifying color bit depth, and other functions that a neural net is generally incapable of creating naturally. The goal of these is to complement defensive methods and work directly to limit the potential of adversarial training.
+
+<div class="caption">
+Source: EvadeML
+   </div>
+
+#### Deep Learning
 
 There's a slight disconnect between security researchers and pure ML researchers, particularly those that are doing research into deep learning. The deep learning architectures that are being researched for malware deterction are multi-layer perception on preselected features and convolutional networks, but there are very few recurrent models. 
 
 Detection softwares are working to identify dynamic features more specifically in malware, as any static features of the code aren't being triggered at runtime. This shift minimizes the attackers' ability to mutate their code while maintaining functionality. This does, however, enable 'time-bomb' style malware, where certain malicious features are static until a certain datetime. 
+
 
 ## Future of the Field
 
