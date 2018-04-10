@@ -281,17 +281,57 @@ Both the genetic mutation and hill climbing methods are shown to fool PDF Rate a
 
 ## State of the Art
 
+>Liang Tong, Bo Li, Chen Hajaj, Chaowei Xiao, Yevgeniy Vorobeychik, "Hardening Classifiers against Evasion: the Good, the Bad, and the Ugly." arXiv:1708.08327. August 2017. [[PDF](https://arxiv.org/abs/1708.08327v2)] [4]
+ 
 Anti-malware defenders today attempt to passively analyze files of a specific type across the web and flag potential malware. These models are often trained offline. The counterparts to these software work much more actively to produce mis-classified malware. These attackers work against black box or often black-world (no response) classifiers.
 
-Malware behavior preservation is difficult due to the nature of code; most changes risk breaking the code entirely. This means that random mutation processes need to be heavily limited to preserve the behavior of the code.
 
-Mutation processes are often either trivial or not done at all. Very few papers allow mutations and verify the process afterward, as it requires dynamic analysis in a sandbox.
+#### Behavior Preservation
 
-Malware development in search of evasive samples is done using genetic algorithms mostly using greedy searches. EvadeML is one such development process to create evasive PDF malwares targeting Hidost and PDFrate. The software has a 100% success rate within 20 generations and works by mutating the raw PDFs.
+Malware behavior preservation is difficult due to the nature of code; most changes risk breaking the code entirely. This means that random mutation processes need to be heavily limited to preserve the behavior of the code. Mutation processes are often either trivial or not done at all. Very few papers allow mutations and verify the process afterward, as it requires dynamic analysis in a sandbox.
+
+For this reason, malware development turns often to genetic development algorithms for finding evasive samples. The nature of these changes is more likely to preserve the behavior of the malware whilst creating a new sample that may be more evasive. 
+
+<p align="center">
+<img src="/images/class9/genetic.png" width="500" >
+<br> <b>Figure:</b> Genetic Mutation Example
+</p>
+
+#### EvadeML
+
+Malware development in search of evasive samples is often done using genetic algorithms mostly using greedy searches. EvadeML is one such development process to create evasive PDF malwares targeting Hidost and PDFrate. The software has a 100% success rate within 20 generations and works by mutating the raw PDFs.
+
+<p align="center">
+<img src="/images/class9/genetic2.png" width="500" >
+<br> <b>Figure:</b> Genetic Algorithm
+</p>
+
+The below graph plots the number of evasive specimen in a population of 500 malicious seeds against the generation using the above evolutionary method. As is readily apparent, evasive malicious samples are not only easy to produce using a small number of generations, but are also numerous. This calls into question the value of the classifiers that we are using to identify malicious code. 
+
+<p align="center">
+<img src="/images/class9/evade.png" width="500" >
+<br> <b>Figure:</b> Evasiveness over Generations
+</p>
+
+EvadeML is also working on a project that would ideally limit the featurespace, thus enabling better targetted classifiers. This is done via a process called feature squeezing. This process is primarily important in the filter sections displayed below, as the featurespace is limited to fewer variables to be passed through a model.
+
+<p align="center">
+<img src="/images/class9/featurefilter.png" width="500" >
+<br> <b>Figure:</b> Comparative Prediction Methodology for Feature Squeezing
+</p>
+
+For each filter, a number of new features are selected as some function of the original feature set. This works similarly to the first layer of a neural network, except that there is more human involvement, other functions can be and are used, and that once the filter function has been created, it in unchanged during the model training process. These filters can be built from rounding/cutoff functions, input smoothing, simplifying color bit depth, and other functions that a neural net is generally incapable of creating naturally. The goal of these is to complement defensive methods and work directly to limit the potential of adversarial training.
+
+<div class="caption">
+Source: EvadeML
+   </div>
+
+#### Deep Learning
 
 There's a slight disconnect between security researchers and pure ML researchers, particularly those that are doing research into deep learning. The deep learning architectures that are being researched for malware deterction are multi-layer perception on preselected features and convolutional networks, but there are very few recurrent models. 
 
 Detection softwares are working to identify dynamic features more specifically in malware, as any static features of the code aren't being triggered at runtime. This shift minimizes the attackers' ability to mutate their code while maintaining functionality. This does, however, enable 'time-bomb' style malware, where certain malicious features are static until a certain datetime. 
+
 
 ## Future of the Field
 
