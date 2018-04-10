@@ -130,7 +130,7 @@ Since this approach is behavioral-based rather than signature-based, it can both
 
 ## Hidost: A Static Machine-Learning-Based Detector of Malicious Files
 
-> Nedim Šrndić and Pavel Laskov. Hidost: a static machine-learning-based detector of malicious files. EURASIP Journal on Information Security, 2016. [[PDF](https://pdfs.semanticscholar.org/c592/abca4236ad3cb9cea9371d0cf35fd9dbd9b5.pdf)]
+> Nedim Šrndić and Pavel Laskov. Hidost: a static machine-learning-based detector of malicious files. EURASIP Journal on Information Security, 2016. [[PDF](https://pdfs.semanticscholar.org/c592/abca4236ad3cb9cea9371d0cf35fd9dbd9b5.pdf)] (earlier version in NDSS 2013: [[PDF](https://pdfs.semanticscholar.org/aec1/740dadccdca0f1f8abb7407c5cb37279fef1.pdf)])
 
 There has been a substantial amount of work on the detection of no-executable malware which includes static, dynamic and combined methods. Although static methods perform in orders of magnitude faster, their applicability has been limited to only specific file formats. Hidost introduces the static machine-learning-based malware detection system to operate multiple file formats like pdf or swf having hierarchical  document structure.
 
