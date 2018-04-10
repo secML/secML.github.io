@@ -359,3 +359,7 @@ Bargav Jayaraman, Guy "Jack" Verrier, Joshua Holtzman, Max Naylor, Nan Yang, Tan
 [[4]](https://arxiv.org/abs/1708.08327v2) Liang Tong, Bo Li, Chen Hajaj, Chaowei Xiao, Yevgeniy Vorobeychik, "Hardening Classifiers against Evasion: the Good, the Bad, and the Ugly." arXiv:1708.08327. August 2017.
 
 [[5]](http://ieeexplore.ieee.org/document/5504793/) R. Sommer and V. Paxson, "Outside the Closed World: On Using Machine Learning for Network Intrusion Detection." 2010 IEEE Symposium on Security and Privacy, Oakland, CA, USA, 2010, pp. 305-316. May 2010.
+
+[[6]](http://evademl.org/docs/evademl.pdf) Weilin Xu, Yanjun Qi, and David Evans. "Automatically Evading Classifiers A Case Study on PDF Malware Classifiers." Network and Distributed Systems Symposium 2016.
+
+[[7]](https://acmccs.github.io/papers/p119-dangA.pdf) Hung Dang, Yue Huang, and Ee-Chien Chang. "Evading Classifiers by Morphing in the Dark". ACM CCS 2017.
