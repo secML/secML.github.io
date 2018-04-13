@@ -14,10 +14,10 @@ See [Teams](/teams) for the class teams and responsibilities.
 <tr><td><a href="/class8">Class 8</a> (23 Mar)</td><td>Testing</td><td style="text-align:center" >Food</td><td style="text-align:center"  bgcolor="#CCC"></td><td style="text-align:center"  bgcolor="#DEF">Blog</td><td style="text-align:center"  bgcolor="#CCDD55">Lead</td></tr>
 
 <tr><td><a href="/class9">Class 9</a> (30 Mar)</td><td>Malware</td><td style="text-align:center"  bgcolor="#CCDD55">Lead</td><td style="text-align:center" >Food</td><td style="text-align:center"  bgcolor="#CCC"></td><td style="text-align:center"  bgcolor="#DEF">Blog</td></tr>
-<tr><td><a href="/class10">Class 10</a> (6 Apr)</td><td></td><td style="text-align:center"  bgcolor="#DEF">Blog</td><td style="text-align:center"  bgcolor="#CCDD55">Lead</td><td style="text-align:center" >Food</td><td style="text-align:center"  bgcolor="#CCC"></td></tr>
-<tr><td><a href="/class11">Class 11</a> (13 Apr)</td><td></td><td style="text-align:center"  bgcolor="#CCC"></td><td style="text-align:center"  bgcolor="#DEF">Blog</td><td style="text-align:center"  bgcolor="#CCDD55">Lead</td><td style="text-align:center" >Food</td></tr>
+<tr><td><a href="/class10">Class 10</a> (6 Apr)</td><td>Formal Verification</td><td style="text-align:center"  bgcolor="#DEF">Blog</td><td style="text-align:center"  bgcolor="#CCDD55">Lead</td><td style="text-align:center" >Food</td><td style="text-align:center"  bgcolor="#CCC"></td></tr>
+<tr><td><a href="/class11">Class 11</a> (13 Apr)</td><td>Poisoning</td><td style="text-align:center"  bgcolor="#CCC"></td><td style="text-align:center"  bgcolor="#DEF">Blog</td><td style="text-align:center"  bgcolor="#CCDD55">Lead</td><td style="text-align:center" >Food</td></tr>
 <tr><td><a href="/class12">Class 12</a> (20 Apr)</td><td></td><td style="text-align:center" >Food</td><td style="text-align:center"  bgcolor="#CCC"></td><td style="text-align:center"  bgcolor="#DEF">Blog</td><td style="text-align:center"  bgcolor="#CCDD55">Lead</td></tr>
 
-<tr><td><a href="/class13">Class 13</a> (26 Apr)</td><td style="text-align:center"  colspan=5 bgcolor="#FF3" style="text-align:center">Mini-Conference</td></tr>
+<tr><td><a href="/">Projects</a></td><td style="text-align:center"  colspan=5 bgcolor="#FF3" style="text-align:center">Due: Monday, April 30 (noon); Project Team meetings scheduled May 2-4</td></tr>
 
 </table>

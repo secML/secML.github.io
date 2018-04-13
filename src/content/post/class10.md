@@ -8,7 +8,7 @@ slug = "class10"
 
 ## Motivation
 
-Similar to what we saw in [Class 6](https://secml.github.io/class6/), we would like to have formal bounds on how robust a machine learning model is to attack. In the following two papers, we aim at achieving this robustness by means of proving properties about the underlying neural networks. Such attempts aim to end the arms race of attacks and defenses commonly seen in literature, and to provide formal guarantees of defenses with respect to any type of adversary.
+Similar to what we saw in [Class 6](https://secml.github.io/class6/), we would like to have formal bounds on how robust a machine learning model under attack. The following two papers aim at achieving this robustness by means of proving properties about the underlying neural networks. This strategy aims to end the arms race of attacks and defenses commonly seen in literature, and to provide formal guarantees of defenses with respect to any type of adversary.
 
 ## Differential Privacy and Adversarial Robustness
 > Mathias Lecuyer, Vaggelis Atlidakis, Roxana Geambasu, Daniel Hsu, Suman Jana. _On the Connection between Differential Privacy and Adversarial Robustness in Machine Learning_. February 2018. arXiv e-print [[PDF]](https://arxiv.org/abs/1802.03471)
@@ -24,19 +24,21 @@ Where, \\( x’ \\) is some perturbed version of \\( x \\). \\( A \\) is the alg
 
 The authors apply this property to images and call it PixelDP. They go on to prove that if a model satisfies PixelDP with respect to the 0-norm metric for a set of inputs, then it is robust to 0-norm attacks on those inputs. (0-norm here indicating how many pixels were changed).
 
-They accomplish this by also establishing an upper bound on the second highest class assignment for the perturbation, \\( \max_{j \ne i} p_j(x’) \\), using the same principle of robustness as defined above.
+They accomplish this by also establishing an upper bound on the second highest class assignment for the perturbation, \\( \max_{j \ne i} p_j(x’) \\), using the same principle of robustness as defined above:
 
 $$ P(A(x’) = j) \le e^{\epsilon}P(A(x) = j) + \delta $$ 
 
 From these two bounds, they arrive at the core proposition that an algorithm satisfies PixelDP robustness to 0-norm attacks if the following holds:
 
-$$ p_{i}(x) > e^{2 \epsilon} \max_{j: j \ne i} p_{j}(x) + (1+e^{\epsilon}) \delta $$	 	 	 		
-			
+$$ p_{i}(x) > e^{2 \epsilon} \max_{j: j \ne i} p_{j}(x)+ (1+e^{\epsilon}) \delta $$
+
+(sorry, can't get this to typeset with mathjax). 
+		
 With this proposition the authors devise a method for attaining this property, primarily by adding and accounting for noise during training and testing.
 
 ### Noise Layer
 
-The authors’ basic approach is to add a noise layer to the neural network. They first establish that the noise added should be proportional to the sensitivity of the layer, which is more difficult to compute for deeper layers. They recommend placing the noise in the first few layers of the network as it is easiest to bound the sensitivity, and they acknowledge that trade-offs of accuracy and robustness play a role in the decision process.
+The authors’ basic approach is to add a noise layer to the neural network. They first establish that the noise added should be proportional to the sensitivity of the layer, which is more difficult to compute for deeper layers. They recommend placing the noise in the first few layers of the network as it is easiest to bound the sensitivity, and acknowledge that trade-offs of accuracy and robustness play a role in the decision process.
 
 The noise layer itself simply uses Laplacian and Gaussian mechanisms to add noise, and the network is trained with the noise layer to allow decent accuracy.
 
@@ -44,11 +46,13 @@ The noise layer itself simply uses Laplacian and Gaussian mechanisms to add nois
 
 To account for the noise during testing, the authors run the input through the network multiple times. The label is the highest predicted score is chosen and these results are counted and aggregated. This allows the variance of each label to also be computed.
 
-The idea of making multiple queries may seem contradictory to the idea of privacy, where each query takes away from a privacy budget. However, here we are not concerned with privacy leakage, only with bounding the output of the function.
+The idea of making multiple queries may seem contradictory to the idea of privacy, where each query takes away from a privacy budget. However, here we are not concerned with privacy leakage here, only with bounding the output of the function.
 
 ### Robustness
 
-Finally, to have a measure of robustness, the authors propose a way deriving a bound for the maximum perturbation allowed. This is accomplished by finding the maximum \\( L \\) such that the proposition defined above still holds. The resulting \\( L_{max} \\) can be compared against some threshold \\( T \\) such that if \\( L_{max} \ge T \\) then the model is robust against that input. That is to say, that perturbation to the given image would not be sufficient to change its label. This metric is, of course, dependent on a given test set, but it allows the claim that a certain portion of the test set is “safe”, meaning the prediction is robust.
+Finally, to have a measure of robustness, the authors propose a way deriving a bound for the maximum perturbation allowed. This is accomplished by finding the maximum \\( L \\) such that the proposition defined above still holds. The resulting \\(L\\)<sub><em>max</em></sub> can be compared against some threshold \\( T \\) such that if \\( L_{max} \ge T \\) then the model is robust against that input. That is to say, that perturbation to the given image would not be sufficient to change its label. 
+
+This metric is, of course, dependent on a given test set, but it allows the claim that a certain portion of the test set is “safe”, meaning the prediction is robust for that test set. If the test set is representative of the input domain examples that matter, this can give us some confidence (but no guarantee) that the model is robust for other inputs also.
 
 ### Evaluation
 
@@ -67,14 +71,14 @@ They first tested accuracy on benign samples with different noise levels, \\( L 
 
 They found that, with higher \\( T \\), robust accuracy decreases but robust precision increases, and that the threshold should be tuned based on the amount of noise.
 
-They then tested the accuracy on malicious samples, compared against the Madry defense [[3]](https://arxiv.org/pdf/1608.04644.pdf)
+They then tested the accuracy on malicious samples, comparing to the Madry defense [[3]](https://arxiv.org/pdf/1608.04644.pdf)
 
 <p align="center">
 <img src="/images/class10/malicious.png" width="500" >
 <br/>
 </p>
 
-This shows that for a 2-norm attack, their defense is comparable to the Madry defense, but for an inf-norm attack, the Madry defense is better. These results make sense because the Madry defense was built around \\( L_{\infty} \\) attacks, while PixelDP is for \\( L_0 \\) and \\( L_2 \\) attacks. This begs the question of if we can have a differential privacy based defense in the \\(L_{\infty} \\) space, but at the moment there is no clear mapping between the two. 
+This shows that for a 2-norm attack, their defense is comparable to the Madry defense, but for an inf-norm attack, the Madry defense is better. These results make sense because the Madry defense was built around \\( L\\)<sub>\\(\infty\\)</sub> attacks, while PixelDP is for \\( L\\)<sub>0</sub> and \\( L\\)<sub>2</sub> attacks. This begs the question of if we can have a differential privacy based defense in the \\(L_{\infty} \\) space, but at the moment there is no clear mapping between the two. 
 
 ## Piecewise Linear Neural Network Verification
 
@@ -141,8 +145,7 @@ Overall, we can see that the proposed branch and bound method is able to compete
 
 ## Suman’s Talk
 
-For the last section of class, Suman Jana from Columbia University gave us a talk on his upcoming research. He also discussed some of the core motivations for why it is important and difficult to study this area. Citing the differences between testing and verifying regular programs, which can have formal specifications and SMT solvers. In machine learning, the idea is to learn the specification, and they are fundamentally much more opaque.
-
+For the last section of class, Suman Jana from Columbia University gave us a talk on his ongoing research. He also discussed some of the core motivations for why it is important and difficult to study this area. Citing the differences between testing and verifying regular programs, which can have formal specifications and SMT solvers. In machine learning, the idea is to learn the specification, and they are fundamentally much more opaque.
 
 
 --- Team Bus:  

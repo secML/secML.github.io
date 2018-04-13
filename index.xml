@@ -6,8 +6,181 @@
     <description>Recent content on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 30 Mar 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 06 Apr 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://secml.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Class 10: Formal Verification Methods</title>
+      <link>https://secml.github.io/class10/</link>
+      <pubDate>Fri, 06 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/class10/</guid>
+      <description>
+
+&lt;h2 id=&#34;motivation&#34;&gt;Motivation&lt;/h2&gt;
+
+&lt;p&gt;Similar to what we saw in &lt;a href=&#34;https://secml.github.io/class6/&#34;&gt;Class 6&lt;/a&gt;, we would like to have formal bounds on how robust a machine learning model under attack. The following two papers aim at achieving this robustness by means of proving properties about the underlying neural networks. This strategy aims to end the arms race of attacks and defenses commonly seen in literature, and to provide formal guarantees of defenses with respect to any type of adversary.&lt;/p&gt;
+
+&lt;h2 id=&#34;differential-privacy-and-adversarial-robustness&#34;&gt;Differential Privacy and Adversarial Robustness&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Mathias Lecuyer, Vaggelis Atlidakis, Roxana Geambasu, Daniel Hsu, Suman Jana. &lt;em&gt;On the Connection between Differential Privacy and Adversarial Robustness in Machine Learning&lt;/em&gt;. February 2018. arXiv e-print &lt;a href=&#34;https://arxiv.org/abs/1802.03471&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In the privacy domain, we are able to provide formal guarantees of the privacy of records by introducing the property of differential privacy. Where for two data sets that differ in one record, the difference of the output predictions on each one is less than some bounded amount.&lt;/p&gt;
+
+&lt;p&gt;In this paper, the authors extend this property to apply to adversarial examples by relating changes in a data set to changes in an input. Where for two &lt;em&gt;inputs&lt;/em&gt; that differ in some perturbation, the difference of the output predictions on each one is less than some bounded amount.&lt;/p&gt;
+
+&lt;p&gt;More formally,
+$$ P(A(x) = i) \le e^{\epsilon} P(A(x’) = i) + \delta  $$
+Where, \( x’ \) is some perturbed version of \( x \). \( A \) is the algorithm in question, and \( P(A(x) = i) \) is the probability that A assigns to \( x \) taking on value \( i \).&lt;/p&gt;
+
+&lt;p&gt;The authors apply this property to images and call it PixelDP. They go on to prove that if a model satisfies PixelDP with respect to the 0-norm metric for a set of inputs, then it is robust to 0-norm attacks on those inputs. (0-norm here indicating how many pixels were changed).&lt;/p&gt;
+
+&lt;p&gt;They accomplish this by also establishing an upper bound on the second highest class assignment for the perturbation, \( \max_{j \ne i} p_j(x’) \), using the same principle of robustness as defined above:&lt;/p&gt;
+
+&lt;p&gt;$$ P(A(x’) = j) \le e^{\epsilon}P(A(x) = j) + \delta $$&lt;/p&gt;
+
+&lt;p&gt;From these two bounds, they arrive at the core proposition that an algorithm satisfies PixelDP robustness to 0-norm attacks if the following holds:&lt;/p&gt;
+
+&lt;p&gt;$$ p&lt;em&gt;{i}(x) &amp;gt; e^{2 \epsilon} \max&lt;/em&gt;{j: j \ne i} p_{j}(x)+ (1+e^{\epsilon}) \delta $$&lt;/p&gt;
+
+&lt;p&gt;(sorry, can&amp;rsquo;t get this to typeset with mathjax).&lt;/p&gt;
+
+&lt;p&gt;With this proposition the authors devise a method for attaining this property, primarily by adding and accounting for noise during training and testing.&lt;/p&gt;
+
+&lt;h3 id=&#34;noise-layer&#34;&gt;Noise Layer&lt;/h3&gt;
+
+&lt;p&gt;The authors’ basic approach is to add a noise layer to the neural network. They first establish that the noise added should be proportional to the sensitivity of the layer, which is more difficult to compute for deeper layers. They recommend placing the noise in the first few layers of the network as it is easiest to bound the sensitivity, and acknowledge that trade-offs of accuracy and robustness play a role in the decision process.&lt;/p&gt;
+
+&lt;p&gt;The noise layer itself simply uses Laplacian and Gaussian mechanisms to add noise, and the network is trained with the noise layer to allow decent accuracy.&lt;/p&gt;
+
+&lt;h3 id=&#34;testing-strategy&#34;&gt;Testing Strategy&lt;/h3&gt;
+
+&lt;p&gt;To account for the noise during testing, the authors run the input through the network multiple times. The label is the highest predicted score is chosen and these results are counted and aggregated. This allows the variance of each label to also be computed.&lt;/p&gt;
+
+&lt;p&gt;The idea of making multiple queries may seem contradictory to the idea of privacy, where each query takes away from a privacy budget. However, here we are not concerned with privacy leakage here, only with bounding the output of the function.&lt;/p&gt;
+
+&lt;h3 id=&#34;robustness&#34;&gt;Robustness&lt;/h3&gt;
+
+&lt;p&gt;Finally, to have a measure of robustness, the authors propose a way deriving a bound for the maximum perturbation allowed. This is accomplished by finding the maximum \( L \) such that the proposition defined above still holds. The resulting \(L\)&lt;sub&gt;&lt;em&gt;max&lt;/em&gt;&lt;/sub&gt; can be compared against some threshold \( T \) such that if \( L_{max} \ge T \) then the model is robust against that input. That is to say, that perturbation to the given image would not be sufficient to change its label.&lt;/p&gt;
+
+&lt;p&gt;This metric is, of course, dependent on a given test set, but it allows the claim that a certain portion of the test set is “safe”, meaning the prediction is robust for that test set. If the test set is representative of the input domain examples that matter, this can give us some confidence (but no guarantee) that the model is robust for other inputs also.&lt;/p&gt;
+
+&lt;h3 id=&#34;evaluation&#34;&gt;Evaluation&lt;/h3&gt;
+
+&lt;p&gt;To evaluate their approach, the authors used three accuracy metrics.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Conventional accuracy: the proportion of correct predictions&lt;/li&gt;
+&lt;li&gt;Robust accuracy: the proportion of correct and robust predictions&lt;/li&gt;
+&lt;li&gt;Robust precision: the proportion of correct predictions relative to the number of robust predictions.
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;They first tested accuracy on benign samples with different noise levels, \( L \) and different thresholds for robustness \( T \).&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class10/benign.png&#34; width=&#34;500&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;p&gt;They found that, with higher \( T \), robust accuracy decreases but robust precision increases, and that the threshold should be tuned based on the amount of noise.&lt;/p&gt;
+
+&lt;p&gt;They then tested the accuracy on malicious samples, comparing to the Madry defense &lt;a href=&#34;https://arxiv.org/pdf/1608.04644.pdf&#34;&gt;[3]&lt;/a&gt;&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class10/malicious.png&#34; width=&#34;500&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;p&gt;This shows that for a 2-norm attack, their defense is comparable to the Madry defense, but for an inf-norm attack, the Madry defense is better. These results make sense because the Madry defense was built around \( L\)&lt;sub&gt;\(\infty\)&lt;/sub&gt; attacks, while PixelDP is for \( L\)&lt;sub&gt;0&lt;/sub&gt; and \( L\)&lt;sub&gt;2&lt;/sub&gt; attacks. This begs the question of if we can have a differential privacy based defense in the \(L_{\infty} \) space, but at the moment there is no clear mapping between the two.&lt;/p&gt;
+
+&lt;h2 id=&#34;piecewise-linear-neural-network-verification&#34;&gt;Piecewise Linear Neural Network Verification&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Rudy Bunel, Ilker Turkaslan, Philip H.S. Torr, Pushmeet Kohli, M. Pawan Kumar. &lt;em&gt;Piecewise Linear Neural Network verification: A comparative study&lt;/em&gt;. arXiv e-print November 2017. &lt;a href=&#34;https://arxiv.org/pdf/1711.00455.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In this paper, the authors look at providing guarantees for piecewise linear neural networks for the purposes of verification. They show how to approach this through several approaches. For all of these approaches, the problem is defined the same general way. We are given a network that implements a function \( y = f(x) \) and some bounded input domain \( C \) in order to prove some property \( P \) about the network. This can be formulated as shown below:
+$$ x \in C, y = f(x) \implies P(y) $$&lt;/p&gt;
+
+&lt;p&gt;In this problem definition, we see that we are only considering piecewise-linear neural networks (PL-NNs). This is justified by the observation that PL-NNs represent the majority of networks used in practice. In addition, the properties mentioned in the problem statement are defined to be Boolean formulas over linear inequalities.&lt;/p&gt;
+
+&lt;h3 id=&#34;verification-methods&#34;&gt;Verification Methods&lt;/h3&gt;
+
+&lt;p&gt;The authors then go on to discuss a couple different verification methods, which all leverage the piecewise linear structure of PL-NN. All of these methods that are compared follow the same general principle: discover a counterexample to make the given property false. If this counterexample problem is unsatisfiable, then we have shown that no counterexample exists and hence the property must be true.&lt;/p&gt;
+
+&lt;h4 id=&#34;mixed-integer-programing-encoding&#34;&gt;Mixed Integer Programing Encoding&lt;/h4&gt;
+
+&lt;p&gt;In the general problem we are taking a look at, we have an issue with non-linearities as we must deal with a max function on the output of our network. In this method, the authors bypass this by replacing these nonlinear max functions with a set of inequalities. These can then be passed off to the solver to see if we can achieve some counterexample.&lt;/p&gt;
+
+&lt;h4 id=&#34;reluplex&#34;&gt;Reluplex&lt;/h4&gt;
+
+&lt;p&gt;This method essentially assigns values to all the variables, even if some of the constraints are violated. It then goes through and tries to fix the violated constraints at each step. Reluplex is covered more extensively in our &lt;a href=&#34;https://secml.github.io/class6/&#34;&gt;previous blog post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;planet&#34;&gt;Planet&lt;/h4&gt;
+
+&lt;p&gt;This method operates by attempting to find an assignment to the phase of the non-linearities. Similar to Reluplex, it assigns values to the variables and then at each step verifies the feasibility of the assignment. Unlike Reluplex, this also has the advantage of being easily extended to networks containing MaxPooling units. In order to detect incoherent assignments, the author also employs a global linear approximation to the neural network. This is done by approximating the nonlinear constraints as a set of linear constraints that represent the convex hull of the nonlinearities.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class10/planet.png&#34; width=&#34;500&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;h4 id=&#34;branch-and-bound-optimization-for-verification&#34;&gt;Branch and Bound Optimization for Verification&lt;/h4&gt;
+
+&lt;p&gt;This method looks at transforming this whole satisfiability problem into an optimization problem. To approach this, we look at adding extra neurons to the end of the network such that we can take a  look at the global minimum and use that information to determine whether the original problem was satisfiable. Essentially, we are formulating any Boolean formula over linear inequalities on the output of the network as a sequence of additional layers, and thus reducing the verification problem to a global minimization problem.&lt;/p&gt;
+
+&lt;p&gt;Optimization algorithms, such as stochastic gradient descent, are not appropriate for this minimization problem as they do not provide the guarantee of a global minimum. The authors thus propose a branch and bound algorithm. This algorithm essentially is a breadth-first search algorithm. The algorithm computes the upper and lower bounds of the minimum of the output. The best upper-bound found so far will serve as a candidate for the global minimum. The iterative splitting process of the BFS type search will allow us to get a tighter and tighter lower bound.&lt;/p&gt;
+
+&lt;h3 id=&#34;evaluation-1&#34;&gt;Evaluation&lt;/h3&gt;
+
+&lt;p&gt;For the evaluation, they consider a couple of data sets: Airborne Collision Avoidance System, Collision Detection, and Twin Stream. For each of these, they attempt to solve the satisfiability problem with a timeout of two hours. They define their success rate to be the proportion of properties successfully solved. A problem determined as SAT means that the property was false and that a counterexample exists and hence, UNSAT means that the property is true. Another metric used is labeled “Number of Wins.” This counts the number of times a solver was the fastest to solve a property. The results for these data sets are shown below:&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class10/acas.png&#34; width=&#34;500&#34; &gt;
+&lt;br/&gt;
+&lt;caption align=&#34;bottom&#34;&gt;ACAS data set&lt;/caption&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class10/collision.png&#34; width=&#34;500&#34; &gt;
+&lt;br/&gt;
+&lt;caption align=&#34;bottom&#34;&gt;Collision Detection data set&lt;/caption&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class10/twinstream.png&#34; width=&#34;500&#34; &gt;
+&lt;br/&gt;
+&lt;caption align=&#34;bottom&#34;&gt;Twin Stream data set&lt;/caption&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Overall, we can see that the proposed branch and bound method is able to compete with other verification methods present in literature and so this proposes a new strategy for formal verification techniques.&lt;/p&gt;
+
+&lt;h2 id=&#34;suman-s-talk&#34;&gt;Suman’s Talk&lt;/h2&gt;
+
+&lt;p&gt;For the last section of class, Suman Jana from Columbia University gave us a talk on his ongoing research. He also discussed some of the core motivations for why it is important and difficult to study this area. Citing the differences between testing and verifying regular programs, which can have formal specifications and SMT solvers. In machine learning, the idea is to learn the specification, and they are fundamentally much more opaque.&lt;/p&gt;
+
+&lt;p&gt;&amp;mdash; Team Bus:&lt;br /&gt;
+Anant Kharkar,
+Atallah Hezbor,
+Bhuvanesh Murali,
+Mainuddin Jonas,
+Weilin Xu&lt;/p&gt;
+
+&lt;h4 id=&#34;references&#34;&gt;References&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1802.03471.pdf&#34;&gt;[1]&lt;/a&gt; M. Lecuyer, V. Atlidakis, R. Geambasu, D. Hsu, S. Jana. &amp;ldquo;On the Connection between Differential Privacy and Adversarial Robustness in Machine Learning&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1802.03471&lt;/em&gt;, February 2018.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1711.00455.pdf&#34;&gt;[2]&lt;/a&gt; R. Bunel, I. Turkaslan, P-H.S. Torr, P. Kohli, M.-P, Kuymar. &amp;ldquo;Piecewise Linear Neural Network verification: A comparative study&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1711.00455&lt;/em&gt;, November 2017.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1706.06083.pdf&#34;&gt;[3]&lt;/a&gt; A. Madry, A. Makelov, L. Schmidt, D. Tsipras, A. Vladu. &amp;ldquo;Towards Deep Learning Models Resistant to Adversarial Attacks&amp;rdquo; &lt;em&gt;arXiv preprint arXiv:1706.06083&lt;/em&gt;, June 2017.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Class 9: Adversarial Malware Detection</title>
@@ -2665,28 +2838,6 @@ is beneficial, but not required so long as you are willing and able to
 learn some foundational materials on your own.  &lt;/p&gt; &lt;p&gt; For more
 information, contact &lt;A href=&#34;https://www.cs.virginia.edu/evans&#34;&gt;David
 Evans&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://secml.github.io/resources/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://secml.github.io/resources/</guid>
-      <description>
-
-&lt;h1 id=&#34;resources-for-adversarial-machine-learning-research&#34;&gt;Resources for Adversarial Machine Learning Research&lt;/h1&gt;
-
-&lt;h2 id=&#34;adversarial-machine-learning-toolkits&#34;&gt;Adversarial Machine Learning Toolkits&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;evademl.org/zoo&#34;&gt;EvadeML-Zoo&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/tensorflow/cleverhans&#34;&gt;cleverhans&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;machine-learning-systems&#34;&gt;Machine Learning Systems&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/facebookresearch/Detectron&#34;&gt;Detectron&lt;/a&gt; - Facebook&amp;rsquo;s research platform for object detection research (including RetinaNet)&lt;/p&gt;
 </description>
     </item>
     

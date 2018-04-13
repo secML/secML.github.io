@@ -115,6 +115,219 @@
 
   
   
+  <p class="fronthead"><A href="/class1/">Class 1: Intro to Adversarial Machine Learning</a><br><span class="authordate">Team Panda &mdash; 26 Jan 2018</span></p>
+    
+
+<h2 id="machine-learning-background">Machine Learning Background</h2>
+
+<!-- - Other ML algorithms use linear decision boundaries (SVM, LR, ...)
+- Deep learning uses linear units with nonlinear composition
+    - More susceptible to attacks
+- Define terms like gradient and loss -->
+
+<p>In supervised Machine Learning, we train models with training data
+along with the label associated with it. We extract features from each
+sample, and use an algorithm to train a model where the inputs are
+those features and the output is the label.</p>
+
+<p>For classifying the testing data, the classifier uses decision
+boundary to separate points of the data belonging to each class. In a
+statistical-classification problem with two classes, a decision
+boundary partitions all the underlying vector space into two separate
+classes. A support vector machine (SVM) is a linear classifier which
+constructs a boundary by focusing two closest points from different
+classes and it finds the line that is equidistant to these two points.</p>
+
+<h4 id="loss-functions">Loss Functions</h4>
+
+<p>A loss function define that how good a given model is at making
+predictions for a given scenario. It has its own curve and its own
+gradients. The slope of the curve indicates the appropriate way of
+updating the parameters to make the model more accurate in case of
+prediction. A frequently used loss function is the 0-1 loss function.</p>
+
+<p align="center">
+<img src="/images/01_loss_function.png" width="150" >
+</p>
+
+<p>where \(I\) is the indicator notation. Hinge loss function is also popular in machine learning field. It provides a relatively tight, convex upper bound on the 0-1 indicator function.
+s
+<!-- <p align="center">
+<img src="/images/hinge_function.png" width="150" >
+</p> --></p>
+
+<h4 id="gradient-descent">Gradient Descent</h4>
+
+<p>Gradient Descent is an optimization algorithm which is used to minimize cost function by iteratively moving the direction of the steepest descent. In machine learning, we use gradient descent to update the parameters (coefficients in Linear Regression and weight in neural networks) of our model.</p>
+
+<p><p align="center">
+<img src="/images/gradient_descent_graph.png" width="300" >
+<br>
+Image credit: <a href="https://sebastianraschka.com/faq/docs/closed-form-vs-gd.html">Sebastian Raschka</a>
+   </p></p>
+
+<p>In the figure, weight is slowly decreasing from the initial stage. \(J_{min}\) is the minimum value of the cost function which can be obtained by optimizing the algorithm.</p>
+
+<p>Recently, there have been many successful applications of Deep Neural
+Networks (DNN) in the fields of information retrieval, computer
+vision, and speech recognition. Despite their potential, deep neural
+architectures, like all other machine learning approaches, are
+vulnerable to what are known as adversarial samples. These systems can
+be fooled by targeted manipulations which slightly modifying a real
+example to trick the model into “believing” that this modified sample
+belongs to an incorrect class with high confidence. To defend against
+these adversarial attacks, many researchers are exploring several
+directions including data augmentation, increasing model complexity,
+retraining, pre-processing, etc. Their main goal is to protect the
+model against adversarial manipulations by the attackers.</p>
+
+<hr />
+
+<h2 id="applications-and-vulnerabilities">Applications and Vulnerabilities</h2>
+
+<p>To get a better idea of what security and privacy mean in a machine learning context, we highlight a few
+applications and examine the possible consequences of vulnerabilities in these domains.</p>
+
+<p>One of the most commonly-discussed applications is in self-driving
+cars, which use machine learning algorithms for image recognition
+tasks, such as identifying traffic signs and road hazards.  If an
+attacker were to cause an erroneous classification, e.g. mistaking a
+stop sign for a speed limit sign or missing a pedestrian in a
+crosswalk, both property and human lives would be in
+jeopardy. (Although luckily self-driving cars use a variety of other
+techniques to avoid collisions, including detailed maps and LIDAR, so
+are likely to not be directly vulnerable to image mis-classification
+attacks.)</p>
+
+<p>Machine learning has also found a place in the medical world, being used to identify patterns and trends in patient histories that can be used for diagnoses, to recognize abnormalities in medical imaging, and even to evaluate the efficiency of a hospital&rsquo;s workflow.  The use of machine learning in healthcare introduces a new concern - how can patient data be effectively utilized for beneficial purposes, like predicting appropriate drug dosages, without compromising patient privacy?</p>
+
+<p>There are numerous other uses of ML today (targeted advertising, fraud detection, malware detection, etc.) and each carries particular security and privacy concerns.</p>
+
+<hr />
+
+<h2 id="adversarial-examples">Adversarial Examples</h2>
+
+<p>In machine learning, an adversarial example is an input that has been manipulated so that the model returns a different, incorrect output.  A classic adversarial example for image classification is from a paper by <a href="https://arxiv.org/pdf/1412.6572.pdf">Goodfellow et al.</a>, which features a photo of a panda that was originally classified correctly, but is misclassified when carefully-crafted noise is added.  The model classifies the new image as a gibbon, even though human eyes can easily see it is a panda.</p>
+
+<p><p align="center">
+<img src="/images/panda.png" width="600" >
+<br> Source: <a href="https://arxiv.org/pdf/1412.6572.pdf">Goodfellow Paper</a>
+   </p></p>
+
+<p>As outlined in <a href="https://arxiv.org/pdf/1712.03141.pdf">Biggio et al.&rsquo;s</a> paper on the history of adversarial machine learning, adversarial examples were first described in 2004 in the context of email spam filters. At this time, <a href="https://homes.cs.washington.edu/~pedrod/papers/kdd04.pdf">Dalvi et al.</a> and <a href="https://ix.cs.uoregon.edu/~lowd/kdd05lowd.pdf">Lowd and Meek</a> realized that slight modifications to spam emails allowed them to pass through the filters, without greatly affecting the content of the message. From this point, the field expanded to study the potential for adversarial examples in other realms, like machine-learning-based image and malware classification.  The increased usage of deep learning techniques for object recognition led to a surge in interest around 2014, when Szegedy et al. showed that deep convolutional neural networks were also susceptible to adversarial examples.  Since then, interest in this field has only continued to increase, with more and more papers published each year.</p>
+
+<h3 id="classifying-attacks">Classifying Attacks</h3>
+
+<p>Attacks can be categorized by many different characteristics, but are often referred to in terms of the attack method, the goal of the attack, and the adversary&rsquo;s level of knowledge, as detailed in <a href="https://arxiv.org/pdf/1611.03814.pdf">Papernot et al.</a>.</p>
+
+<h4 id="attack-method">Attack Method</h4>
+
+<p>A poisoning attack is when the adversary adds carefully-crafted samples into the training data, thereby disrupting the learning process and manipulating the final trained model.  An evasion attack occurs when a sample originally correctly classified into class A is manipulated and fed back into the model, now receiving an output that is <em>not</em> class A.  A key difference between these two attacks is where each occurs in the ML pipeline: poisoning attacks occur before the training stage and evasion attacks occuring after training, during the testing stage.</p>
+
+<p><p align="center">
+<img src="/images/ml_pipeline.jpg" width="650" >
+<br> Source: <a href="https://docs.google.com/presentation/d/1dFRjRfCIz1TChZYfIY_FLYiSk7nNmdBY2luJ8T_TCAE/edit?usp=sharing">Presentation Slides</a>
+   </p></p>
+
+<h4 id="goal-of-attack">Goal of Attack</h4>
+
+<p>The goal of the adversary is another way to categorize attacks, which
+in this case means whether or not there was a specific goal
+classification or not.  <em>Error-generic</em> (also called <em>untargeted</em>)
+attacks aim to find a sample close to a given seed that is
+misclassified, but do not have a specific target output
+class. <em>Error-specific</em> (<em>targeted</em>) attacks deliberately change the
+seed sample&rsquo;s classification from the original class A to a chosen
+class B.</p>
+
+<h4 id="adversary-knowledge">Adversary Knowledge</h4>
+
+<p>The level of knowledge the adversary possesses generally falls into one of three loosely defined categories: black box, grey box, and white box attacks.  Black box attacks assume the lowest level of adversary knowledge, generally only allowing the final classification to be known without any finer details about the model.  On the other end of the spectrum, white box attacks assume that the attacker knows everything about the model, including the specific algorithm used, the feature set, the training data, etc. An attack by an adversary who knows more about the model than a black box but less than a white box is called a grey box attack, although the exact definition tends to vary.</p>
+
+<p align="center">
+<img src="/images/boxes.png" width="600" >
+</p>
+
+<hr />
+
+<h2 id="modern-machine-learning-as-a-potemkin-village">Modern Machine Learning as a Potemkin village</h2>
+
+<p align="center">
+<img src="/images/potemkin.jpeg" width="350" >
+</p>
+
+<p>The term &ldquo;Potemkin village&rdquo; describes a difference between appeance and reality. In a <a href="https://arxiv.org/abs/1412.6572">paper</a> by Goodfellow, Shlens, and Szegdy, modern machine learning methods are described as building &ldquo;a Potemkin village that works well on naturally occuring data, but is exposed as a fake when one visits points in space that do not have high probability in the data distribution.&rdquo; The apparent fragility of deep neural networks has been particuarly exposed, as seen in the panda picture above.</p>
+
+<p>The two-faced nature of machine learning models to be both fragile and robout from two different angles leads to concerns in the security of machine learning algorithms. High confidence in classifying adversarial examples poses a threat to the integrity of the model&rsquo;s output.</p>
+
+<h4 id="fast-gradient-sign-method-fgsm">Fast gradient sign method (FGSM)</h4>
+
+<p>Also the <a href="https://arxiv.org/abs/1412.6572">paper</a> mentioned a method for generating adversarial examples. Fast gradient sign method maximizes the error between the ground truth classification of the sample and minimizes the error to the target classification. The method is effecitve is generating the best pixels to change to achieve a higher loss, essentially acting as a reverse optimization method. FGSM simply traverses the loss curve by moving in the opposite direction of the gradient loss.</p>
+
+<p align="center">
+<img src="/images/formula.png" width="200" >
+</p>
+
+<p>As we discussed, the sign method in the FGSM is an approximation to the actual gradient. Although the most accurate method would use the true gradient, the sign of the gradient is taken for the sake efficiency: since \(\epsilon\) reflect the adversarial strength (the maximum size perturbation allowed), this represents taking the largest step possible in each dimension in the direction given by the gradient. (There are many variations on FGSM that we&rsquo;ll discuss in later posts, including iterative versions where a sequence of smaller steps is used.) FGSM showcases the fragility of machine learning models especially through visualizations such as the panda example.</p>
+
+<hr />
+
+<h2 id="adversarial-training">Adversarial training</h2>
+
+<h4 id="effects-of-nonlinearities">Effects of nonlinearities</h4>
+
+<p>One criticism of deep neural networks is that their nonlinearity creates vulnerabilities that can be exploited by adversarial examples.  As shown below, the mode function cuts through the data points linearly, while the function drawn by the neural network conforms more tightly to the training data points.  This overfitting to training data creates pockets in which the class chosen by the function does not match the ground truth class value for a given data point.</p>
+
+<p><p align="center">
+<img src="/images/capacity.png" width="650" >
+<br>Image credit: <a href="https://www.papernot.fr/files/16-mcdaniel-sp-machine-learning-in-adversarial-settings.pdf">McDaniel, Papernot, and Celik, <em>IEEE Security &amp; Privacy Magazine</em></a>
+   </p></p>
+
+<h4 id="solutions">Solutions</h4>
+
+<p>As a possible solution, <a href="https://arxiv.org/pdf/1312.6199.pdf">Szegedy et al.</a> proposed incorporating adversarial examples into the training data.  Using various techniques to find the vulnerable pockets in the model, the authors were able to generate examples that would fall into those adversarial region.  Adding those samples to the training data results in a new model that does not follow the original training points as closely, creating a smoother, more accurate function.</p>
+
+<p>Using an adversarial <a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)">regularizer</a> is also a technique to limit overfitting and vulnerability to adversarial examples. <a href="https://arxiv.org/abs/1412.6572">Goodfellow et al.</a> describes a technique using the fast gradient sign method mentioned above as a regularizer. Their method generates adversarial examples using the fast gradient sign method and then trains the model with the adversarial examples. By continually updating the adversarial examples to the model, the adversarial regions are minimized. In the paper, they were able to reduce the error rate on adversarial examples from 0.94% to 0.84% using this approach. In order to reduce this error further, they also increased the model size and introduced early stopping on adversarial validation set error. Using these additional techniques they were able to drop the error rate on adversarial examples based on the FGSM from 89.4% to 17.9%. A combination of techniques introduced in training can significantly decrease the vunerability to simple adversarial attacks.</p>
+
+<hr />
+
+<h2 id="transferability-of-adversarial-samples">Transferability of adversarial samples</h2>
+
+<p>As shown above, an adversarial sample can fool a machine-learned model to misclassify it with high confidence. In particular, the adversarial samples made to fool image classifiers show how an adversarial sample can be indistinguishable to humans from legitimate samples. Additionally, examples that evade one classifier tend to evade others. This poses a vulnerability for machine learned models, one that can be exploited with cross-evasion.</p>
+
+<h4 id="learning-classifier-substitutes">Learning classifier substitutes</h4>
+
+<p>For example, <a href="https://arxiv.org/abs/1605.07277">Papernot et al.</a>, took advantage of the transferability of adversarial examples on a remote DNN by training a new model with their own synthetic data. By using a relatively small number of queries to label their data, they trained a substitute model which they then used to craft adversarial samples. Demonstrating transferability, 84.24% of the adversarial samples trained from the substitute model fooled the remote DNN.</p>
+
+<p>To explicitly demonstrate the phenomenon of both intra and cross-technique transferability, <a href="https://arxiv.org/abs/1605.07277">Papernot et al.</a> used five different machine learning algorithms on five disjoint training sets of MNIST dataset. With this setup, adversarial samples trained from one technique on one subset of the training data fools &ndash; to varying degrees &ndash; models trained by a different subset of the training data as well as a different technique. Furthermore, an ensemble classifier could be fooled at a rate of up to 44%.</p>
+
+<p>&mdash; Team Panda:<br />
+Christopher Geier,
+Faysal Hossain Shezan,
+Helen Simecek,
+Lawrence Hook,
+Nishant Jha</p>
+
+<h4 id="references">References</h4>
+
+<p><a href="https://arxiv.org/pdf/1412.6572.pdf">[1]</a> I.J. Goodfellow, J. Shlens, C. Szegedy, &ldquo;Explaining
+and Harnessing Adversarial Examples.&rdquo; <em>ArXiv e-prints</em>, December 2014.</p>
+
+<p><a href="https://arxiv.org/pdf/1712.03141.pdf">[2]</a> B. Biggio, F. Roli, &ldquo;Wild patterns: Ten years after the rise of
+adversarial machine learning.&rdquo; <em>arXiv preprint arXiv:1712.03141</em>, 2017.</p>
+
+<p><a href="https://homes.cs.washington.edu/~pedrod/papers/kdd04.pdf">[3]</a> N. Dalvi, P. Domingos, Mausam, S. Sanghai, D. Verma, &ldquo;Adversarial classification,&rdquo;&rdquo; <em>Int’l Conf. Knowl. Disc. and Data Mining</em>, 2004, pp. 99–108.</p>
+
+<p><a href="https://ix.cs.uoregon.edu/~lowd/kdd05lowd.pdf">[4]</a> D. Lowd, C. Meek, &ldquo;Adversarial learning,&rdquo; <em>Int’l Conf. Knowl. Disc. and Data Mining</em>, ACM Press, Chicago, IL, USA, 2005, pp. 641–647.</p>
+
+<p><a href="https://arxiv.org/pdf/1611.03814.pdf">[5]</a> N. Papernot, P. McDaniel, A. Sinha, M. Wellman, &ldquo;Towards the science of security and privacy in machine learning.&rdquo; <em>IEEE European Symposium on Security and Privacy</em>,
+2018.</p>
+
+<p><a href="https://arxiv.org/abs/1605.07277">[6]</a> N. Papernot, P. Mcdaniel, I.J. Goodfellow, &ldquo;Transferability in machine learning: from phenomena to black-box attacks using adversarial samples&rdquo; <em>arXiv preprint arXiv:1605.07277</em>, 2016.</p>
+
+<p><a href="https://arxiv.org/pdf/1312.6199.pdf">[7]</a> C. Szegedy, W. Zaremba, I. Sutskever, J Bruna, D. Erhan, I.J. Goodfellow, R. Fergus. &ldquo;Intriguing properties of neural networks.&rdquo; <em>ICLR,</em> abs/1312.6199, 2014.</p>
+ 
+  
   <p class="fronthead"><A href="/first-week/">First Week</a><br><span class="authordate">David Evans &mdash; 20 Jan 2018</span></p>
     <p><em>This message was also sent out by email.</em></p>
 
