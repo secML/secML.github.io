@@ -1,18 +1,41 @@
 +++
-date = "13 Apr 2018"
+date = "18 Apr 2018"
 draft = false 
-title = "Class 11: Formal Verification Methods"
-author = "Team Bus"
-slug = "class10"
+title = "Class 11: Poisoning"
+author = "Team Gibbon"
+slug = "class11"
 +++
 
 ## Motivation
 
 ????
 
+## Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks
+> Ali Shafahi, W. Ronny Huang, Mahyar Najibi, Octavian Suciu, Christoph Studer, Tudor Dumitras, and Tom Goldstein. _Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks._ April 2018. arXiv e-print [[PDF]](https://arxiv.org/pdf/1804.00792.pdf)
+
+### A Simple Clean Label Attack
+
+The paper presents a novel clean-label attack, which restricts the attacker to injecting correctly-classified examples into the victim's training set. The goal of the attacker is to make the model misclassify a "target" instance, specifically to the same class as some chosen "base" instance. The attack is executed by subtly changing the base instance to display features of the target; this is illustrated in Figure (a) below. Figure (b) shows a simple diagram of the intended effect on the model's decision boundary. When the model trains, it hopefully overfits on the poisoned instance, thereby allowing the target to be classified incorrectly. The major benefit of this approach is that it is difficult for the victim to detect: since the poisoned data is still labeled correctly, the model's test accuracy should not change.
+
+![](/images/class11/poison-spam.png)
+
+In more formal language, the clean-label attack does this: given a target instance \\(t\\) and a base instance \\(b\\), create a poisoned instance \\(p\\) such that
+
+- \\(p\\) is humanly-indistinguishable from \\(b\\) (and is classified the same), and
+- the model, after training on a data set that includes \\(p\\), misclassifies \\(t\\) to be in the same class as \\(b\\).
+
+The equivalent optimization problem is
+
+![](/images/class11/poison-clean.png)
+
+where \\(\beta\\) represents how closely \\(p\\) resembles the base instance \\(b\\). There is a simple algorithm for solving this optimization problem: alternate between "forward steps" to inch closer to \\(t\\) and "backward steps" to stay close to \\(b\\).
+
+The clean-label attack works extremely well on transfer learning models, which contain a pre-trained feature extraction network hooked up to a trainable, final classification layer. As an example, the authors created an [InceptionV3](https://arxiv.org/pdf/1512.00567.pdf) model that classified images of dogs and fish. They were able to attack this model a 100% success rate by including just one poisoned image in each attack; furthermore, the target images were misclassified by the model with high confidence (see below).
+
+![](/images/class11/poison-conf.png)
+
 ## Manipulating Machine Learning: Poisoning Attacks and Countermeasures for Regression Learning
-> Matthew Jagielski, Alina Oprea, Battista Biggio, Chang Liu, Cristina Nita-Rotaru and Bo Li._Manipulating Machine Learning: Poisoning Attacks
-and Countermeasures for Regression Learning_. April 2018. arXiv e-print [[PDF]](https://arxiv.org/pdf/1804.00308.pdf)
+> Matthew Jagielski, Alina Oprea, Battista Biggio, Chang Liu, Cristina Nita-Rotaru and Bo Li. _Manipulating Machine Learning: Poisoning Attacks and Countermeasures for Regression Learning_. April 2018. arXiv e-print [[PDF]](https://arxiv.org/pdf/1804.00308.pdf)
 
 
 ### Introduction
@@ -117,3 +140,6 @@ and Countermeasures for Regression Learning_. April 2018.
 
 [[6]](https://people.eecs.berkeley.edu/~tygar/papers/SML/Spam_filter.pdf) Nelson, Blaine, et al. "Exploiting Machine Learning to Subvert Your Spam Filter." LEET 8 (2008): 1-9.
 
+[[7]](https://arxiv.org/pdf/1804.00792.pdf) Ali Shafahi, W. Ronny Huang, Mahyar Najibi, Octavian Suciu, Christoph Studer, Tudor Dumitras, and Tom Goldstein. "Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks." April 2018.
+
+[[8]](https://arxiv.org/pdf/1512.00567.pdf) Szegedy, Christian et. al. "Rethinking the inception architecture for computer vision." Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (2016): 2818–2826.
