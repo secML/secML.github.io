@@ -344,7 +344,11 @@ For both the vSRL and MLC tasks, their training data is biased as illustrated in
 Source: [_Men Also Like Shopping: Reducing Gender Bias Amplification using Corpus-level Constraints_]((https://arxiv.org/pdf/1608.04644.pdf)) [1]
 </div>
 
-Calibration results are then summarized in the table below, which utilizes RBA method. The experimental results show that, with this calibrated method, we are able to significantly reduce the gender bias.
+Calibration results are then summarized in the table below, which utilizes RBA method. The experimental results show that, with this calibrated method, we are able to significantly reduce the gender bias.      
+<p align="center">
+<img src="/images/class7/calib_result.png" width="30%">
+<br>
+</p>
 
 ![](/images/class7/calib_result.png)
 <div class="caption">
