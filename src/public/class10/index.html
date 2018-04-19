@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>Class 10: Formal Verification Methods  &middot; secML</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="description" content="" />
+
+<meta name="keywords" content="">
+
+
+<meta property="og:title" content="Class 10: Formal Verification Methods  &middot; secML ">
+<meta property="og:site_name" content="secML"/>
+<meta property="og:url" content="https://secml.github.io/class10/" />
+<meta property="og:locale" content="en-us">
+
+
+<meta property="og:type" content="article" />
+<meta property="og:description" content=""/>
+<meta property="og:article:published_time" content="2018-04-06T00:00:00Z" />
+<meta property="og:article:modified_time" content="2018-04-06T00:00:00Z" />
+
+  
+
+  
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@" />
+<meta name="twitter:title" content="Class 10: Formal Verification Methods" />
+<meta name="twitter:description" content="" />
+<meta name="twitter:url" content="https://secml.github.io/class10/" />
+<meta name="twitter:domain" content="https://secml.github.io">
+  
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "Class 10: Formal Verification Methods",
+    "author": {
+      "@type": "Person",
+      "name": "http://profiles.google.com/+?rel=author"
+    },
+    "datePublished": "2018-04-06",
+    "description": "",
+    "wordCount":  1882 
+  }
+</script>
+
+
+<link rel="canonical" href="https://secml.github.io/class10/" />
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://secml.github.io/touch-icon-144-precomposed.png">
+<link href="https://secml.github.io/favicon.png" rel="icon">
+
+<meta name="generator" content="Hugo 0.17" />
+
+  <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link href='https://fonts.googleapis.com/css?family=Merriweather:300%7CRaleway%7COpen+Sans' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://secml.github.io/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://secml.github.io/css/style.css">
+
+
+  
+  <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+</head>
+<body>
+  <main id="main-wrapper" class="container main_wrapper has-sidebar">
+    <header id="main-header" class="container main_header">
+  <div class="container brand">
+  
+  
+<div class="container topline">
+  <a href="/">
+  Security and Privacy of Machine Learning
+
+</a>
+</div>
+
+
+</div>
+
+  <nav class="container nav primary no-print">
+  
+
+
+  
+<a href="https://secml.github.io/syllabus">Syllabus</a>
+
+<a href="https://secml.github.io/schedule">Schedule</a>
+
+<a href="https://secml.github.io/teams">Teams</a>
+
+<a href="https://secml.github.io/topics">Topics</a>
+
+<a href="https://secml.github.io/post" title="Show list of posts">Posts</a>
+
+
+</nav>
+
+<div class="container nav secondary no-print">
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+  
+
+</header>
+
+
+<article id="main-content" class="container main_content single">
+  <header class="container hat">
+  <h1><center>Class 10: Formal Verification Methods
+</center></h1>
+
+  <div class="metas">
+<time datetime="2018-04-06">6 Apr, 2018</time>
+
+
+  
+    &middot; by Team Bus
+  
+  <br>
+  
+
+
+</div>
+
+</header>
+
+  <div class="container content">
+  
+
+<h2 id="motivation">Motivation</h2>
+
+<p>Similar to what we saw in <a href="https://secml.github.io/class6/">Class 6</a>, we would like to have formal bounds on how robust a machine learning model under attack. The following two papers aim at achieving this robustness by means of proving properties about the underlying neural networks. This strategy aims to end the arms race of attacks and defenses commonly seen in literature, and to provide formal guarantees of defenses with respect to any type of adversary.</p>
+
+<h2 id="differential-privacy-and-adversarial-robustness">Differential Privacy and Adversarial Robustness</h2>
+
+<blockquote>
+<p>Mathias Lecuyer, Vaggelis Atlidakis, Roxana Geambasu, Daniel Hsu, Suman Jana. <em>On the Connection between Differential Privacy and Adversarial Robustness in Machine Learning</em>. February 2018. arXiv e-print <a href="https://arxiv.org/abs/1802.03471">[PDF]</a></p>
+</blockquote>
+
+<p>In the privacy domain, we are able to provide formal guarantees of the privacy of records by introducing the property of differential privacy. Where for two data sets that differ in one record, the difference of the output predictions on each one is less than some bounded amount.</p>
+
+<p>In this paper, the authors extend this property to apply to adversarial examples by relating changes in a data set to changes in an input. Where for two <em>inputs</em> that differ in some perturbation, the difference of the output predictions on each one is less than some bounded amount.</p>
+
+<p>More formally,
+$$ P(A(x) = i) \le e^{\epsilon} P(A(x’) = i) + \delta  $$
+Where, \( x’ \) is some perturbed version of \( x \). \( A \) is the algorithm in question, and \( P(A(x) = i) \) is the probability that A assigns to \( x \) taking on value \( i \).</p>
+
+<p>The authors apply this property to images and call it PixelDP. They go on to prove that if a model satisfies PixelDP with respect to the 0-norm metric for a set of inputs, then it is robust to 0-norm attacks on those inputs. (0-norm here indicating how many pixels were changed).</p>
+
+<p>They accomplish this by also establishing an upper bound on the second highest class assignment for the perturbation, \( \max_{j \ne i} p_j(x’) \), using the same principle of robustness as defined above:</p>
+
+<p>$$ P(A(x’) = j) \le e^{\epsilon}P(A(x) = j) + \delta $$</p>
+
+<p>From these two bounds, they arrive at the core proposition that an algorithm satisfies PixelDP robustness to 0-norm attacks if the following holds:</p>
+
+<p>$$ p<em>{i}(x) &gt; e^{2 \epsilon} \max</em>{j: j \ne i} p_{j}(x)+ (1+e^{\epsilon}) \delta $$</p>
+
+<p>(sorry, can&rsquo;t get this to typeset with mathjax).</p>
+
+<p>With this proposition the authors devise a method for attaining this property, primarily by adding and accounting for noise during training and testing.</p>
+
+<h3 id="noise-layer">Noise Layer</h3>
+
+<p>The authors’ basic approach is to add a noise layer to the neural network. They first establish that the noise added should be proportional to the sensitivity of the layer, which is more difficult to compute for deeper layers. They recommend placing the noise in the first few layers of the network as it is easiest to bound the sensitivity, and acknowledge that trade-offs of accuracy and robustness play a role in the decision process.</p>
+
+<p>The noise layer itself simply uses Laplacian and Gaussian mechanisms to add noise, and the network is trained with the noise layer to allow decent accuracy.</p>
+
+<h3 id="testing-strategy">Testing Strategy</h3>
+
+<p>To account for the noise during testing, the authors run the input through the network multiple times. The label is the highest predicted score is chosen and these results are counted and aggregated. This allows the variance of each label to also be computed.</p>
+
+<p>The idea of making multiple queries may seem contradictory to the idea of privacy, where each query takes away from a privacy budget. However, here we are not concerned with privacy leakage here, only with bounding the output of the function.</p>
+
+<h3 id="robustness">Robustness</h3>
+
+<p>Finally, to have a measure of robustness, the authors propose a way deriving a bound for the maximum perturbation allowed. This is accomplished by finding the maximum \( L \) such that the proposition defined above still holds. The resulting \(L\)<sub><em>max</em></sub> can be compared against some threshold \( T \) such that if \( L_{max} \ge T \) then the model is robust against that input. That is to say, that perturbation to the given image would not be sufficient to change its label.</p>
+
+<p>This metric is, of course, dependent on a given test set, but it allows the claim that a certain portion of the test set is “safe”, meaning the prediction is robust for that test set. If the test set is representative of the input domain examples that matter, this can give us some confidence (but no guarantee) that the model is robust for other inputs also.</p>
+
+<h3 id="evaluation">Evaluation</h3>
+
+<p>To evaluate their approach, the authors used three accuracy metrics.</p>
+
+<ul>
+<li>Conventional accuracy: the proportion of correct predictions</li>
+<li>Robust accuracy: the proportion of correct and robust predictions</li>
+<li>Robust precision: the proportion of correct predictions relative to the number of robust predictions.
+<br /></li>
+</ul>
+
+<p>They first tested accuracy on benign samples with different noise levels, \( L \) and different thresholds for robustness \( T \).</p>
+
+<p align="center">
+<img src="/images/class10/benign.png" width="500" >
+<br/>
+</p>
+
+<p>They found that, with higher \( T \), robust accuracy decreases but robust precision increases, and that the threshold should be tuned based on the amount of noise.</p>
+
+<p>They then tested the accuracy on malicious samples, comparing to the Madry defense <a href="https://arxiv.org/pdf/1608.04644.pdf">[3]</a></p>
+
+<p align="center">
+<img src="/images/class10/malicious.png" width="500" >
+<br/>
+</p>
+
+<p>This shows that for a 2-norm attack, their defense is comparable to the Madry defense, but for an inf-norm attack, the Madry defense is better. These results make sense because the Madry defense was built around \( L\)<sub>\(\infty\)</sub> attacks, while PixelDP is for \( L\)<sub>0</sub> and \( L\)<sub>2</sub> attacks. This begs the question of if we can have a differential privacy based defense in the \(L_{\infty} \) space, but at the moment there is no clear mapping between the two.</p>
+
+<h2 id="piecewise-linear-neural-network-verification">Piecewise Linear Neural Network Verification</h2>
+
+<blockquote>
+<p>Rudy Bunel, Ilker Turkaslan, Philip H.S. Torr, Pushmeet Kohli, M. Pawan Kumar. <em>Piecewise Linear Neural Network verification: A comparative study</em>. arXiv e-print November 2017. <a href="https://arxiv.org/pdf/1711.00455.pdf">[PDF]</a></p>
+</blockquote>
+
+<p>In this paper, the authors look at providing guarantees for piecewise linear neural networks for the purposes of verification. They show how to approach this through several approaches. For all of these approaches, the problem is defined the same general way. We are given a network that implements a function \( y = f(x) \) and some bounded input domain \( C \) in order to prove some property \( P \) about the network. This can be formulated as shown below:
+$$ x \in C, y = f(x) \implies P(y) $$</p>
+
+<p>In this problem definition, we see that we are only considering piecewise-linear neural networks (PL-NNs). This is justified by the observation that PL-NNs represent the majority of networks used in practice. In addition, the properties mentioned in the problem statement are defined to be Boolean formulas over linear inequalities.</p>
+
+<h3 id="verification-methods">Verification Methods</h3>
+
+<p>The authors then go on to discuss a couple different verification methods, which all leverage the piecewise linear structure of PL-NN. All of these methods that are compared follow the same general principle: discover a counterexample to make the given property false. If this counterexample problem is unsatisfiable, then we have shown that no counterexample exists and hence the property must be true.</p>
+
+<h4 id="mixed-integer-programing-encoding">Mixed Integer Programing Encoding</h4>
+
+<p>In the general problem we are taking a look at, we have an issue with non-linearities as we must deal with a max function on the output of our network. In this method, the authors bypass this by replacing these nonlinear max functions with a set of inequalities. These can then be passed off to the solver to see if we can achieve some counterexample.</p>
+
+<h4 id="reluplex">Reluplex</h4>
+
+<p>This method essentially assigns values to all the variables, even if some of the constraints are violated. It then goes through and tries to fix the violated constraints at each step. Reluplex is covered more extensively in our <a href="https://secml.github.io/class6/">previous blog post</a>.</p>
+
+<h4 id="planet">Planet</h4>
+
+<p>This method operates by attempting to find an assignment to the phase of the non-linearities. Similar to Reluplex, it assigns values to the variables and then at each step verifies the feasibility of the assignment. Unlike Reluplex, this also has the advantage of being easily extended to networks containing MaxPooling units. In order to detect incoherent assignments, the author also employs a global linear approximation to the neural network. This is done by approximating the nonlinear constraints as a set of linear constraints that represent the convex hull of the nonlinearities.</p>
+
+<p align="center">
+<img src="/images/class10/planet.png" width="500" >
+<br/>
+</p>
+
+<h4 id="branch-and-bound-optimization-for-verification">Branch and Bound Optimization for Verification</h4>
+
+<p>This method looks at transforming this whole satisfiability problem into an optimization problem. To approach this, we look at adding extra neurons to the end of the network such that we can take a  look at the global minimum and use that information to determine whether the original problem was satisfiable. Essentially, we are formulating any Boolean formula over linear inequalities on the output of the network as a sequence of additional layers, and thus reducing the verification problem to a global minimization problem.</p>
+
+<p>Optimization algorithms, such as stochastic gradient descent, are not appropriate for this minimization problem as they do not provide the guarantee of a global minimum. The authors thus propose a branch and bound algorithm. This algorithm essentially is a breadth-first search algorithm. The algorithm computes the upper and lower bounds of the minimum of the output. The best upper-bound found so far will serve as a candidate for the global minimum. The iterative splitting process of the BFS type search will allow us to get a tighter and tighter lower bound.</p>
+
+<h3 id="evaluation-1">Evaluation</h3>
+
+<p>For the evaluation, they consider a couple of data sets: Airborne Collision Avoidance System, Collision Detection, and Twin Stream. For each of these, they attempt to solve the satisfiability problem with a timeout of two hours. They define their success rate to be the proportion of properties successfully solved. A problem determined as SAT means that the property was false and that a counterexample exists and hence, UNSAT means that the property is true. Another metric used is labeled “Number of Wins.” This counts the number of times a solver was the fastest to solve a property. The results for these data sets are shown below:</p>
+
+<p align="center">
+<img src="/images/class10/acas.png" width="500" >
+<br/>
+<caption align="bottom">ACAS data set</caption>
+<br/>
+</p>
+
+<p align="center">
+<img src="/images/class10/collision.png" width="500" >
+<br/>
+<caption align="bottom">Collision Detection data set</caption>
+<br/>
+</p>
+
+<p align="center">
+<img src="/images/class10/twinstream.png" width="500" >
+<br/>
+<caption align="bottom">Twin Stream data set</caption>
+<br/>
+</p>
+
+<p>Overall, we can see that the proposed branch and bound method is able to compete with other verification methods present in literature and so this proposes a new strategy for formal verification techniques.</p>
+
+<h2 id="suman-s-talk">Suman’s Talk</h2>
+
+<p>For the last section of class, Suman Jana from Columbia University gave us a talk on his ongoing research. He also discussed some of the core motivations for why it is important and difficult to study this area. Citing the differences between testing and verifying regular programs, which can have formal specifications and SMT solvers. In machine learning, the idea is to learn the specification, and they are fundamentally much more opaque.</p>
+
+<p>&mdash; Team Bus:<br />
+Anant Kharkar,
+Atallah Hezbor,
+Bhuvanesh Murali,
+Mainuddin Jonas,
+Weilin Xu</p>
+
+<h4 id="references">References</h4>
+
+<p><a href="https://arxiv.org/pdf/1802.03471.pdf">[1]</a> M. Lecuyer, V. Atlidakis, R. Geambasu, D. Hsu, S. Jana. &ldquo;On the Connection between Differential Privacy and Adversarial Robustness in Machine Learning&rdquo; <em>arXiv preprint arXiv:1802.03471</em>, February 2018.</p>
+
+<p><a href="https://arxiv.org/pdf/1711.00455.pdf">[2]</a> R. Bunel, I. Turkaslan, P-H.S. Torr, P. Kohli, M.-P, Kuymar. &ldquo;Piecewise Linear Neural Network verification: A comparative study&rdquo; <em>arXiv preprint arXiv:1711.00455</em>, November 2017.</p>
+
+<p><a href="https://arxiv.org/pdf/1706.06083.pdf">[3]</a> A. Madry, A. Makelov, L. Schmidt, D. Tsipras, A. Vladu. &ldquo;Towards Deep Learning Models Resistant to Adversarial Attacks&rdquo; <em>arXiv preprint arXiv:1706.06083</em>, June 2017.</p>
+
+</div>
+
+
+  <footer class="container">
+  <div class="container navigation no-print">
+  <h2>Navigation</h2>
+  
+  
+
+    
+    <a class="prev" href="https://secml.github.io/class9/" title="Class 9: Adversarial Malware Detection">
+      Previous
+    </a>
+    
+
+    
+
+  
+
+
+</div>
+
+</footer>
+
+</article>
+      <footer id="main-footer" class="container main_footer">
+  
+
+  <div class="container nav foot no-print">
+  
+
+  <a class="toplink" href="#">back to top</a>
+
+</div>
+
+  <div class="container credits">
+  
+<div class="container footline">
+  
+  <p align="center">cs6501: secML | University of Virginia, Spring 2018 | <a href="https://www.cs.virginia.edu/evans">David Evans</a>
+
+
+</div>
+
+
+  
+
+</div>
+
+</footer>
+
+    </main>
+    
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-3775212-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+    
+  </body>
+</html>
+
