@@ -6,7 +6,7 @@ author = "Team Gibbon"
 slug = "class11"
 +++
 
-This week we talked about poisoning attacks. Below are three papers which discuss interesting work happening in this field.
+This week we discussed poisoning attacks, which differ from previously-discussed attacks in a key way. Instead of finding test instances that the target model misclassifies, a poisoning attack adds "poisoned" instances to the training set, introducing new errors into the model. Below are three papers which discuss interesting work happening in this field.
 
 ## Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks
 > Ali Shafahi, W. Ronny Huang, Mahyar Najibi, Octavian Suciu, Christoph Studer, Tudor Dumitras, and Tom Goldstein. _Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks._ April 2018. arXiv e-print [[PDF]](https://arxiv.org/pdf/1804.00792.pdf)
@@ -60,9 +60,9 @@ The authors found that targeting outlier instances has a 17% higher success rate
 
 
 ### Introduction
-It is well understood that in machine learning models are easy to be manipulated by smart attackers. There are both test time evasion attack or training time data poisoning attacks and hence, studying and understanding these potential risks is beneficial for application of machine learning in security critical domains.
+It is well understood that machine learning models are easy to be manipulated by smart attackers. There are both test-time evasion attacks and training-time data poisoning attacks, so studying and understanding these potential risks is beneficial for the application of machine learning in security critical domains.
 
-In this paper, the authors studied specific problem of training data poisoning attack on linear regression models and subsequently propose an effective defensive strategy.
+In this paper, the authors studied the specific problem of training a data poisoning attack on linear regression models and subsequently proposed an effective defensive strategy.
 
 A linear regression is defined as
 <p align="center">
@@ -76,66 +76,66 @@ And the loss function being optimized during the training time is the mean-squar
 <br/>
 </p>
 
-MSE is used here as the result of linear regression is a continuous value while traditional classification task outputs discrete categorical values. The term \\(\Omega(\mathbf{w})\\) denotes the regularization terms. When we take different norms, it corresponds to different regularization functions ( \\(L_{2}\\)-norm corresponds to ridge regression, \\(L_{1}\\)-norm correspond to LASSO regression and Elastic-net Regression takes the linear combination of \\(L_{1}\\)-norm and \\(L_{2}\\)-norm).
+MSE is used here as the result of linear regression and is a continuous value, while a traditional classification task outputs discrete categorical values. The term \\(\Omega(\mathbf{w})\\) denotes the regularization terms. When we take different norms, it corresponds to different regularization functions. ( \\(L_{2}\\)-norm corresponds to ridge regression, \\(L_{1}\\)-norm correspond to LASSO regression, and Elastic-net Regression takes the linear combination of \\(L_{1}\\)-norm and \\(L_{2}\\)-norm).
 
 ### Attacker's Goal and Optimization-based Poisoning Attack
-The attack aims to corrupt the machine learning in the training phase by introducing noisy training data points such that predictions at test time will be influenced. The author considered both the white-box and black-box attack. White-box attack means the attacker is aware of all the information including training dataset, feature values, training algorithm and trained parameters. In the black-box setting, only training dataset is assumed to be unknown while rest are the same as white-box setting. With all these described, we arrive at the following formualtion regarding training data poisoning attack:
+The attack aims to corrupt the machine learning in the training phase by introducing noisy training data points such that predictions at test time will be influenced. The author considered both the white-box and black-box attack. White-box attack means the attacker is aware of all the information including training dataset, feature values, training algorithm and trained parameters. In the black-box setting, the training dataset is assumed to be unknown. With all these described, we arrive at the following formulation regarding training data poisoning attack:
 
 <p align="center">
 <img src="/images/class11/problem_formulation.png" width="500" >
 <br/>
 </p>
 
-where \\(\mathbf{\theta}_{p}^{*}\\) is the model parameter obtained by training the model on poisoned training dataset. \\(D_{tr}\\) denotes unpoisoned training data, anmd \\(D_{p}\\) are the poisoned training data, which typically takes around \\(10\%\\) of the clean training data. \\(W(D^{'},\mathbf{\theta}_{p}^{*})\\) is the loss function defined on test (or validation) dataset \\(D^{'}\\), which is free from the poisoning attacks. Note that, this is bilevel optimization problem and is different from traditional optimization we know in that the constraint itself is an optimization problem. Also, with the parameter \\(\theta_{p}^{*}\\) depends implicitly on the poisoned training dataset \\(D_{p}^{*}\\). To optimize the above problem with respect to a set of data points \\(D_{p}\\), the approach is to optimize each istance \\(\mathbf{x}_{c}\\) in the set \\(D_{p}\\). With this, the authors apply gradient aescend algorithms to fina an optiaml \\(\mathbf{x}_c\\) that can maximize the loss function \\(W(\cdot)\\). The gradient can be calculated as below:
+where \\(\mathbf{\theta}_{p}^{*}\\) is the model parameter obtained by training the model on poisoned training dataset. \\(D_{tr}\\) denotes unpoisoned training data, and \\(D_{p}\\) are the poisoned training data, which typically takes around \\(10\%\\) of the clean training data. \\(W(D^{'},\mathbf{\theta}_{p}^{*})\\) is the loss function defined on the test (or validation) dataset \\(D^{'}\\), which is free from the poisoning attacks. Note that this is a bilevel optimization problem and is different from the traditional optimization we know, in that the constraint itself is an optimization problem. Also, the parameter \\(\theta_{p}^{*}\\) depends implicitly on the poisoned training dataset \\(D_{p}^{*}\\). To optimize the above problem with respect to a set of data points \\(D_{p}\\), the approach is to optimize each instance \\(\mathbf{x}_{c}\\) in the set \\(D_{p}\\). With this, the authors apply gradient descent algorithms to find an optimal \\(\mathbf{x}_c\\) that can maximize the loss function \\(W(\cdot)\\). The gradient can be calculated as below:
 
 <p align="center">
 <img src="/images/class11/gradient_cal1.png" width="250" >
 <br/>
 </p>
 
-The calculation of first term is non-trivial as there is an implicit dependence of \\(\mathbf{\theta}\\) and \\(\mathbf{x}_c\\). With some tricks played by KKT equilibrium conditions, the author arrived at equation as follows:
+The calculation of first term is non-trivial as there is an implicit dependence of \\(\mathbf{\theta}\\) and \\(\mathbf{x}_c\\). With some tricks played by KKT equilibrium conditions, the author arrived at this equation:
 
 <p align="center">
 <img src="/images/class11/gradient_cal2.png" width="500" >
 <br/>
 </p>
 
-Combining the above two, we are able to approximately compute the gardient and update \\(\mathbf{x}_c\\). Notebally, unlike previous papers on training data poisoning attacks on classifiers, the problem setting of this paper is in linear regression and the author further propose to optimize both the data point \\(\mathbf{x}_c\\) and its response variable \\(y_c\\). Hence, a new variable \\(\mathbf{z}_{c}= (\mathbf{x}_{c},y_{c})\\) is introduced to repalce \\(\mathbf{x}_c\\). Details of the gradient of \\(W\\) with respect to varaible \\(\mathbf{z}_{c}\\) can be referred from equation (14) and equation (4).
+Combining the above two, we are able to approximately compute the gardient and update \\(\mathbf{x}_c\\). Notably, unlike previous papers on training data poisoning attacks on classifiers, the problem setting of this paper is in linear regression, and the authors further propose to optimize both the data point \\(\mathbf{x}_c\\) and its response variable \\(y_c\\). Hence, a new variable \\(\mathbf{z}_{c}= (\mathbf{x}_{c},y_{c})\\) is introduced to replace \\(\mathbf{x}_c\\). Details of the gradient of \\(W\\) with respect to variable \\(\mathbf{z}_{c}\\) can be referred from equation (14) and equation (4).
 
 ### Statistical-based Poisoning Attack
 
-Statistical Attack is in contrast to the previous optimization based attack. Statistical attack is computationally efficient and it operates by generating adversarial training poinst from a multivariate normal distribution with mean and covariance estimated from the training data. Then, the feature values are rounded to corner values and the finally the reponse value \\(y_{c}\\) for a given data point \\(\mathbf{x}_c\\) is rounded to boundary value (either 1 or 0). As can be seen from the description, it is computationally effective, but less accurate than the optimization based method.
+Statistical Attack contrasts the previous optimization based attack. Statistical attack is computationally efficient and it operates by generating adversarial training points from a multivariate normal distribution with mean and covariance estimated from the training data. Then, the feature values are rounded to corner values and the finally the response value \\(y_{c}\\) for a given data point \\(\mathbf{x}_c\\) is rounded to the boundary value (either 1 or 0). As can be seen from the description, it is computationally effective but less accurate than the optimization based method.
 
 ### TRIM algorithm
-This is the defense method proposed by the author to tackle the above mentioned two attack strategies. TRIM algorithm operates byiteratively estimating the regression parameters while at the same time training on a subset of points with lowest residuals in each iteration. Here, residual means error in a result. For example, error is taken with respect to \\(\mathbf{x}_c\\) while residual with taken with respect to \\(f(\mathbf{x})\\). The intuitive understanding of this algorithm is in that, majority of the training points are non-correupted and poisoned data points typically exhibit larger outlier behavior. If poisoned data points do not have outlier behavior, then its effect on regression task is minimized and hence can be considered as less harmful. The TRIM algorithm actually provides solution to the following optimization problem:
+This is the defense method proposed by the author to tackle the two above-mentioned attack strategies. The TRIM algorithm operates by iteratively estimating the regression parameters while at the same time training on a subset of points with lowest residuals in each iteration. Here, residual means error in a result. For example, error is taken with respect to \\(\mathbf{x}_c\\) while residual with taken with respect to \\(f(\mathbf{x})\\). The intuitive understanding of this algorithm is in that, majority of the training points are non-corrupted and poisoned data points typically exhibit larger outlier behavior. If poisoned data points do not have outlier behavior, then its effect on regression task is minimized and hence can be considered as less harmful. The TRIM algorithm actually provides a solution to the following optimization problem:
 
 <p align="center">
 <img src="/images/class11/trim_formulation.png" width="500" >
 <br/>
 </p>
 
-Optimization problem above intuitively represents that we optimize the regression parameter \\(\theta\\) and the subset of points with smallest residuals at the same time. This problem is computionally challenging as simple approach of enumarating all possible subsets of \\(I\\) of size \\(n\\) is large. Also, the parameter \\(theta\\) is typically unknown without any prior assumptions (if we know \\(\theta\\) in advance, we can simply choose \\(I\\) as a set of \\(n\\) points with lowest residuals with respect to \\(theta\\)).
+The optimization problem above intuitively represents that we optimize the regression parameter \\(\theta\\) and the subset of points with smallest residuals at the same time. This problem is computionally challenging as a simple approach of enumarating all possible subsets of \\(I\\) of size \\(n\\) is large. Also, the parameter \\(theta\\) is typically unknown without any prior assumptions (if we know \\(\theta\\) in advance, we can simply choose \\(I\\) as a set of \\(n\\) points with lowest residuals with respect to \\(theta\\)).
 
-The solution to the challeng above is to alternatively optimize parameter \\(\theta\\) and \\(I\\). Specifically, at the begining of iteration \\(i\\), an estimation of parameter \\(\theta\\) is obtained based on the current set \\(I\\). Next, with the selected parameter \\(\theta\\), the set \\(I\\) is updated by selecting \\(n\\) points with lowest residuals with respect to \\(\theta\\). As for side note, the first iteration, the set \\(I\\) is initialized with random set of size \\(n\\). \\(theta\\) is updated through some initialization technique or prior knowledge.
+The solution to the challenge above is to alternatively optimize parameter \\(\theta\\) and \\(I\\). Specifically, at the begining of iteration \\(i\\), an estimation of parameter \\(\theta\\) is obtained based on the current set \\(I\\). Next, with the selected parameter \\(\theta\\), the set \\(I\\) is updated by selecting \\(n\\) points with lowest residuals with respect to \\(\theta\\). As for side note, the first iteration, the set \\(I\\) is initialized with random set of size \\(n\\). \\(theta\\) is updated through some initialization technique or prior knowledge.
 
-The theorem 1 in the paper proves that the TRIM terminates in finite number of steps, and hence convergence of the algorithm is guaranteed. The following thereom (theorem 2 in the paper) provides an upper bound on the worst case loss of the regression model under adversarial noise injection.
+The theorem 1 in the paper proves that the TRIM terminates in finite number of steps, and hence convergence of the algorithm is guaranteed. The following theorem (theorem 2 in the paper) provides an upper bound on the worst case loss of the regression model under adversarial noise injection.
 
 <p align="center">
 <img src="/images/class11/loss_up_bound.png" width="500" >
 <br/>
 </p>
 
-The left hand side means the loss on clean data (test or vallidation dataset) with respect to parameters trained on noisy data is upper bounded by fraction \\(1 + \frac{\alpha}{1-\alpha}\\) with respect to best case training loss on clean data \\(D_{tr}\\) abd parameter \\(\theta^{*}\\) is obtained by training on the clean dataset. Hence, right hand side actually denotes a ideal-case scenario. Note that, an implicit assumption here is, \\(D^{''}\\) and \\(D_{tr}\\) follow same distribution. Also, note that \\(alpha\\) is the fraction of poisoned data points in the training set, which is typically very small.
+The left hand side means the loss on clean data (test or validation dataset) with respect to parameters trained on noisy data is upper bounded by fraction \\(1 + \frac{\alpha}{1-\alpha}\\) with respect to best case training loss on clean data \\(D_{tr}\\) and parameter \\(\theta^{*}\\) is obtained by training on the clean dataset. Hence, right hand side actually denotes a ideal-case scenario. Note that, an implicit assumption here is \\(D^{''}\\) and \\(D_{tr}\\) follow same distribution. Also, note that \\(alpha\\) is the fraction of poisoned data points in the training set, which is typically very small.
 
 ### Experimental Results
-In this paper, the author used Health care dataset, Loan Dataset and House pricing dataset, which all suits well for regression tasks. The results in this blog only contains results for ridge regression tasks. As shown in figure below (Fig3 in the paper), the optimization based attack method and statistical attack method proposed in this paper outperform the baseline gradient desend ([BGD](http://www.cs.man.ac.uk/~gbrown/publications/xiao2015icml.pdf)) method  significantly (BGD is a method adapted from previous attack method on classification task. There are no existing methods on attacking regression models).
+In this paper, the author used Health care dataset, Loan Dataset and House pricing dataset, which all are well-suited for regression tasks. The results in this blog only contains results for ridge regression tasks. As shown in the figure below (Fig3 in the paper), the optimization based attack method and statistical attack method proposed in this paper outperform the baseline gradient desend ([BGD](http://www.cs.man.ac.uk/~gbrown/publications/xiao2015icml.pdf)) method significantly. (BGD is a method adapted from previous attack method on classification task. There are no existing methods on attacking regression models).
 
 <p align="center">
 <img src="/images/class11/attack_fig.png" width="800" >
 <br/>
 </p>
 
-As for the defense method, following figure illustrates its effectiveness in face of the atatcks desciribed in previous sections. It is obvious that TRIM algorithm (defense method proposed in this paper) outperforms other defense methods significantly. Other three defense methods are from existing works that are suitable for countering the attacks proposed in this paper ([RANSAC](https://www.sri.com/sites/default/files/publications/ransac-publication.pdf) and [Huber](https://projecteuclid.org/download/pdf_1/euclid.aoms/1177703732) from robust statistics and RONI implemented by authors based on [this](http://proceedings.mlr.press/v28/chen13h.pdf) and [this](https://people.eecs.berkeley.edu/~tygar/papers/SML/Spam_filter.pdf)).
+As for the defense method, following figure illustrates its effectiveness in face of the attacks described in previous sections. It is obvious that TRIM algorithm (defense method proposed in this paper) outperforms other defense methods significantly. Three other defense methods are from existing works that are suitable for countering the attacks proposed in this paper ([RANSAC](https://www.sri.com/sites/default/files/publications/ransac-publication.pdf) and [Huber](https://projecteuclid.org/download/pdf_1/euclid.aoms/1177703732) from robust statistics and RONI implemented by authors based on [this](http://proceedings.mlr.press/v28/chen13h.pdf) and [this](https://people.eecs.berkeley.edu/~tygar/papers/SML/Spam_filter.pdf)).
 
 <p align="center">
 <img src="/images/class11/defense_fig.png" width="800" >
@@ -150,18 +150,18 @@ As a concluding mark, this paper is the first paper to consider training data po
 
 
 ### Background of Traffic Matrix and PCA-based Defense
-To uncover anomalies, many network anomography detection techniques mine the network-wide traffic matrix, which describes the traffic volume between all pairs of Points-of Presence(PoP) in a backbone network and contains the collected traffic volume time series for each origin-destination(OD) flow.
+To uncover anomalies, many network anomography detection techniques mine the network-wide traffic matrix, which describes the traffic volume between all pairs of Points-of-Presence (PoP) in a backbone network and contains the collected traffic volume time series for each origin-destination (OD) flow.
 
 There is a network with N links and F OD flows and measure traffic on this network over T time intervals.
-The relationship between link traffic and OD flow traffic is concisely captured in the routing matrix A. This matrix is an N ×F matrix such that Aij = 1 if OD flow j passes over link i, and is zero otherwise. If X is the T ×F traffic matrix(TM) containing the time-series of all OD flows, and if Y is the T × N link TM containing the time-series of all links, then Y = XA. We denote the t the row of Y as y(t) = Yt, which is the vector of N link traffic measurements at time t), and the original traffic along a source link, S by yS(t). 
+The relationship between link traffic and OD flow traffic is concisely captured in the routing matrix A. This matrix is an N×F matrix such that Aij = 1 if OD flow j passes over link i, and is zero otherwise. If X is the T×F traffic matrix \(TM) containing the time-series of all OD flows, and if Y is the T×N link TM containing the time-series of all links, then Y = XA. We denote the t the row of Y as y(t) = Yt, which is the vector of N link traffic measurements at time t, and the original traffic along a source link, S by yS(t). 
 
 Besides, the PCA defense method is inferring this normal traffic subspace using PCA, which finds the principal traffic components, makes it easier to identify volume anomalies in the remaining abnormal subspace.
 
-This paper's topic is to poisoning Principal Component Analysis anomaly detectors by poisoning the training data the detector uses (observed normal network activity), like adding additional traffic and noise to regular network traffic, to achieve a higher false negative rate
+This paper's topic is to poisoning Principal Component Analysis anomaly detectors by poisoning the training data the detector uses (observed normal network activity), like adding additional traffic and noise to regular network traffic, to achieve a higher false negative rate.
 
 ### Poisoning Strategies
 #### Threat Model
-The adversary’s goal is to launch a Denial of Service (DoS) attack on some victim and to have the attack traffic successfully cross an ISP’s network without being detected. Before launching a DoS attack, the attacker poisons the detector for a period of time, by injecting additional traffic, chaff, along the OD flow that he eventually intends to attack.  For a poisoning strategy, the attacker needs to decide how much chaff to add, and when to do so. These choices are guided by the amount of information available to the attacker. The weakest attacker is one that knows nothing about the traffic at the ingress PoP, and adds chaff randomly. An intermediate case is when the attacker is partially informed. Here the attacker knows the current volume of traffic on the ingress link(s) that he intends to inject chaff on, which is locally-informed attack. Attack can be the third type, globally-informed because the attacker's global view over the network enables him to know the traffic levels on all network links. Moreover, we assume this attacker has knowledge of future traffic link levels. 
+The adversary’s goal is to launch a Denial of Service (DoS) attack on some victim and to have the attack traffic successfully cross an ISP’s network without being detected. Before launching a DoS attack, the attacker poisons the detector for a period of time, by injecting additional traffic, chaff, along the OD flow that he eventually intends to attack.  For a poisoning strategy, the attacker needs to decide how much chaff to add, and when to do so. These choices are guided by the amount of information available to the attacker. The weakest attacker is one that knows nothing about the traffic at the ingress PoP, and adds chaff randomly. An intermediate case is when the attacker is partially informed. Here the attacker knows the current volume of traffic on the ingress link(s) that he intends to inject chaff on, which is locally-informed attack. An attack can also be globally-informed when the attacker's global view over the network enables him to know the traffic levels on all network links. Moreover, we assume this attacker has knowledge of future traffic link levels. 
 
 ##### Uninformed Chaff Selection
 At each time t, the adversary decides whether or not to inject chaff according to a Bernoulli random variable. If he
@@ -169,11 +169,11 @@ decides to inject chaff, the amount of chaff added is of size θ, for example, c
 ##### Locally-Informed Chaff Selection
 The attacker knows the volume of traffic in the ingress link he controls, Ys(t). Hence, this scheme elects to
 only add chaff when the existing traffic is already reasonably large. In particular, we add chaff when the traffic volume on
-the link exceeds a parameter α (we typically use the mean). The amount of chaff added is ct = (max {0, yS(t) − α}})θ
+the link exceeds a parameter α (we typically use the mean). The amount of chaff added is ct = (max {0, yS(t) − α}})θ.
 
-##### Globally-informed
+##### Globally-Informed
 
-Omnipotent adversary with knowledge of past, present, and future network traffic. Selects a link to poison and amount of chaff to add by solving an optimization problem. The optimization problem is as follow:
+The attacker is an omnipotent adversary with knowledge of past, present, and future network traffic. The attacker selects a link to poison and amount of chaff to add by solving an optimization problem. The optimization problem is as follows:
 
 <p align="center">
 <img src="/images/class11/global.png" width="800" >
@@ -184,20 +184,20 @@ In this optimization problem, as we introduced before, Y contains time series of
 
 
 ### ANTIDOTE: A ROBUST DEFENSE
-This paper propose an approach searches for directions that maximize a robust scale estimate of the data projection to make PCA robust. Together with a new robust Laplace threshold, they form a new network-wide traffic anomaly detection method, Antidote. To mitigate the effect of poisoning attacks, this paper needs a learning algorithm that is stable in spite of data contamination. So the robust PCA can be that learning algorithm since robust is the formal term used to qualify this notion of stability.
+This paper propose an approach searches for directions that maximize a robust scale estimate of the data projection to make PCA robust. Together with a new robust Laplace threshold, they form a new network-wide traffic anomaly detection method, Antidote. To mitigate the effect of poisoning attacks, this paper needs a learning algorithm that is stable in spite of data contamination. That learning algorithm can be robust PCA since robust is the formal term used to qualify this notion of stability.
 
-The aim of a robust PCA is to construct a low dimensional subspace that captures most of the data’s dispersion and are stable under data contamination. The robust PCA algorithms we considered search for a unit direction v whose projections maximize some univariate dispersion measure S(·); that is
+The aim of a robust PCA is to construct a low dimensional subspace that captures most of the data’s dispersion and is stable under data contamination. The robust PCA algorithms we considered search for a unit direction v whose projections maximize some univariate dispersion measure S(·); that is
 
 <p align="center">
 <img src="/images/class11/equation4.png" width="800" >
 <br/>
 </p> 
 
-The standard deviation is the dispersion measure used by PCA;
+The standard deviation is the dispersion measure used by PCA.
 
 Unlike the eigenvector solutions that arise in PCA, there is generally no efficiently computable solution for robust dispersion measures and so these must be approximated. So this paper proposed PCA-GRID, which is a successful method for approximating robust PCA subspaces.
 
-To better understand the efficacy of a robust PCA algorithm, this paper demonstrate the effect our poisoning techniques have on the PCA algorithm and contrast them with the effect on the PCA-GRID algorithm
+To better understand the efficacy of a robust PCA algorithm, this paper demonstrates the effect our poisoning techniques have on the PCA algorithm and contrast them with the effect on the PCA-GRID algorithm.
 
 #### PCA-GRID
 
@@ -215,15 +215,15 @@ Here the data has been projected into the 2D space spanned by the 1st principal 
 
 #### Robust Laplace Threshold
 
-Instead of the normal distribution assumed by the Q-statistic, this paper use the quantiles of a Laplace distribution specified by a location parameter c and a scale parameter b. Critically, though, instead of using the mean and standard deviation, this paper robustly fit the distribution’s parameters. Then, they estimate c and b from the residuals ya(t)2 using robust consistent estimates of location (median) and scale (MAD)
+Instead of the normal distribution assumed by the Q-statistic, this paper use the quantiles of a Laplace distribution specified by a location parameter c and a scale parameter b. Critically, though, instead of using the mean and standard deviation, this paper robustly fit the distribution’s parameters. Then, they estimate c and b from the residuals ya(t)2 using robust consistent estimates of location (median) and scale (MAD).
 
 <p align="center">
 <img src="/images/class11/estimate.png" width="800" >
 <br/>
 </p> 
 
-where P^{−1}(q) is the qth quantile of the standard Laplace
-distribution. The Laplace quantile function has the form $$P^{−1}_{c,b}(q) = c+b·k(q) for some k(q)
+where \\(P^{−1}(q)\\) is the qth quantile of the standard Laplace
+distribution. The Laplace quantile function has the form \((P^{−1}_{c,b}(q) = c+b·k(q)\\) for some k(q).
 
 <p align="center">
 <img src="/images/class11/pcapcagrid.png" width="800" >
