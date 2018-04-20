@@ -6,9 +6,7 @@ author = "Team Gibbon"
 slug = "class11"
 +++
 
-## Motivation
-
-????
+This week we talked about poisoning attacks. Below are three papers which discuss interesting work happening in this field.
 
 ## Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks
 > Ali Shafahi, W. Ronny Huang, Mahyar Najibi, Octavian Suciu, Christoph Studer, Tudor Dumitras, and Tom Goldstein. _Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks._ April 2018. arXiv e-print [[PDF]](https://arxiv.org/pdf/1804.00792.pdf)
@@ -124,6 +122,46 @@ As for the defense method, following figure illustrates its effectiveness in fac
 ### Conclusion
 As a concluding mark, this paper is the first paper to consider training data poisoning attacks on linear regression models. Both attack and defense methods for the linear regression task are provided with theoretical guarantees on the convergence and optimality of their attacka and defense algorithms. 
 
+## ANTIDOTE: Understanding and Defending against Poisoning of Anomaly Detectors
+> Rubinstein, Benjamin IP, et al. "Antidote: understanding and defending against poisoning of anomaly detectors." Proceedings of the 9th ACM SIGCOMM conference on Internet measurement. ACM, 2009. [[PDF]](http://people.ischool.berkeley.edu/~tygar/papers/SML/IMC.2009.pdf)
+
+
+### Jin's part
+
+### Methodology
+They first collected data over a 6 month period, consisting of measurements across network flows. They wanted to evaluate the how good ANTIDOTE is in the face of poisoning and DoS attacks. They used two weeks of data for this, the first for testing and second for training. The poisoning occurs during the training phase, and the attack occurs during the test week. They also had a second method where training and poisoning occurred over multiple weeks, called the Boiling Frog method. They determined success by the false negative rate (FNR), or the number of successful evasions to attacks.  
+
+To compute FNRs, they generated anomalies by the Lakhina et al. method and injected into collected data. Data is binned in 5 minute windows, and they make a decision at the end of each 5 minute window whether or not there was an attack. In terms of FPRs, they generate negative examples, fit the data to a model. Selected points in the data that differ from the model by a small amount are “benign.” If the detectors raise an alarm for these points, we have a false positive. They also carried out the Boiling Frog method which has a complicated mathematical procedure and can be understood further by reading the paper.
+
+### Effectiveness of Poisoning
+During the testing phase, a DoS attack was launched during the 5 minute windows of the single training experiment. The graph below indicates evasion is smallest with the uninformed strategy, intermediate for the locally-informed strategy, and largest for the globally-informed strategy. This makes sense since naturally the globally-informed attacker would know more than the others. 
+
+<p align="center">
+<img src="/images/class11/results1.PNG" width="800" >
+<br/>
+</p> 
+
+For the multi-training poisoning (boiling frog), the schedules were varied with increasing growth rates from week to week. The evasion graph is shown below. The three slower schedules have a small rejection rate. The 15% schedule has a higher rejection rate, but after a month of injected poison data, the rates drop off. 
+
+<p align="center">
+<img src="/images/class11/results2.PNG" width="800" >
+<br/>
+</p> 
+
+### How well does ANTIDOTE perform in the face of attacks?
+We can see that the evasion success of the attack is dramatically reduced with ANTIDOTE in the figure below if we compare it to the evasion graph for single training poisoning in the previous section. The evasion success is cut in half. The most effective poisoning scheme on PCA was globally informed, but with their solution was the most ineffective scheme. 
+
+<p align="center">
+<img src="/images/class11/antidote_results1.PNG" width="800" >
+<br/>
+</p> 
+
+With the boiling frog strategy, we can see the results in the graph below. For the stealthiest poisoning (1.01 and 1.02), antidote is most effective in reducing evasion success. Also, under PCA the evasion increased with time. However, with ANTIDOTE, evasion success starts to drop off after some time. 
+
+<p align="center">
+<img src="/images/class11/antidote_results2.PNG">
+<br/>
+</p> 
 
 #### References
 
@@ -143,3 +181,5 @@ and Countermeasures for Regression Learning_. April 2018.
 [[7]](https://arxiv.org/pdf/1804.00792.pdf) Ali Shafahi, W. Ronny Huang, Mahyar Najibi, Octavian Suciu, Christoph Studer, Tudor Dumitras, and Tom Goldstein. "Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks." April 2018.
 
 [[8]](https://arxiv.org/pdf/1512.00567.pdf) Szegedy, Christian et. al. "Rethinking the inception architecture for computer vision." Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (2016): 2818–2826.
+
+[[9]](http://people.ischool.berkeley.edu/~tygar/papers/SML/IMC.2009.pdf) Rubinstein, Benjamin IP, et al. "Antidote: understanding and defending against poisoning of anomaly detectors." Proceedings of the 9th ACM SIGCOMM conference on Internet measurement. ACM, 2009.
