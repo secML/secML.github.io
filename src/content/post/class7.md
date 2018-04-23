@@ -339,11 +339,6 @@ The experiment of vSRL is conducted on [imSitu](https://www.cv-foundation.org/op
 #### Result analysis
 For both the vSRL and MLC tasks, their training data is biased as illustrated in Figure 2. Y-axis denotes the percentage of male agents and x-axis represents gender bias in training data. It is clear that many verbs are biased in the training set and when a model is trained on these biased training datasets, the gender bias is further amplified. Figure 2(a) denotes demonstrates the gender bias in vSRL task and figure 2(b) shows the gender bias in MLC task. Some seemingly neutral words like "microwaving" and "washing" is heavily biased towards female and other words like "driving" is beavily biased towards male. 
 
-<p align="center">
-<img src="/images/class7/bias_fig.png" width="500" >
-<br>
-</p>
-
 ![](/images/class7/bias_fig.png)
 <div class="caption">
 Source: [_Men Also Like Shopping: Reducing Gender Bias Amplification using Corpus-level Constraints_]((https://arxiv.org/pdf/1608.04644.pdf)) [1]
@@ -355,7 +350,7 @@ Calibration results are then summarized in the table below, which utilizes RBA m
 <br>
 </p>
 
-![](/images/class7/bias_fig.png)
+![](/images/class7/calib_result.png)
 <div class="caption">
 Source: [_Men Also Like Shopping: Reducing Gender Bias Amplification using Corpus-level Constraints_]((https://arxiv.org/pdf/1707.09457.pdf)) [1]
 </div>
