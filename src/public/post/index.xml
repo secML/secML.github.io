@@ -6,8 +6,322 @@
     <description>Recent content in Post-rsses on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 18 Apr 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://secml.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Class 11: Poisoning</title>
+      <link>https://secml.github.io/class11/</link>
+      <pubDate>Wed, 18 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/class11/</guid>
+      <description>
+
+&lt;p&gt;This week we discussed poisoning attacks, which differ from previously-discussed attacks in a key way. Instead of finding test instances that the target model misclassifies, a poisoning attack adds &amp;ldquo;poisoned&amp;rdquo; instances to the training set, introducing new errors into the model. Below are three papers which discuss interesting work happening in this field.&lt;/p&gt;
+
+&lt;h2 id=&#34;poison-frogs&#34;&gt;Poison Frogs!&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Ali Shafahi, W. Ronny Huang, Mahyar Najibi, Octavian Suciu, Christoph Studer, Tudor Dumitras, and Tom Goldstein. &lt;em&gt;Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks.&lt;/em&gt; April 2018. arXiv e-print &lt;a href=&#34;https://arxiv.org/pdf/1804.00792.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;a-simple-clean-label-attack&#34;&gt;A Simple Clean Label Attack&lt;/h3&gt;
+
+&lt;p&gt;The paper presents a novel clean-label attack, which restricts the attacker to injecting correctly-classified examples into the victim&amp;rsquo;s training set. The goal of the attacker is to make the model misclassify a &amp;ldquo;target&amp;rdquo; instance, specifically to the same class as some chosen &amp;ldquo;base&amp;rdquo; instance. The attack is executed by subtly changing the base instance to display features of the target; this is illustrated in Figure (a) below. Figure (b) shows a simple diagram of the intended effect on the model&amp;rsquo;s decision boundary. When the model trains, it hopefully overfits on the poisoned instance, thereby allowing the target to be classified incorrectly. The major benefit of this approach is that it is difficult for the victim to detect: since the poisoned data is still labeled correctly, the model&amp;rsquo;s test accuracy should not change.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class11/poison-spam.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In more formal language, the clean-label attack does this: given a target instance \(t\) and a base instance \(b\), create a poisoned instance \(p\) such that&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;\(p\) is humanly-indistinguishable from \(b\) (and is classified the same), and&lt;/li&gt;
+&lt;li&gt;the model, after training on a data set that includes \(p\), misclassifies \(t\) to be in the same class as \(b\).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The equivalent optimization problem is&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://secml.github.io/images/class11/poison-clean.png&#34;&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;where \(\beta\) represents how closely \(p\) resembles the base instance \(b\). There is a simple algorithm for solving this optimization problem: alternate between &amp;ldquo;forward steps&amp;rdquo; to inch closer to \(t\) and &amp;ldquo;backward steps&amp;rdquo; to stay close to \(b\).&lt;/p&gt;
+
+&lt;p&gt;The clean-label attack works extremely well on transfer learning models, which contain a pre-trained feature extraction network hooked up to a trainable, final classification layer. As an example, the authors created an &lt;a href=&#34;https://arxiv.org/pdf/1512.00567.pdf&#34;&gt;InceptionV3&lt;/a&gt; model that classified images of dogs and fish. They were able to attack this model a 100% success rate by including just one poisoned image in each attack; furthermore, the target images were misclassified by the model with high confidence:&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://secml.github.io/images/class11/poison-conf.png&#34;&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;watermarking-attack-on-end-to-end-training&#34;&gt;Watermarking Attack on End-to-End Training&lt;/h3&gt;
+
+&lt;p&gt;The poisoning attack above is effective when the early feature extraction layers of a network are not retrained (as in transfer learning), but is not as effective when training end-to-end. The figure below shows this effect measured by the angular deviation of the decision boundary. The angular deviation is the angular difference between the decision boundary of a clean and poisoned network. A high angular deviation indicates the poisoning attack was strong, causing the decision boundary to significantly shift. We see that the poisoning attack we&amp;rsquo;ve discussed does not shift the decision boundary on end-to-end learning nearly as much as it does for transfer learning.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class11/poison-transfer-vs-e2e.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The figure below shows the feature space representations of the target, base, and poison instances in the context of their training data for a single-shot poisoning attack. The clean model shows the target and poison instance overlapping &amp;ndash; this indicates the optimization algorithm to find a poison instance works. However, we see that retraining the network separates the poison and target instances and returns the poison instance to the base class.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class11/poison-single-shot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To fix this, the authors use a technique called watermarking. Watermaking blends additional features of the target instance into the poison instance in a way humans can&amp;rsquo;t notice. In particular, a low opacity watermark of the target instance is added to the poison instances. Watermarks are not noticeable to humans up to 30% opacity. The figure below shows how constructing 50 poison instances from 50 random base instances casuses the target instances to be pulled out of the target feature space into the base class feature space, resulting in incorrect classifications.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class11/poison-multi-shot.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We see below 60 images of dogs with watermarks of birds at 30% opacity. These poison instances successfully cause a target image of a bird to get misclassified as a dog with end-to-end training.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/poison-watermarking.png&#34; width=&#34;400px&#34;/&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The authors found that targeting outlier instances has a 17% higher success rate. Since these targets lie far from other training samples in their class, they are close to the decision boundary, and it is therefore easier to flip their class label. Additionally, the authors found that the attack success rate was higher when more poison instances were included in the retraining and when the watermark had a higher opacity.&lt;/p&gt;
+
+&lt;h2 id=&#34;poisoning-regression-learning&#34;&gt;Poisoning Regression Learning&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Matthew Jagielski, Alina Oprea, Battista Biggio, Chang Liu, Cristina Nita-Rotaru and Bo Li. &lt;em&gt;Manipulating Machine Learning: Poisoning Attacks and Countermeasures for Regression Learning&lt;/em&gt;. April 2018. arXiv e-print &lt;a href=&#34;https://arxiv.org/pdf/1804.00308.pdf&#34;&gt;[PDF]&lt;/a&gt; (&lt;em&gt;IEEE Symposium on Security and Privacy&lt;/em&gt; 2018)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;It is well understood that machine learning models are easy to be manipulated by smart attackers. There are both test-time evasion attacks and training-time data poisoning attacks, so studying and understanding these potential risks is beneficial for the application of machine learning in security critical domains.&lt;/p&gt;
+
+&lt;p&gt;In this paper, the authors studied the specific problem of training a data poisoning attack on linear regression models and subsequently proposed an effective defensive strategy.&lt;/p&gt;
+
+&lt;p&gt;A linear regression is defined as
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/linear_regression.png&#34; width=&#34;250&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;And the loss function being optimized during the training time is the mean-squared error (MSE), which is defined as:
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/loss_func.png&#34; width=&#34;500&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt;&lt;/p&gt;
+
+&lt;p&gt;MSE is used here as the result of linear regression and is a continuous value, while a traditional classification task outputs discrete categorical values. The term \(\Omega(\mathbf{w})\) denotes the regularization terms. When we take different norms, it corresponds to different regularization functions. (\(L\)&lt;sub&gt;2&lt;/sub&gt;-norm corresponds to ridge regression, \(L\)&lt;sub&gt;1&lt;/sub&gt;-norm to LASSO regression, and Elastic-net Regression takes the linear combination of \(L\)&lt;sub&gt;1&lt;/sub&gt;-norm and \(L\)&lt;sub&gt;2&lt;/sub&gt;-norm).&lt;/p&gt;
+
+&lt;h3 id=&#34;optimization-based-poisoning-attack&#34;&gt;Optimization-based Poisoning Attack&lt;/h3&gt;
+
+&lt;p&gt;The attack aims to corrupt the machine learning in the training phase by introducing noisy training data points such that predictions at test time will be influenced. The author considered both the white-box and black-box attack. White-box attack means the attacker is aware of all the information including training dataset, feature values, training algorithm and trained parameters. In the black-box setting, the training dataset is assumed to be unknown. With all these described, we arrive at the following formulation regarding training data poisoning attack:&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/problem_formulation.png&#34; width=&#34;400&#34;&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;p&gt;where \(\mathbf{\theta}&lt;em&gt;{p}^{*}\) is the model parameter obtained by training the model on poisoned training dataset. \(D&lt;/em&gt;{tr}\) denotes unpoisoned training data, and \(D&lt;em&gt;{p}\) are the poisoned training data, which typically takes around \(10\%\) of the clean training data. \(W(D^{&amp;lsquo;},\mathbf{\theta}&lt;/em&gt;{p}^{*})\) is the loss function defined on the test (or validation) dataset \(D^{&amp;lsquo;}\), which is free from the poisoning attacks.  (Sorry, can&amp;rsquo;t fix the mathjax typesetting for this paragraph; please check the original paper if confused.)&lt;/p&gt;
+
+&lt;p&gt;Note that this is a bilevel optimization problem and is different from the traditional optimization we know, in that the constraint itself is an optimization problem. Also, the parameter \(\theta&lt;em&gt;{p}^{*}\) depends implicitly on the poisoned training dataset \(D&lt;/em&gt;{p}^{*}\).&lt;/p&gt;
+
+&lt;p&gt;To optimize the above problem with respect to a set of data points \(D&lt;em&gt;{p}\), the approach is to optimize each instance \(\mathbf{x}&lt;/em&gt;{c}\) in the set \(D_{p}\). With this, the authors apply gradient descent algorithms to find an optimal \(\mathbf{x}_c\) that can maximize the loss function \(W(\cdot)\). The gradient can be calculated as below:&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/gradient_cal1.png&#34; width=&#34;250&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The calculation of first term is non-trivial as there is an implicit dependence of \(\mathbf{\theta}\) and \(\mathbf{x}_c\). With some tricks played by KKT equilibrium conditions, the author arrived at this equation:&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/gradient_cal2.png&#34; width=&#34;500&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Combining the above two, we are able to approximately compute the gardient and update \(\mathbf{x}_c\). Notably, unlike previous papers on training data poisoning attacks on classifiers, the problem setting of this paper is in linear regression, and the authors further propose to optimize both the data point \(\mathbf{x}_c\) and its response variable \(y&lt;em&gt;c\). Hence, a new variable \(\mathbf{z}&lt;/em&gt;{c}= (\mathbf{x}&lt;em&gt;{c},y&lt;/em&gt;{c})\) is introduced to replace \(\mathbf{x}&lt;em&gt;c\). Details of the gradient of \(W\) with respect to variable \(\mathbf{z}&lt;/em&gt;{c}\) can be referred from equation (14) and equation (4).&lt;/p&gt;
+
+&lt;h3 id=&#34;statistical-based-poisoning-attack&#34;&gt;Statistical-based Poisoning Attack&lt;/h3&gt;
+
+&lt;p&gt;Statistical Attack contrasts the previous optimization based attack. Statistical attack is computationally efficient and it operates by generating adversarial training points from a multivariate normal distribution with mean and covariance estimated from the training data. Then, the feature values are rounded to corner values and the finally the response value \(y_{c}\) for a given data point \(\mathbf{x}_c\) is rounded to the boundary value (either 1 or 0). As can be seen from the description, it is computationally effective but less accurate than the optimization based method.&lt;/p&gt;
+
+&lt;h3 id=&#34;trim-algorithm&#34;&gt;TRIM algorithm&lt;/h3&gt;
+
+&lt;p&gt;This is the defense method proposed by the author to tackle the two above-mentioned attack strategies. The TRIM algorithm operates by iteratively estimating the regression parameters while at the same time training on a subset of points with lowest residuals in each iteration. Here, residual means error in a result. For example, error is taken with respect to \(\mathbf{x}_c\) while residual with taken with respect to \(f(\mathbf{x})\). The intuitive understanding of this algorithm is in that, majority of the training points are non-corrupted and poisoned data points typically exhibit larger outlier behavior. If poisoned data points do not have outlier behavior, then its effect on regression task is minimized and hence can be considered as less harmful. The TRIM algorithm actually provides a solution to the following optimization problem:&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/trim_formulation.png&#34; width=&#34;350&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The optimization problem above intuitively represents that we optimize the regression parameter \(\theta\) and the subset of points with smallest residuals at the same time. This problem is computionally challenging as a simple approach of enumarating all possible subsets of \(I\) of size \(n\) is large. Also, the parameter \(theta\) is typically unknown without any prior assumptions (if we know \(\theta\) in advance, we can simply choose \(I\) as a set of \(n\) points with lowest residuals with respect to \(theta\)).&lt;/p&gt;
+
+&lt;p&gt;The solution to the challenge above is to alternatively optimize parameter \(\theta\) and \(I\). Specifically, at the begining of iteration \(i\), an estimation of parameter \(\theta\) is obtained based on the current set \(I\). Next, with the selected parameter \(\theta\), the set \(I\) is updated by selecting \(n\) points with lowest residuals with respect to \(\theta\). As for side note, the first iteration, the set \(I\) is initialized with random set of size \(n\). \(theta\) is updated through some initialization technique or prior knowledge.&lt;/p&gt;
+
+&lt;p&gt;The theorem 1 in the paper proves that the TRIM terminates in finite number of steps, and hence convergence of the algorithm is guaranteed. The following theorem (theorem 2 in the paper) provides an upper bound on the worst case loss of the regression model under adversarial noise injection.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/loss_up_bound.png&#34; width=&#34;500&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The left hand side means the loss on clean data (test or validation dataset) with respect to parameters trained on noisy data is upper bounded by fraction \(1 + \frac{\alpha}{1-\alpha}\) with respect to best case training loss on clean data \(D&lt;em&gt;{tr}\) and parameter \(\theta^{*}\) is obtained by training on the clean dataset. Hence, right hand side actually denotes a ideal-case scenario. Note that, an implicit assumption here is \(D^{&amp;ldquo;}\) and \(D&lt;/em&gt;{tr}\) follow same distribution. Also, note that \(alpha\) is the fraction of poisoned data points in the training set, which is typically very small.&lt;/p&gt;
+
+&lt;h3 id=&#34;experimental-results&#34;&gt;Experimental Results&lt;/h3&gt;
+
+&lt;p&gt;In this paper, the author used Health care dataset, Loan Dataset and House pricing dataset, which all are well-suited for regression tasks. The results in this blog only contains results for ridge regression tasks. As shown in the figure below (Fig3 in the paper), the optimization based attack method and statistical attack method proposed in this paper outperform the baseline gradient desend (&lt;a href=&#34;http://www.cs.man.ac.uk/~gbrown/publications/xiao2015icml.pdf&#34;&gt;BGD&lt;/a&gt;) method significantly. (BGD is a method adapted from previous attack method on classification task. There are no existing methods on attacking regression models).&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/attack_fig.png&#34; width=&#34;800&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;p&gt;As for the defense method, following figure illustrates its effectiveness in face of the attacks described in previous sections. It is obvious that TRIM algorithm (defense method proposed in this paper) outperforms other defense methods significantly. Three other defense methods are from existing works that are suitable for countering the attacks proposed in this paper (&lt;a href=&#34;https://www.sri.com/sites/default/files/publications/ransac-publication.pdf&#34;&gt;RANSAC&lt;/a&gt; and &lt;a href=&#34;https://projecteuclid.org/download/pdf_1/euclid.aoms/1177703732&#34;&gt;Huber&lt;/a&gt; from robust statistics and RONI implemented by authors based on &lt;a href=&#34;http://proceedings.mlr.press/v28/chen13h.pdf&#34;&gt;this&lt;/a&gt; and &lt;a href=&#34;https://people.eecs.berkeley.edu/~tygar/papers/SML/Spam_filter.pdf&#34;&gt;this&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/defense_fig.png&#34; width=&#34;800&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;As a concluding mark, this paper is the first paper to consider training data poisoning attacks on linear regression models. Both attack and defense methods for the linear regression task are provided with theoretical guarantees on the convergence and optimality of their attack and defense algorithms.&lt;/p&gt;
+
+&lt;h2 id=&#34;antidote&#34;&gt;ANTIDOTE&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Benjamin I. P. Rubinstein, Blaine Nelson, Ling Huang, Anthony D. Joseph, Shing-hon Lau, Satish Rao, Nina Taft, and J. D. Tygar. &amp;ldquo;Antidote: understanding and defending against poisoning of anomaly detectors.&amp;rdquo; Proceedings of the 9th ACM SIGCOMM Conference on Internet Measurement, 2009. &lt;a href=&#34;http://people.ischool.berkeley.edu/~tygar/papers/SML/IMC.2009.pdf&#34;&gt;[PDF]&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&#34;background-of-traffic-matrix-and-pca-based-defense&#34;&gt;Background of Traffic Matrix and PCA-based Defense&lt;/h3&gt;
+
+&lt;p&gt;To uncover anomalies, many network anomography detection techniques mine the network-wide traffic matrix, which describes the traffic volume between all pairs of Points-of-Presence (PoP) in a backbone network and contains the collected traffic volume time series for each origin-destination (OD) flow.&lt;/p&gt;
+
+&lt;p&gt;There is a network with \(N\) links and \(F\) OD flows and measure traffic on this network over \(T\) time intervals.
+The relationship between link traffic and OD flow traffic is concisely captured in the routing matrix \(A\). This matrix is an \(N \times F\) matrix such that \(A_{ij} = 1\) if OD flow \(j\) passes over link \(i\), and is 0 otherwise. If \(X\) is the \(T \times F\) traffic matrix (TM) containing the time-series of all OD flows, and if \(Y\) is the \(T \times N\) link TM containing the time-series of all links, then \(Y = XA\). We denote the \(t\)th row of \(Y\) as \(y(t) = Yt\), which is the vector of \(N\) link traffic measurements at time \(t\), and the original traffic along a source link, \(S\) by \(yS(t)\).&lt;/p&gt;
+
+&lt;p&gt;Besides, the PCA defense method is inferring this normal traffic subspace using PCA, which finds the principal traffic components, makes it easier to identify volume anomalies in the remaining abnormal subspace.&lt;/p&gt;
+
+&lt;p&gt;This paper&amp;rsquo;s topic is to poisoning Principal Component Analysis anomaly detectors by poisoning the training data the detector uses (observed normal network activity), like adding additional traffic and noise to regular network traffic, to achieve a higher false negative rate.&lt;/p&gt;
+
+&lt;h3 id=&#34;poisoning-strategies&#34;&gt;Poisoning Strategies&lt;/h3&gt;
+
+&lt;h4 id=&#34;threat-model&#34;&gt;Threat Model&lt;/h4&gt;
+
+&lt;p&gt;The adversary’s goal is to launch a Denial of Service (DoS) attack on some victim and to have the attack traffic successfully cross an ISP’s network without being detected. Before launching a DoS attack, the attacker poisons the detector for a period of time, by injecting additional traffic, chaff, along the OD flow that he eventually intends to attack.  For a poisoning strategy, the attacker needs to decide how much chaff to add, and when to do so. These choices are guided by the amount of information available to the attacker. The weakest attacker is one that knows nothing about the traffic at the ingress PoP, and adds chaff randomly. An intermediate case is when the attacker is partially informed. Here the attacker knows the current volume of traffic on the ingress link(s) that he intends to inject chaff on, which is locally-informed attack. An attack can also be globally-informed when the attacker&amp;rsquo;s global view over the network enables him to know the traffic levels on all network links. Moreover, we assume this attacker has knowledge of future traffic link levels.&lt;/p&gt;
+
+&lt;h5 id=&#34;uninformed-chaff-selection&#34;&gt;Uninformed Chaff Selection&lt;/h5&gt;
+
+&lt;p&gt;At each time t, the adversary decides whether or not to inject chaff according to a Bernoulli random variable. If he
+decides to inject chaff, the amount of chaff added is of size θ, for example, ct = θ.&lt;/p&gt;
+
+&lt;h5 id=&#34;locally-informed-chaff-selection&#34;&gt;Locally-Informed Chaff Selection&lt;/h5&gt;
+
+&lt;p&gt;The attacker knows the volume of traffic in the ingress link he controls, Ys(t). Hence, this scheme elects to
+only add chaff when the existing traffic is already reasonably large. In particular, we add chaff when the traffic volume on
+the link exceeds a parameter α (we typically use the mean). The amount of chaff added is ct = (max {0, yS(t) − α}})θ.&lt;/p&gt;
+
+&lt;h5 id=&#34;globally-informed&#34;&gt;Globally-Informed&lt;/h5&gt;
+
+&lt;p&gt;The attacker is an omnipotent adversary with knowledge of past, present, and future network traffic. The attacker selects a link to poison and amount of chaff to add by solving an optimization problem. The optimization problem is as follows:&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/global.png&#34; width=&#34;300&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt; 
+
+&lt;p&gt;In this optimization problem, as we introduced before, Y contains time series of all links; A is the rounting matrix; C is the amount of chaff; $$ \widetilde{y_t} $$ is the link volume in future time t;  μ is mean traffic vector; θ is a constant constraining total chaff.&lt;/p&gt;
+
+&lt;h3 id=&#34;antidote-a-robust-defense&#34;&gt;ANTIDOTE: A ROBUST DEFENSE&lt;/h3&gt;
+
+&lt;p&gt;This paper propose an approach searches for directions that maximize a robust scale estimate of the data projection to make PCA robust. Together with a new robust Laplace threshold, they form a new network-wide traffic anomaly detection method, Antidote. To mitigate the effect of poisoning attacks, this paper needs a learning algorithm that is stable in spite of data contamination. That learning algorithm can be robust PCA since robust is the formal term used to qualify this notion of stability.&lt;/p&gt;
+
+&lt;p&gt;The aim of a robust PCA is to construct a low dimensional subspace that captures most of the data’s dispersion and is stable under data contamination. The robust PCA algorithms we considered search for a unit direction v whose projections maximize some univariate dispersion measure S(·); that is&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/equation4.png&#34; width=&#34;200&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt; 
+
+&lt;p&gt;The standard deviation is the dispersion measure used by PCA.&lt;/p&gt;
+
+&lt;p&gt;Unlike the eigenvector solutions that arise in PCA, there is generally no efficiently computable solution for robust dispersion measures and so these must be approximated. So this paper proposed PCA-GRID, which is a successful method for approximating robust PCA subspaces.&lt;/p&gt;
+
+&lt;p&gt;To better understand the efficacy of a robust PCA algorithm, this paper demonstrates the effect our poisoning techniques have on the PCA algorithm and contrast them with the effect on the PCA-GRID algorithm.&lt;/p&gt;
+
+&lt;h4 id=&#34;pca-grid&#34;&gt;PCA-GRID&lt;/h4&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/pcagrid.png&#34; width=&#34;300&#34;&gt;
+&lt;br/&gt;
+&lt;/p&gt; 
+
+&lt;p&gt;Here the data has been projected into the 2D space spanned by the 1st principal component and the direction of the attack flow. The effect on the 1st principal components of PCA and PCA-GRID is shown under a globally informed attack (represented by points).&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/poison.png&#34; width=&#34;300&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt; 
+
+&lt;h4 id=&#34;robust-laplace-threshold&#34;&gt;Robust Laplace Threshold&lt;/h4&gt;
+
+&lt;p&gt;Instead of the normal distribution assumed by the Q-statistic, this paper use the quantiles of a Laplace distribution specified by a location parameter c and a scale parameter b. Critically, though, instead of using the mean and standard deviation, this paper robustly fit the distribution’s parameters. Then, they estimate c and b from the residuals ya(t)2 using robust consistent estimates of location (median) and scale (MAD).&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/estimate.png&#34; width=&#34;300&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt; 
+
+&lt;p&gt;where \(P^{−1}(q)\) is the qth quantile of the standard Laplace
+distribution. The Laplace quantile function has the form ((P^{−1}_{c,b}(q) = c+b·k(q)\) for some k(q).&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/pcapcagrid.png&#34; width=&#34;400&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt; 
+
+&lt;h3 id=&#34;methodology&#34;&gt;Methodology&lt;/h3&gt;
+
+&lt;p&gt;They first collected data over a 6 month period, consisting of measurements across network flows. They wanted to evaluate the how good ANTIDOTE is in the face of poisoning and DoS attacks. They used two weeks of data for this, the first for testing and second for training. The poisoning occurs during the training phase, and the attack occurs during the test week. They also had a second method where training and poisoning occurred over multiple weeks, called the Boiling Frog method. They determined success by the false negative rate (FNR), or the number of successful evasions to attacks.&lt;/p&gt;
+
+&lt;p&gt;To compute FNRs, they generated anomalies by the Lakhina et al. method and injected into collected data. Data is binned in 5 minute windows, and they make a decision at the end of each 5 minute window whether or not there was an attack. In terms of FPRs, they generate negative examples, fit the data to a model. Selected points in the data that differ from the model by a small amount are “benign.” If the detectors raise an alarm for these points, we have a false positive. They also carried out the Boiling Frog method which has a complicated mathematical procedure and can be understood further by reading the paper.&lt;/p&gt;
+
+&lt;h3 id=&#34;effectiveness-of-poisoning&#34;&gt;Effectiveness of Poisoning&lt;/h3&gt;
+
+&lt;p&gt;During the testing phase, a DoS attack was launched during the 5 minute windows of the single training experiment. The graph below indicates evasion is smallest with the uninformed strategy, intermediate for the locally-informed strategy, and largest for the globally-informed strategy. This makes sense since naturally the globally-informed attacker would know more than the others.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/results1.PNG&#34; width=&#34;400&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt; 
+
+&lt;p&gt;For the multi-training poisoning (boiling frog), the schedules were varied with increasing growth rates from week to week. The evasion graph is shown below. The three slower schedules have a small rejection rate. The 15% schedule has a higher rejection rate, but after a month of injected poison data, the rates drop off.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/results2.PNG&#34; width=&#34;800&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt; 
+
+&lt;h3 id=&#34;how-well-does-antidote-perform-in-the-face-of-attacks&#34;&gt;How well does ANTIDOTE perform in the face of attacks?&lt;/h3&gt;
+
+&lt;p&gt;We can see that the evasion success of the attack is dramatically reduced with ANTIDOTE in the figure below if we compare it to the evasion graph for single training poisoning in the previous section. The evasion success is cut in half. The most effective poisoning scheme on PCA was globally informed, but with their solution was the most ineffective scheme.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/antidote_results1.PNG&#34; width=&#34;400&#34; &gt;
+&lt;br/&gt;
+&lt;/p&gt; 
+
+&lt;p&gt;With the boiling frog strategy, we can see the results in the graph below. For the stealthiest poisoning (1.01 and 1.02), antidote is most effective in reducing evasion success. Also, under PCA the evasion increased with time. However, with ANTIDOTE, evasion success starts to drop off after some time.&lt;/p&gt;
+
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://secml.github.io/images/class11/antidote_results2.PNG&#34; width=&#34;600&#34;&gt;
+&lt;br/&gt;
+&lt;/p&gt; 
+
+&lt;h4 id=&#34;references&#34;&gt;References&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1804.00308.pdf&#34;&gt;[1]&lt;/a&gt; Matthew Jagielski, Alina Oprea, Battista Biggio, Chang Liu, Cristina Nita-Rotaru and Bo Li. &lt;em&gt;Manipulating Machine Learning: Poisoning Attacks
+and Countermeasures for Regression Learning&lt;/em&gt;. April 2018.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.cs.man.ac.uk/~gbrown/publications/xiao2015icml.pdf&#34;&gt;[2]&lt;/a&gt; Xiao, Huang, et al. &amp;ldquo;Is feature selection secure against training data poisoning?&amp;rdquo;. International Conference on Machine Learning. 2015.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.sri.com/sites/default/files/publications/ransac-publication.pdf&#34;&gt;[3]&lt;/a&gt; Fischler, Martin A., and Robert C. Bolles. &amp;ldquo;Random sample consensus: a paradigm for model fitting with applications to image analysis and automated cartography.&amp;rdquo; Readings in computer vision. 1987. 726-740.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://projecteuclid.org/download/pdf_1/euclid.aoms/1177703732&#34;&gt;[4]&lt;/a&gt; Huber, Peter J. &amp;ldquo;Robust estimation of a location parameter.&amp;rdquo; The annals of mathematical statistics (1964): 73-101.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://proceedings.mlr.press/v28/chen13h.pdf&#34;&gt;[5]&lt;/a&gt; Chen, Yudong, Constantine Caramanis, and Shie Mannor. &amp;ldquo;Robust sparse regression under adversarial corruption.&amp;rdquo; International Conference on Machine Learning. 2013.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://people.eecs.berkeley.edu/~tygar/papers/SML/Spam_filter.pdf&#34;&gt;[6]&lt;/a&gt; Nelson, Blaine, et al. &amp;ldquo;Exploiting Machine Learning to Subvert Your Spam Filter.&amp;rdquo; LEET 8 (2008): 1-9.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1804.00792.pdf&#34;&gt;[7]&lt;/a&gt; Ali Shafahi, W. Ronny Huang, Mahyar Najibi, Octavian Suciu, Christoph Studer, Tudor Dumitras, and Tom Goldstein. &amp;ldquo;Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks.&amp;rdquo; April 2018.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://arxiv.org/pdf/1512.00567.pdf&#34;&gt;[8]&lt;/a&gt; Szegedy, Christian et. al. &amp;ldquo;Rethinking the inception architecture for computer vision.&amp;rdquo; Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (2016): 2818–2826.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://people.ischool.berkeley.edu/~tygar/papers/SML/IMC.2009.pdf&#34;&gt;[9]&lt;/a&gt; Rubinstein, Benjamin IP, et al. &amp;ldquo;Antidote: understanding and defending against poisoning of anomaly detectors.&amp;rdquo; Proceedings of the 9th ACM SIGCOMM conference on Internet measurement. ACM, 2009.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Class 10: Formal Verification Methods</title>
@@ -1292,11 +1606,6 @@ $$\underset{y\in Y}{\operatorname{argmax}}f_{\theta}(y,i)$$&lt;/p&gt;
 
 &lt;p&gt;For both the vSRL and MLC tasks, their training data is biased as illustrated in Figure 2. Y-axis denotes the percentage of male agents and x-axis represents gender bias in training data. It is clear that many verbs are biased in the training set and when a model is trained on these biased training datasets, the gender bias is further amplified. Figure 2(a) denotes demonstrates the gender bias in vSRL task and figure 2(b) shows the gender bias in MLC task. Some seemingly neutral words like &amp;ldquo;microwaving&amp;rdquo; and &amp;ldquo;washing&amp;rdquo; is heavily biased towards female and other words like &amp;ldquo;driving&amp;rdquo; is beavily biased towards male.&lt;/p&gt;
 
-&lt;p align=&#34;center&#34;&gt;
-&lt;img src=&#34;https://secml.github.io/images/class7/bias_fig.png&#34; width=&#34;500&#34; &gt;
-&lt;br&gt;
-&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class7/bias_fig.png&#34; alt=&#34;&#34; /&gt;
 &lt;div class=&#34;caption&#34;&gt;
 Source: &lt;a href=&#34;(https://arxiv.org/pdf/1608.04644.pdf)&#34;&gt;&lt;em&gt;Men Also Like Shopping: Reducing Gender Bias Amplification using Corpus-level Constraints&lt;/em&gt;&lt;/a&gt; [1]
@@ -1308,7 +1617,7 @@ Source: &lt;a href=&#34;(https://arxiv.org/pdf/1608.04644.pdf)&#34;&gt;&lt;em&gt
 &lt;br&gt;
 &lt;/p&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class7/bias_fig.png&#34; alt=&#34;&#34; /&gt;
+&lt;p&gt;&lt;img src=&#34;https://secml.github.io/images/class7/calib_result.png&#34; alt=&#34;&#34; /&gt;
 &lt;div class=&#34;caption&#34;&gt;
 Source: &lt;a href=&#34;(https://arxiv.org/pdf/1707.09457.pdf)&#34;&gt;&lt;em&gt;Men Also Like Shopping: Reducing Gender Bias Amplification using Corpus-level Constraints&lt;/em&gt;&lt;/a&gt; [1]
 &lt;/div&gt;&lt;/p&gt;
@@ -2810,34 +3119,6 @@ it. The immediate tasks for each team are:&lt;/p&gt;
       
       <guid>https://secml.github.io/syllabusposted/</guid>
       <description>&lt;p&gt;The &lt;a href=&#34;https://secml.github.io/syllabus&#34;&gt;Syllabus&lt;/a&gt; is now posted.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Welcome</title>
-      <link>https://secml.github.io/welcome/</link>
-      <pubDate>Sun, 31 Dec 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://secml.github.io/welcome/</guid>
-      <description>&lt;p&gt;This graduate-level special topics course will be offered in Spring
-2018. Meetings will be &lt;strong&gt;Fridays, 9:30-noon&lt;/strong&gt; in Rice Hall 032. More
-information will be posted here soon, but the seminar format will be
-roughly similar to what we used to &lt;a
-href=&#34;https://tlseminar.github.io&#34;&gt;TLSeminar&lt;/a&gt; last Spring.&lt;/p&gt;
-
-&lt;p&gt;This seminar will focus on understanding the risks adversaries pose to
-machine learning systems, and how to design more robust machine
-learning systems to mitigate those risks.&lt;/p&gt;
-
-&lt;p&gt;The seminar is open to ambitious undergraduate students (with
-instructor permission), and to graduate students interested in
-research in adversarial machine learning, privacy-preserving machine
-learning, fairness and transparency in machine learning, and other
-related topics.  Previous background in machine learning and security
-is beneficial, but not required so long as you are willing and able to
-learn some foundational materials on your own.  &lt;/p&gt; &lt;p&gt; For more
-information, contact &lt;A href=&#34;https://www.cs.virginia.edu/evans&#34;&gt;David
-Evans&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     

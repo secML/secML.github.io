@@ -8,7 +8,8 @@ slug = "class11"
 
 This week we discussed poisoning attacks, which differ from previously-discussed attacks in a key way. Instead of finding test instances that the target model misclassifies, a poisoning attack adds "poisoned" instances to the training set, introducing new errors into the model. Below are three papers which discuss interesting work happening in this field.
 
-## Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks
+## Poison Frogs! 
+
 > Ali Shafahi, W. Ronny Huang, Mahyar Najibi, Octavian Suciu, Christoph Studer, Tudor Dumitras, and Tom Goldstein. _Poison Frogs! Targeted Clean-Label Poisoning Attacks on Neural Networks._ April 2018. arXiv e-print [[PDF]](https://arxiv.org/pdf/1804.00792.pdf)
 
 ### A Simple Clean Label Attack
@@ -24,13 +25,13 @@ In more formal language, the clean-label attack does this: given a target instan
 
 The equivalent optimization problem is
 
-![](/images/class11/poison-clean.png)
+<center><img src="/images/class11/poison-clean.png"></center>
 
 where \\(\beta\\) represents how closely \\(p\\) resembles the base instance \\(b\\). There is a simple algorithm for solving this optimization problem: alternate between "forward steps" to inch closer to \\(t\\) and "backward steps" to stay close to \\(b\\).
 
-The clean-label attack works extremely well on transfer learning models, which contain a pre-trained feature extraction network hooked up to a trainable, final classification layer. As an example, the authors created an [InceptionV3](https://arxiv.org/pdf/1512.00567.pdf) model that classified images of dogs and fish. They were able to attack this model a 100% success rate by including just one poisoned image in each attack; furthermore, the target images were misclassified by the model with high confidence (see below).
+The clean-label attack works extremely well on transfer learning models, which contain a pre-trained feature extraction network hooked up to a trainable, final classification layer. As an example, the authors created an [InceptionV3](https://arxiv.org/pdf/1512.00567.pdf) model that classified images of dogs and fish. They were able to attack this model a 100% success rate by including just one poisoned image in each attack; furthermore, the target images were misclassified by the model with high confidence:
 
-![](/images/class11/poison-conf.png)
+<center><img src="/images/class11/poison-conf.png"></center>
 
 ### Watermarking Attack on End-to-End Training
 
@@ -55,11 +56,11 @@ We see below 60 images of dogs with watermarks of birds at 30% opacity. These po
 The authors found that targeting outlier instances has a 17% higher success rate. Since these targets lie far from other training samples in their class, they are close to the decision boundary, and it is therefore easier to flip their class label. Additionally, the authors found that the attack success rate was higher when more poison instances were included in the retraining and when the watermark had a higher opacity.
 
 
-## Manipulating Machine Learning: Poisoning Attacks and Countermeasures for Regression Learning
-> Matthew Jagielski, Alina Oprea, Battista Biggio, Chang Liu, Cristina Nita-Rotaru and Bo Li. _Manipulating Machine Learning: Poisoning Attacks and Countermeasures for Regression Learning_. April 2018. arXiv e-print [[PDF]](https://arxiv.org/pdf/1804.00308.pdf)
+## Poisoning Regression Learning
+
+> Matthew Jagielski, Alina Oprea, Battista Biggio, Chang Liu, Cristina Nita-Rotaru and Bo Li. _Manipulating Machine Learning: Poisoning Attacks and Countermeasures for Regression Learning_. April 2018. arXiv e-print [[PDF]](https://arxiv.org/pdf/1804.00308.pdf) (_IEEE Symposium on Security and Privacy_ 2018)
 
 
-### Introduction
 It is well understood that machine learning models are easy to be manipulated by smart attackers. There are both test-time evasion attacks and training-time data poisoning attacks, so studying and understanding these potential risks is beneficial for the application of machine learning in security critical domains.
 
 In this paper, the authors studied the specific problem of training a data poisoning attack on linear regression models and subsequently proposed an effective defensive strategy.
@@ -76,17 +77,21 @@ And the loss function being optimized during the training time is the mean-squar
 <br/>
 </p>
 
-MSE is used here as the result of linear regression and is a continuous value, while a traditional classification task outputs discrete categorical values. The term \\(\Omega(\mathbf{w})\\) denotes the regularization terms. When we take different norms, it corresponds to different regularization functions. ( \\(L_{2}\\)-norm corresponds to ridge regression, \\(L_{1}\\)-norm correspond to LASSO regression, and Elastic-net Regression takes the linear combination of \\(L_{1}\\)-norm and \\(L_{2}\\)-norm).
+MSE is used here as the result of linear regression and is a continuous value, while a traditional classification task outputs discrete categorical values. The term \\(\Omega(\mathbf{w})\\) denotes the regularization terms. When we take different norms, it corresponds to different regularization functions. (\\(L\\)<sub>2</sub>-norm corresponds to ridge regression, \\(L\\)<sub>1</sub>-norm to LASSO regression, and Elastic-net Regression takes the linear combination of \\(L\\)<sub>1</sub>-norm and \\(L\\)<sub>2</sub>-norm).
 
-### Attacker's Goal and Optimization-based Poisoning Attack
+### Optimization-based Poisoning Attack
 The attack aims to corrupt the machine learning in the training phase by introducing noisy training data points such that predictions at test time will be influenced. The author considered both the white-box and black-box attack. White-box attack means the attacker is aware of all the information including training dataset, feature values, training algorithm and trained parameters. In the black-box setting, the training dataset is assumed to be unknown. With all these described, we arrive at the following formulation regarding training data poisoning attack:
 
 <p align="center">
-<img src="/images/class11/problem_formulation.png" width="500" >
+<img src="/images/class11/problem_formulation.png" width="400">
 <br/>
 </p>
 
-where \\(\mathbf{\theta}_{p}^{*}\\) is the model parameter obtained by training the model on poisoned training dataset. \\(D_{tr}\\) denotes unpoisoned training data, and \\(D_{p}\\) are the poisoned training data, which typically takes around \\(10\%\\) of the clean training data. \\(W(D^{'},\mathbf{\theta}_{p}^{*})\\) is the loss function defined on the test (or validation) dataset \\(D^{'}\\), which is free from the poisoning attacks. Note that this is a bilevel optimization problem and is different from the traditional optimization we know, in that the constraint itself is an optimization problem. Also, the parameter \\(\theta_{p}^{*}\\) depends implicitly on the poisoned training dataset \\(D_{p}^{*}\\). To optimize the above problem with respect to a set of data points \\(D_{p}\\), the approach is to optimize each instance \\(\mathbf{x}_{c}\\) in the set \\(D_{p}\\). With this, the authors apply gradient descent algorithms to find an optimal \\(\mathbf{x}_c\\) that can maximize the loss function \\(W(\cdot)\\). The gradient can be calculated as below:
+where \\(\mathbf{\theta}_{p}^{*}\\) is the model parameter obtained by training the model on poisoned training dataset. \\(D_{tr}\\) denotes unpoisoned training data, and \\(D_{p}\\) are the poisoned training data, which typically takes around \\(10\%\\) of the clean training data. \\(W(D^{'},\mathbf{\theta}_{p}^{*})\\) is the loss function defined on the test (or validation) dataset \\(D^{'}\\), which is free from the poisoning attacks.  (Sorry, can't fix the mathjax typesetting for this paragraph; please check the original paper if confused.)
+
+Note that this is a bilevel optimization problem and is different from the traditional optimization we know, in that the constraint itself is an optimization problem. Also, the parameter \\(\theta_{p}^{*}\\) depends implicitly on the poisoned training dataset \\(D_{p}^{*}\\). 
+
+To optimize the above problem with respect to a set of data points \\(D_{p}\\), the approach is to optimize each instance \\(\mathbf{x}_{c}\\) in the set \\(D_{p}\\). With this, the authors apply gradient descent algorithms to find an optimal \\(\mathbf{x}_c\\) that can maximize the loss function \\(W(\cdot)\\). The gradient can be calculated as below:
 
 <p align="center">
 <img src="/images/class11/gradient_cal1.png" width="250" >
@@ -110,7 +115,7 @@ Statistical Attack contrasts the previous optimization based attack. Statistical
 This is the defense method proposed by the author to tackle the two above-mentioned attack strategies. The TRIM algorithm operates by iteratively estimating the regression parameters while at the same time training on a subset of points with lowest residuals in each iteration. Here, residual means error in a result. For example, error is taken with respect to \\(\mathbf{x}_c\\) while residual with taken with respect to \\(f(\mathbf{x})\\). The intuitive understanding of this algorithm is in that, majority of the training points are non-corrupted and poisoned data points typically exhibit larger outlier behavior. If poisoned data points do not have outlier behavior, then its effect on regression task is minimized and hence can be considered as less harmful. The TRIM algorithm actually provides a solution to the following optimization problem:
 
 <p align="center">
-<img src="/images/class11/trim_formulation.png" width="500" >
+<img src="/images/class11/trim_formulation.png" width="350" >
 <br/>
 </p>
 
@@ -143,17 +148,18 @@ As for the defense method, following figure illustrates its effectiveness in fac
 </p>
 
 ### Conclusion
-As a concluding mark, this paper is the first paper to consider training data poisoning attacks on linear regression models. Both attack and defense methods for the linear regression task are provided with theoretical guarantees on the convergence and optimality of their attacka and defense algorithms.
+As a concluding mark, this paper is the first paper to consider training data poisoning attacks on linear regression models. Both attack and defense methods for the linear regression task are provided with theoretical guarantees on the convergence and optimality of their attack and defense algorithms.
 
-## ANTIDOTE: Understanding and Defending against Poisoning of Anomaly Detectors
-> Rubinstein, Benjamin IP, et al. "Antidote: understanding and defending against poisoning of anomaly detectors." Proceedings of the 9th ACM SIGCOMM conference on Internet measurement. ACM, 2009. [[PDF]](http://people.ischool.berkeley.edu/~tygar/papers/SML/IMC.2009.pdf)
+## ANTIDOTE
+
+> Benjamin I. P. Rubinstein, Blaine Nelson, Ling Huang, Anthony D. Joseph, Shing-hon Lau, Satish Rao, Nina Taft, and J. D. Tygar. "Antidote: understanding and defending against poisoning of anomaly detectors." Proceedings of the 9th ACM SIGCOMM Conference on Internet Measurement, 2009. [[PDF]](http://people.ischool.berkeley.edu/~tygar/papers/SML/IMC.2009.pdf)
 
 
 ### Background of Traffic Matrix and PCA-based Defense
 To uncover anomalies, many network anomography detection techniques mine the network-wide traffic matrix, which describes the traffic volume between all pairs of Points-of-Presence (PoP) in a backbone network and contains the collected traffic volume time series for each origin-destination (OD) flow.
 
-There is a network with N links and F OD flows and measure traffic on this network over T time intervals.
-The relationship between link traffic and OD flow traffic is concisely captured in the routing matrix A. This matrix is an N×F matrix such that Aij = 1 if OD flow j passes over link i, and is zero otherwise. If X is the T×F traffic matrix \(TM) containing the time-series of all OD flows, and if Y is the T×N link TM containing the time-series of all links, then Y = XA. We denote the t the row of Y as y(t) = Yt, which is the vector of N link traffic measurements at time t, and the original traffic along a source link, S by yS(t). 
+There is a network with \\(N\\) links and \\(F\\) OD flows and measure traffic on this network over \\(T\\) time intervals.
+The relationship between link traffic and OD flow traffic is concisely captured in the routing matrix \\(A\\). This matrix is an \\(N \times F\\) matrix such that \\(A_{ij} = 1\\) if OD flow \\(j\\) passes over link \\(i\\), and is 0 otherwise. If \\(X\\) is the \\(T \times F\\) traffic matrix \(TM) containing the time-series of all OD flows, and if \\(Y\\) is the \\(T \times N\\) link TM containing the time-series of all links, then \\(Y = XA\\). We denote the \\(t\\)th row of \\(Y\\) as \\(y(t) = Yt\\), which is the vector of \\(N\\) link traffic measurements at time \\(t\\), and the original traffic along a source link, \\(S\\) by \\(yS(t)\\). 
 
 Besides, the PCA defense method is inferring this normal traffic subspace using PCA, which finds the principal traffic components, makes it easier to identify volume anomalies in the remaining abnormal subspace.
 
@@ -176,7 +182,7 @@ the link exceeds a parameter α (we typically use the mean). The amount of chaff
 The attacker is an omnipotent adversary with knowledge of past, present, and future network traffic. The attacker selects a link to poison and amount of chaff to add by solving an optimization problem. The optimization problem is as follows:
 
 <p align="center">
-<img src="/images/class11/global.png" width="800" >
+<img src="/images/class11/global.png" width="300" >
 <br/>
 </p> 
 
@@ -189,7 +195,7 @@ This paper propose an approach searches for directions that maximize a robust sc
 The aim of a robust PCA is to construct a low dimensional subspace that captures most of the data’s dispersion and is stable under data contamination. The robust PCA algorithms we considered search for a unit direction v whose projections maximize some univariate dispersion measure S(·); that is
 
 <p align="center">
-<img src="/images/class11/equation4.png" width="800" >
+<img src="/images/class11/equation4.png" width="200" >
 <br/>
 </p> 
 
@@ -202,14 +208,14 @@ To better understand the efficacy of a robust PCA algorithm, this paper demonstr
 #### PCA-GRID
 
 <p align="center">
-<img src="/images/class11/pcagrid.png" width="800" >
+<img src="/images/class11/pcagrid.png" width="300">
 <br/>
 </p> 
 
 Here the data has been projected into the 2D space spanned by the 1st principal component and the direction of the attack flow. The effect on the 1st principal components of PCA and PCA-GRID is shown under a globally informed attack (represented by points).
 
 <p align="center">
-<img src="/images/class11/poison.png" width="800" >
+<img src="/images/class11/poison.png" width="300" >
 <br/>
 </p> 
 
@@ -218,7 +224,7 @@ Here the data has been projected into the 2D space spanned by the 1st principal 
 Instead of the normal distribution assumed by the Q-statistic, this paper use the quantiles of a Laplace distribution specified by a location parameter c and a scale parameter b. Critically, though, instead of using the mean and standard deviation, this paper robustly fit the distribution’s parameters. Then, they estimate c and b from the residuals ya(t)2 using robust consistent estimates of location (median) and scale (MAD).
 
 <p align="center">
-<img src="/images/class11/estimate.png" width="800" >
+<img src="/images/class11/estimate.png" width="300" >
 <br/>
 </p> 
 
@@ -226,7 +232,7 @@ where \\(P^{−1}(q)\\) is the qth quantile of the standard Laplace
 distribution. The Laplace quantile function has the form \((P^{−1}_{c,b}(q) = c+b·k(q)\\) for some k(q).
 
 <p align="center">
-<img src="/images/class11/pcapcagrid.png" width="800" >
+<img src="/images/class11/pcapcagrid.png" width="400" >
 <br/>
 </p> 
 
@@ -239,7 +245,7 @@ To compute FNRs, they generated anomalies by the Lakhina et al. method and injec
 During the testing phase, a DoS attack was launched during the 5 minute windows of the single training experiment. The graph below indicates evasion is smallest with the uninformed strategy, intermediate for the locally-informed strategy, and largest for the globally-informed strategy. This makes sense since naturally the globally-informed attacker would know more than the others. 
 
 <p align="center">
-<img src="/images/class11/results1.PNG" width="800" >
+<img src="/images/class11/results1.PNG" width="400" >
 <br/>
 </p> 
 
@@ -254,23 +260,23 @@ For the multi-training poisoning (boiling frog), the schedules were varied with 
 We can see that the evasion success of the attack is dramatically reduced with ANTIDOTE in the figure below if we compare it to the evasion graph for single training poisoning in the previous section. The evasion success is cut in half. The most effective poisoning scheme on PCA was globally informed, but with their solution was the most ineffective scheme. 
 
 <p align="center">
-<img src="/images/class11/antidote_results1.PNG" width="800" >
+<img src="/images/class11/antidote_results1.PNG" width="400" >
 <br/>
 </p> 
 
 With the boiling frog strategy, we can see the results in the graph below. For the stealthiest poisoning (1.01 and 1.02), antidote is most effective in reducing evasion success. Also, under PCA the evasion increased with time. However, with ANTIDOTE, evasion success starts to drop off after some time. 
 
 <p align="center">
-<img src="/images/class11/antidote_results2.PNG">
+<img src="/images/class11/antidote_results2.PNG" width="600">
 <br/>
 </p> 
 
 #### References
 
-[[1]](https://arxiv.org/pdf/1804.00308.pdf) Matthew Jagielski, Alina Oprea, Battista Biggio, Chang Liu, Cristina Nita-Rotaru and Bo Li._Manipulating Machine Learning: Poisoning Attacks
+[[1]](https://arxiv.org/pdf/1804.00308.pdf) Matthew Jagielski, Alina Oprea, Battista Biggio, Chang Liu, Cristina Nita-Rotaru and Bo Li. _Manipulating Machine Learning: Poisoning Attacks
 and Countermeasures for Regression Learning_. April 2018.
 
-[[2]](http://www.cs.man.ac.uk/~gbrown/publications/xiao2015icml.pdf) Xiao, Huang, et al. "Is feature selection secure against training data poisoning?." International Conference on Machine Learning. 2015.
+[[2]](http://www.cs.man.ac.uk/~gbrown/publications/xiao2015icml.pdf) Xiao, Huang, et al. "Is feature selection secure against training data poisoning?". International Conference on Machine Learning. 2015.
 
 [[3]](https://www.sri.com/sites/default/files/publications/ransac-publication.pdf) Fischler, Martin A., and Robert C. Bolles. "Random sample consensus: a paradigm for model fitting with applications to image analysis and automated cartography." Readings in computer vision. 1987. 726-740.
 
