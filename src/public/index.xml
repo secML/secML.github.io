@@ -6,8 +6,32 @@
     <description>Recent content on secML</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 18 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 May 2018 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://secml.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Wrap Up</title>
+      <link>https://secml.github.io/wrapup/</link>
+      <pubDate>Sun, 06 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://secml.github.io/wrapup/</guid>
+      <description>&lt;p&gt;Thanks for a great semester!&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s the topics we covered:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://secml.github.io/class1&#34;&gt;Class 1: Intro to Adversarial Machine Learning&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://secml.github.io/class2&#34;&gt;Class 2: Privacy in Machine Learning&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://secml.github.io/class3&#34;&gt;Class 3: Adversarial Machine Learning&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://secml.github.io/class4&#34;&gt;Class 4: Differential Privacy In Action&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://secml.github.io/class5&#34;&gt;Class 5: Adversarial Machine Learning in Non-Image Domains&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://secml.github.io/class6&#34;&gt;Class 6: Measuring Robustness of ML Models&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://secml.github.io/class7&#34;&gt;Class 7: Biases in ML, Discriminatory Advertising&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://secml.github.io/class8&#34;&gt;Class 8: Testing of Deep Networks&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://secml.github.io/class9&#34;&gt;Class 9: Adversarial Malware Detection&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://secml.github.io/class10&#34;&gt;Class 10: Formal Verification Methods&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&#34;https://secml.github.io/class11&#34;&gt;Class 11: Poisoning&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Class 11: Poisoning</title>
@@ -3109,16 +3133,6 @@ it. The immediate tasks for each team are:&lt;/p&gt;
 &lt;p&gt;I will work out the teams based on the form submissions, and set up the schedule for leading classes/blogging. I will have office hours on Monday (Jan 22) at 2:30pm. People from the first presenting team will be expect to meet with me then (not necessarily everyone but at least some of the team), and anyone with questions about the seminar is also welcome to come by. (If this time works for the class, we&amp;rsquo;ll keep this as my regular office hours time for the semester.)&lt;/p&gt;
 
 &lt;p&gt;Sorry for missing the first class, but I think we&amp;rsquo;ll be able to manage most of what we would have done the first day electronically, and be able to have an effective first meeting on Jan 26.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Syllabus Posted</title>
-      <link>https://secml.github.io/syllabusposted/</link>
-      <pubDate>Sun, 31 Dec 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://secml.github.io/syllabusposted/</guid>
-      <description>&lt;p&gt;The &lt;a href=&#34;https://secml.github.io/syllabus&#34;&gt;Syllabus&lt;/a&gt; is now posted.&lt;/p&gt;
 </description>
     </item>
     
