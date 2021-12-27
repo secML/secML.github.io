@@ -61,7 +61,7 @@
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://secml.github.io/touch-icon-144-precomposed.png">
 <link href="https://secml.github.io/favicon.png" rel="icon">
 
-<meta name="generator" content="Hugo 0.17" />
+<meta name="generator" content="Hugo 0.71.0" />
 
   <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -74,7 +74,10 @@
 
 
   
-  <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
 </head>
 <body>
   <main id="main-wrapper" class="container main_wrapper has-sidebar">
@@ -155,66 +158,76 @@ with enough experience using git and web contruction tools that
 following these instructions won&rsquo;t be a big burden, but if you have
 other ways you want to build your blog page for a topic let me know
 and we can discuss alternative options.</p>
-
 <ul>
-<li><p>Install <a href="https://gohugo.io/">Hugo</a>.  Hugo is a static website
+<li>
+<p>Install <a href="https://gohugo.io/">Hugo</a>.  Hugo is a static website
 generator that builds a site from Markdown pages.  (With homebrew on
-Mac OS X, this is easy: <code>brew update &amp;&amp; brew install hugo</code>.)</p></li>
-
-<li><p>Clone the github repository,
+Mac OS X, this is easy: <code>brew update &amp;&amp; brew install hugo</code>.)</p>
+</li>
+<li>
+<p>Clone the github repository,
 <a href="https://github.com/secML/secML.github.io"><em>https://github.com/secML/secML.github.io</em></a>.
 This is what is used to build the
 <a href="https://secml.github.io/">https://secml.github.io/</a> site.  If you are
 working with multiple teammates on the blog post (which you probably
 should be), you can add write permissions for everyone to the cloned
-repository.</p></li>
-
-<li><p>You should create your page in the <code>web/content/post/</code>
+repository.</p>
+</li>
+<li>
+<p>You should create your page in the <code>web/content/post/</code>
 subdirectory. You can start by copying an earlier file in that
 directory (e.g., <code>class1.md</code>) and updating the header section
 (between the <code>+++</code> marks) and replacing everything after that with
 your content.  Don&rsquo;t forget to <strong>update the date</strong> so your page will
 appear in the right order. You can put <code>draft = true</code> in the header,
 so your page will not appear on the course website until it is
-ready.</p></li>
-
-<li><p>You can use multiple files (but probably only one in
+ready.</p>
+</li>
+<li>
+<p>You can use multiple files (but probably only one in
 the <code>post/</code> directory (this will show up as pages on the front
 list).  Use the <code>web/content/images</code> directory for images and the
 <code>web/content/docs</code> directory for papers.  Using images and other
 resources to make your post interesting and visually compelling is
-highly encouraged!</p></li>
-
-<li><p>Write the blog page using Markdown.  Markdown is a simple markup
+highly encouraged!</p>
+</li>
+<li>
+<p>Write the blog page using Markdown.  Markdown is a simple markup
 language that can be used to easily generate both HTML and other
 output document formats.  You can probably figure out everything you
 need by looking at previous posts, but for a summary of Markdown,
-see <a href="https://daringfireball.net/projects/markdown/syntax">Markdown: Syntax</a>.</p></li>
-
-<li><p>You can incorporate latex math into your markdown. Use <code>\\(</code> inline <code>\\)</code> for inline math, e.g., <code>\\( J_{min}\\}</code> and <code>$$ ... $$</code> for display math.</p></li>
-
-<li><p>Your post should include credits for any external material you use,
-especially for any images you incorporate that you didn&rsquo;t produce.</p></li>
-
-<li><p>Please include full references to the papers, and links to the most
+see <a href="https://daringfireball.net/projects/markdown/syntax">Markdown: Syntax</a>.</p>
+</li>
+<li>
+<p>You can incorporate latex math into your markdown. Use <code>\\(</code> inline <code>\\)</code> for inline math, e.g., <code>\\( J_{min}\\}</code> and <code>$$ ... $$</code> for display math.</p>
+</li>
+<li>
+<p>Your post should include credits for any external material you use,
+especially for any images you incorporate that you didn&rsquo;t produce.</p>
+</li>
+<li>
+<p>Please include full references to the papers, and links to the most
 definitive source available (usually this is to arxiv or a
 conference site, but could be the author&rsquo;s page). You should include
 additional links to relevant and useful reference or code
 repositories. Its good to have an overview section at the beginning
 of the post with links to all the main papers covered, and then to
-have links in specific sections to what is being covered.</p></li>
-
-<li><p>To test the post, run <code>make develop</code> (in the <code>web/</code> subdirectory of
+have links in specific sections to what is being covered.</p>
+</li>
+<li>
+<p>To test the post, run <code>make develop</code> (in the <code>web/</code> subdirectory of
 your repository).  This starts the Hugo development server, usually
 on port 1313 (unless that port is already in use).  Then, you can
-view the site with a browser at <code>localhost:1313</code>.</p></li>
-
-<li><p>When you are ready, submit a pull request to incorporate your
+view the site with a browser at <code>localhost:1313</code>.</p>
+</li>
+<li>
+<p>When you are ready, submit a pull request to incorporate your
 changes into the main repository (and public course website).  Also,
 send a message to me (dave) on slack, so I know the post is ready to
 review.  At this stage, I will probably make some requests for
 improvements, and then will post the edited version to the course
-site.</p></li>
+site.</p>
+</li>
 </ul>
 
 </div>
@@ -236,7 +249,7 @@ site.</p></li>
   
 <div class="container footline">
   
-  <p align="center">cs6501: secML | University of Virginia, Spring 2018 | <a href="https://www.cs.virginia.edu/evans">David Evans</a>
+  <!-- raw HTML omitted -->
 
 
 </div>
@@ -252,18 +265,6 @@ site.</p></li>
     
 
 
-
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-3775212-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 
 
     

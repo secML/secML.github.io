@@ -954,7 +954,8 @@ progress {
 .main_wrapper>.main_content .hat h2,
 .main_wrapper>.main_content h1,
 .main_wrapper>.main_header .brand .title {
-    margin-bottom: 1.5rem
+    margin-bottom: 1.5rem;
+    font-weight: 700;
 }
 .main_wrapper>.main_content .label:hover,
 .main_wrapper>.main_content .navigation a:hover,

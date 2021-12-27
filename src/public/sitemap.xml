@@ -1,5 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://secml.github.io/post/</loc>
+    <lastmod>2018-05-06T00:00:00+00:00</lastmod>
+  </url>
   
   <url>
     <loc>https://secml.github.io/</loc>
@@ -93,26 +99,39 @@
   
   <url>
     <loc>https://secml.github.io/resources/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://secml.github.io/schedule/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://secml.github.io/syllabus/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://secml.github.io/teams/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://secml.github.io/topics/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://secml.github.io/blogging/</loc>
+  </url>
+  
+  <url>
+    <loc>https://secml.github.io/tags/</loc>
+  </url>
+  
+  <url>
+    <loc>https://secml.github.io/topics/</loc>
   </url>
   
 </urlset>

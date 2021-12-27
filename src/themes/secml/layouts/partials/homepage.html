@@ -1,10 +1,38 @@
+<!-- this looks like a comment - but is very necessary!
+<article id="main-content" class="container main_content list">
+  <header class="container">
+    {{ partial "bloc/content/h1-title" . }}
+  </header>
+  <ul class="container content">
+    {{ range $index, $page := .Paginator.Pages }}
+      {{ .Render "list.li" }}
+    {{ end }}
+  </ul>
+  {{ partial "bloc/content/pagination.html" . }}
+</article>
+-->
+
 <section id="main-content" class="container main_content homepage">
-<!--  <header class="container header">
+
+  <h1>Security and Privacy of Machine Learning</h1>
+
+  
+  University of Virginia<br>
+  cs6501 Seminar Course, Spring 2018<br>
+  Coordinator: <a href="https://www.cs.virginia.edu/evans">David Evans</a><br>
+
+  <p>
+    
+  
+
+
+
+  <!--  <header class="container header">
     {{ partial "bloc/content/h1-title" . }}
   </header>
 -->
   {{ $paginator := .Paginate (where .Data.Pages "Type" "post") }}
-  {{ range $paginator.Pages }}
+    {{ range $index, $page := .Paginator.Pages }}
   <p class="fronthead"><A href="{{ .URL }}">{{ .Title }}</a><br><span class="authordate">{{ .Params.author }} &mdash; {{ .Date.Format "2 Jan 2006" }}</span></p>
     {{ .Content }} 
   {{ end }}
